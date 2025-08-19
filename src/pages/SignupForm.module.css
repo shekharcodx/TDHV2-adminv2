@@ -1,0 +1,200 @@
+.container {
+  max-width: 650px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  font-family: sans-serif;
+  color: #333; /* ✅ default text color visible */
+}
+
+/* Page Heading */
+.heading {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #222; /* ✅ visible heading */
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+/* Stepper Header */
+.stepsHeader {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 2rem;
+}
+
+.step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 0.9rem;
+  color: #777; /* ✅ visible step text */
+}
+
+.step span {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: #e0e0e0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 6px;
+  font-weight: bold;
+  color: #333; /* ✅ step number visible */
+}
+
+.step p {
+  margin: 0;
+}
+
+.active span {
+  background: linear-gradient(to right, #1dbbb4, #1b5a5a);
+  color: #fff; /* ✅ white text on active step */
+}
+
+.active p {
+  color: #222;
+  font-weight: 600;
+}
+
+.line {
+  flex: 1;
+  height: 2px;
+  background: #e0e0e0;
+  margin: 0 25px;
+}
+
+/* Form Grid */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+}
+
+/* Labels */
+.label {
+  display: block;
+  margin-bottom: 0.3rem;
+  font-size: 0.85rem;
+  color: #444; /* ✅ labels clearly visible */
+}
+
+/* Inputs */
+.input {
+  padding: 0.6rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  color: #333; /* ✅ input text visible */
+  background: #fff;
+  width: 100%;
+}
+
+.inputFull {
+  grid-column: span 2;
+  padding: 0.6rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  color: #333; /* ✅ full-width input text visible */
+  background: #fff;
+}
+
+/* Country Select */
+.countrySelect {
+  display: flex;
+  align-items: center;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  padding: 0.4rem 0.6rem;
+  background: #fff;
+}
+
+.select {
+  flex: 1;
+  border: none;
+  font-size: 0.95rem;
+  outline: none;
+  background: transparent;
+  color: #333; /* ✅ selected value visible */
+  cursor: pointer;
+}
+
+.select option {
+  background: #fff;
+  color: #333; /* ✅ dropdown options visible */
+}
+
+.flag {
+  width: 24px;
+  height: auto;
+  margin-right: 10px;
+}
+
+/* Phone Field */
+.phoneField {
+  display: flex;
+  align-items: center;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  overflow: hidden;
+  background: #fff;
+}
+
+.phonePrefix {
+  display: flex;
+  align-items: center;
+  background-color: #f1f1f1;
+  padding: 0 10px;
+  font-size: 0.9rem;
+  border-right: 1px solid #ccc;
+  color: #333; /* ✅ country code visible */
+}
+
+.phoneInput {
+  flex: 1;
+  padding: 0.6rem;
+  border: none;
+  outline: none;
+  color: #333; /* ✅ phone number visible */
+  background: #fff;
+}
+
+/* Next Button */
+.nextButton {
+  width: 100%;
+  padding: 0.8rem;
+  margin-top: 1.5rem;
+  background: linear-gradient(to right, #1dbbb4, #1c84dd);
+  color: white; /* ✅ button text visible */
+  font-size: 1rem;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+/* Footer */
+.footer {
+  margin-top: 1rem;
+  text-align: center;
+  font-size: 0.9rem;
+  color: #555; /* ✅ footer text visible */
+}
+
+.loginLink {
+  color: #1cc3dd; /* ✅ link visible */
+  text-decoration: none;
+  margin-left: 4px;
+}
+/* ✅ Make entire page background white */
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #fff;
+  font-family: sans-serif;
+  color: #333;
+}

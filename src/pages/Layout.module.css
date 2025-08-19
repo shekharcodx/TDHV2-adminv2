@@ -1,0 +1,21 @@
+.layoutContainer {
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+}
+
+.mainContent {
+  flex: 1;
+  padding: 30px 40px;
+  overflow-y: auto;
+  background-color: #f9fafc;
+}
+
+.contentWrapper {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
+}
