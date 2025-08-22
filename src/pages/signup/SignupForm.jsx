@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import styles from "./SignupForm.module.css";
 
-import indiaFlag from "../assets/india-flag.png";
-import uaeFlag from "../assets/uae-flag.png";
-import usaFlag from "../assets/usa-flag.png";
+import indiaFlag from "../../assets/india-flag.png";
+
+import uaeFlag from "../../assets/uae-flag.png";
+import usaFlag from "../../assets/usa-flag.png";
 import { useNavigate } from "react-router-dom";
 
 

@@ -11,7 +11,7 @@ const VendorProfile = () => {
 
   return (
     <div className={styles.vendorContainer}>
-      {/* Left Profile Section */}
+    {/* Left Profile Section */}
       <div className={styles.leftCard}>
         <img
           src="https://cdn-icons-png.flaticon.com/512/2922/2922510.png"
@@ -126,3 +126,4 @@ const VendorProfile = () => {
 };
 
 export default VendorProfile;
+

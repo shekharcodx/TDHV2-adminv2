@@ -1,13 +1,16 @@
 .page {
   font-family: 'Segoe UI', sans-serif;
-  background: #f0f2f5;
-  min-height: 100vh;
+  background:  #fdfdfd;;
+  
   margin-left: 220px;
   box-sizing: border-box;
-  width: calc(100% - 220px); /* add this to keep content inside viewport */
-  color: #333; /* ensure text color is visible */
-  padding: 20px; /* optional for spacing */
+  width: calc(100% - 220px); /* Keep content inside viewport */
+  color: #333;
+  padding: 60px 20px 40p;
+  align-items:flex-start;
+
 }
+
 
 /* Header */
 .header {
@@ -17,6 +20,11 @@
   justify-content: space-between;
   align-items: center;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+.logoImage {
+  height: 40px;
+  object-fit: contain;
 }
 
 .logo {
@@ -48,6 +56,9 @@
   padding: 40px;
   max-width: 1200px;
   margin: 0 auto;
+  
+
+  
 }
 
 /* Section Title */
@@ -64,6 +75,7 @@
   border-radius: 12px;
   padding: 30px;
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+  
 }
 
 .grid {
@@ -84,7 +96,7 @@
 
 .input:focus,
 .select:focus {
-  border-color: #0070f3;
+  border-color: #31b0a6;
   outline: none;
 }
 
@@ -93,8 +105,3 @@
   color: #888;
   cursor: not-allowed;
 }
-.logoImage {
-  height: 40px;
-  object-fit: contain;
-}
-

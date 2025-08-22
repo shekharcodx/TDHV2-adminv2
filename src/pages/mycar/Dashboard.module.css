@@ -1,0 +1,86 @@
+.summary {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 20px;
+}
+
+.card {
+  flex: 1;
+  padding: 1rem;
+  background-color: #f5f5f5;
+  border-radius: 10px;
+  text-align: center;
+  font-weight: bold;
+}
+
+.tableWrapper {
+  background: white;
+  padding: 1rem;
+  border-radius: 10px;
+}
+
+.search {
+  padding: 0.5rem;
+  width: 60%;
+  margin-bottom: 10px;
+}
+
+.createBtn {
+  float: right;
+  padding: 0.5rem 1rem;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  margin-bottom: 10px;
+  border-radius: 5px;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table th,
+.table td {
+  padding: 0.75rem;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+.carTitle {
+  display: flex;
+  align-items: center;
+}
+
+.carTitle img {
+  width: 60px;
+  height: 60px;
+  margin-right: 10px;
+  border-radius: 5px;
+}
+
+.status {
+  padding: 0.3rem 0.6rem;
+  border-radius: 4px;
+  font-size: 0.85rem;
+}
+
+.pending {
+  background-color: #ffeeba;
+  color: #856404;
+}
+
+.editBtn {
+  margin-left: 10px;
+  background: #17a2b8;
+  color: white;
+  border: none;
+  padding: 0.3rem 0.6rem;
+  border-radius: 4px;
+}
+
+.pagination {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 1rem;
+}

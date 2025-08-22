@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import styles from './CarListing.module.css';
-import logo from "../assets/logo.png";
+
 const carData = {
   Audi: ['A3', 'A4', 'Q7'],
   BMW: ['X5', 'M3', 'i8'],
   Bentley: ['Continental', 'Bentayga'],
-  Cadillac: ['Escalade', 'CT5']
+  Cadillac: ['Escalade', 'CT5'],
 };
 
 const CarListing = () => {
@@ -14,28 +14,15 @@ const CarListing = () => {
 
   return (
     <div className={styles.page}>
-      {/* Header */}
-      <header className={styles.header}>
-        <img src= {logo} alt="Logo" className={styles.logoImage} />
-
-        <div className={styles.profile}>
-          <span className={styles.vendor}>ALaina</span>
-          <img
-            src="https://ui-avatars.com/api/?name=Naveed+Ahsan&background=0070f3&color=fff"
-            alt="Profile"
-            className={styles.avatar}
-          />
-        </div>
-      </header>
-
-      {/* Main Content */}
       <main className={styles.container}>
         <h2 className={styles.title}>Add Car Details</h2>
 
         <form className={styles.form}>
+
+          {/* Section 1: Basic Info */}
           <div className={styles.grid}>
             <select className={styles.select}>
-              <option value="">Locations</option>
+              <option value="">Select Location</option>
               <option value="dubai">Dubai</option>
               <option value="abu-dhabi">Abu Dhabi</option>
             </select>
@@ -48,7 +35,7 @@ const CarListing = () => {
                 setSelectedModel('');
               }}
             >
-              <option value="">Brand</option>
+              <option value="">Select Brand</option>
               {Object.keys(carData).map((brand) => (
                 <option key={brand} value={brand}>
                   {brand}
@@ -62,7 +49,9 @@ const CarListing = () => {
               onChange={(e) => setSelectedModel(e.target.value)}
               disabled={!selectedBrand}
             >
-              <option value="">Car Model</option>
+              <option value="">
+                {selectedBrand ? 'Select Model' : 'Select Brand First'}
+              </option>
               {selectedBrand &&
                 carData[selectedBrand].map((model) => (
                   <option key={model} value={model}>
@@ -71,35 +60,63 @@ const CarListing = () => {
                 ))}
             </select>
 
-            <input className={styles.input} placeholder="Year" />
+            <input className={styles.input} placeholder="Year (e.g. 2023)" />
+
             <select className={styles.select}>
-              <option value="">Car Type</option>
+              <option value="">Select Car Type</option>
               <option value="suv">SUV</option>
               <option value="sedan">Sedan</option>
               <option value="hatchback">Hatchback</option>
             </select>
+          </div>
 
-            <input className={styles.input} placeholder="Capacity (Passengers)" />
-            <input className={styles.input} placeholder="Capacity (Tank)" />
+          {/* Section 2: Capacity & Specs */}
+          <div className={styles.grid}>
+            <input className={styles.input} placeholder="Passenger Capacity" />
+            <input className={styles.input} placeholder="Tank Capacity (L)" />
             <input className={styles.input} placeholder="Bags" />
+          </div>
 
+          {/* Section 3: Appearance */}
+          <div className={styles.grid}>
             <select className={styles.select}>
-              <option value="">Interior Colors</option>
+              <option value="">Interior Color</option>
               <option value="black">Black</option>
               <option value="beige">Beige</option>
             </select>
 
             <select className={styles.select}>
-              <option value="">Exterior Colors</option>
+              <option value="">Exterior Color</option>
               <option value="white">White</option>
               <option value="blue">Blue</option>
             </select>
+          </div>
 
+          {/* Section 4: Pricing */}
+          <div className={styles.grid}>
             <input className={styles.input} placeholder="Included Mileage (km)" />
             <input className={styles.input} placeholder="Extra Mileage Rate (AED/km)" />
             <input className={styles.input} placeholder="Delivery Charge (AED)" />
             <input className={styles.input} placeholder="Total Charges (AED)" />
             <input className={styles.input} placeholder="Security Deposit (AED)" />
+          </div>
+
+          {/* Submit Button (optional) */}
+          <div style={{ marginTop: '30px', textAlign: 'right' }}>
+            <button
+              type="submit"
+              style={{
+                backgroundColor: '#5fc0bdff',
+                color: '#fff',
+                padding: '12px 24px',
+                fontSize: '14px',
+                border: 'none',
+                borderRadius: '8px',
+                cursor: 'pointer'
+              }}
+            >
+              Save Car
+            </button>
           </div>
         </form>
       </main>

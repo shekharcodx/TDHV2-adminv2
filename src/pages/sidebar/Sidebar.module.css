@@ -49,7 +49,7 @@
 .menu li:hover,
 .menu li.active {
   background-color: #f0f4ff;
-  color: #4460f1;
+  color: #5fc0bdff;
   border-left: 4px solid #4460f1;
 }
 
