@@ -126,6 +126,17 @@
   font-weight: 500;
   transition: background-color 0.2s ease, transform 0.2s ease;
 }
+.documentsList {
+  display: flex;           /* Enables flex layout */
+  flex-wrap: wrap;         /* Allows items to move to the next line if too long */
+  gap: 20px;               /* Space between DocumentCards */
+  margin-top: 10px;
+}
+
+.documentsList > * {
+  flex: 1 1 200px;         /* Grow/shrink, with minimum width 200px */
+  max-width: 250px;        /* Optional: limit the card width */
+}
 
 /* Edit Button (View Mode) */
             /* neutral */

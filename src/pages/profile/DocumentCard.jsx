@@ -19,7 +19,7 @@ const DocumentCard = ({ doc }) => {
         <div className={styles.iconWrapper}>{getIcon(doc.filename)}</div>
         <div>
           <p className={styles.filename}>{doc.filename}</p>
-          <p className={styles.size}>200 KB – 100% uploaded</p>
+          <p className={styles.size}>200 KB </p>
         </div>
       </div>
       <a href={doc.key} download className={styles.downloadBtn}>

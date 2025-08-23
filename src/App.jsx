@@ -19,14 +19,15 @@ function App() {
     <Router>
       <Routes>
         <Route path="/" element={<Layout />}>
-           <Route index element={<Profile/>} /> 
-          <Route path="profile" element={<Profile />} />
+           <Route index element={<DashboardPage/>} /> 
+          <Route path="/profile" element={<Profile />} />
           {/* Uncomment the next line if UserForm is implemented and imported */}
           {/* <Route path="user-form" element={<UserForm />} /> */}
           <Route path="car-listing" element={<CarListing />} />
           <Route path="admin-car" element={<CarListing />} />
-          <Route path="cards" element={<Cards />} />
-          <Route path="dashboard" element={<DashboardPage />} />
+          <Route path="/car-listing" element={<CarListing />} />
+          <Route path="/card" element={<Cards />} />
+          <Route path="/DashboardPage" element={<DashboardPage />} />
         </Route>
       </Routes>
     </Router>

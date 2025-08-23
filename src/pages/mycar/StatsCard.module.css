@@ -1,0 +1,19 @@
+.card {
+  flex: 1;
+  background: #fff;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.05);
+  text-align: center;
+}
+
+.value {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.label {
+  font-size: 14px;
+  color: #666;
+}

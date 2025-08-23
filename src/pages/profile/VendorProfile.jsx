@@ -213,13 +213,16 @@ const VendorProfile = () => {
           </div>
         </div>
 
-        {/* Documents */}
-        <div style={{ padding: "20px" }}>
-          <h2>Vendor Documents</h2>
-          {Object.values(vendor.documents).map((doc, index) => (
-            <DocumentCard key={index} doc={doc} />
-          ))}
-        </div>
+       {/* Documents */}
+<div style={{ padding: "20px" }}>
+  <h2>Vendor Documents</h2>
+  <div style={{ display: "flex", flexWrap: "wrap", gap: "20px" }}>
+    {Object.values(vendor.documents).map((doc, index) => (
+      <DocumentCard key={index} doc={doc} />
+    ))}
+  </div>
+</div>
+
 
         {/* Buttons */}
         <button
