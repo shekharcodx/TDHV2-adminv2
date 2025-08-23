@@ -8,12 +8,12 @@
   margin-bottom: 12px;
   background: #fff;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-  max-width: 300px;
+  width: 300px;
 }
 .container {
   display: flex;
-  flex-wrap: wrap;      /* moves cards to next line if space runs out */
-  gap: 16px;            /* spacing between cards */
+  flex-wrap: wrap; /* moves cards to next line if space runs out */
+  gap: 16px; /* spacing between cards */
   justify-content: flex-start; /* left aligned */
   align-items: flex-start;
   padding: 20px;

@@ -12,8 +12,8 @@ const Card = ({ title, value, Icon, iconColor }) => {
         <Icon className={styles.icon} style={{ color: iconColor }} />
       </div>
       <div>
-        <h3>{value}</h3>
-        <p>{title}</p>
+        <h3 className={styles.h3}>{value}</h3>
+        <p className={styles.p}>{title}</p>
       </div>
     </div>
   );

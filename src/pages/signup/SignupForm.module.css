@@ -191,7 +191,7 @@
   margin-left: 4px;
 }
 /* ✅ Make entire page background white */
-body {
+.body {
   margin: 0;
   padding: 0;
   background-color: #fff;

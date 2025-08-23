@@ -9,7 +9,13 @@
   flex: 1;
   padding: 30px 40px;
   overflow-y: auto;
-  background-color: #f9fafc;
+  /* background-color: #f9fafc; */
+}
+
+@media (max-width: 550px) {
+  .mainContent {
+    padding: 30px 10px;
+  }
 }
 
 .contentWrapper {

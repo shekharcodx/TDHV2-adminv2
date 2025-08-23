@@ -1,12 +1,21 @@
 .page {
-  font-family: 'Segoe UI', sans-serif;
-  background: #fdfdfd;
+  font-family: "Segoe UI", sans-serif;
+  /* background: #fdfdfd; */
   margin-left: 220px;
   box-sizing: border-box;
   width: calc(100% - 220px);
   color: #333;
   padding: 60px 20px 40px;
 }
+
+@media (max-width: 990px) {
+  .page {
+    padding: 0px;
+    margin-left: 0px; /* space for sidebar */
+    width: 100%;
+  }
+}
+
 .imageUploadSection {
   margin-top: 20px; /* More space from Other Features */
   margin-bottom: 20px;
@@ -60,9 +69,7 @@
   border: 1px solid #ccc;
 }
 
-
 .container {
-
   width: 100%;
   margin: 0 auto;
 }
@@ -90,7 +97,7 @@
 
 .input,
 .select,
-textarea {
+.textarea {
   padding: 12px 14px;
   font-size: 14px;
   border-radius: 8px;
@@ -103,7 +110,7 @@ textarea {
 
 .input:focus,
 .select:focus,
-textarea:focus {
+.textarea:focus {
   border-color: #31b0a6;
   outline: none;
 }
@@ -114,29 +121,26 @@ textarea:focus {
   cursor: not-allowed;
 }
 
-textarea {
+.textarea {
   resize: vertical;
   min-height: 80px;
 }
 
 /* Technical Features */
-label.checkboxLabel {
+.checkboxLabel {
   display: flex;
   align-items: center;
   gap: 8px;
   font-size: 14px;
 }
-input[type="checkbox"] {
+
+.checkBox {
   width: 18px;
   height: 18px;
   accent-color: #5ecfd5;
   cursor: pointer;
-  appearance: auto; /* Ensure native checkbox rendering */
+  appearance: auto;
 }
-
-
-
-
 
 .techFeaturesGrid {
   display: grid;
@@ -160,8 +164,8 @@ input[type="checkbox"] {
   padding: 8px 16px;
   background-color: #5fc0bd;
   color: white;
- 
- font-size:14px ;
+
+  font-size: 14px;
   margin-bottom: 10px;
   display: inline-block;
 }
@@ -187,7 +191,7 @@ input[type="checkbox"] {
 }
 
 /* Buttons */
-button {
+.button {
   background-color: #5fc0bd;
   color: #fff;
   padding: 12px 24px;
@@ -198,7 +202,7 @@ button {
   transition: all 0.3s ease;
 }
 
-button:hover {
+.button:hover {
   background-color: #31b0a6;
 }
 

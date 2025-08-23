@@ -8,9 +8,15 @@ import { zodResolver } from "@hookform/resolvers/zod";
 // Zod schema
 const schema = z.object({
   carFleetSize: z.string().min(1, "Car fleet size is required"),
-  ejari: z.any().refine((file) => file?.length > 0, "Ejari Certificate is required"),
-  tradeLicense: z.any().refine((file) => file?.length > 0, "Trade License is required"),
-  vatCertificate: z.any().refine((file) => file?.length > 0, "VAT Certificate is required"),
+  ejari: z
+    .any()
+    .refine((file) => file?.length > 0, "Ejari Certificate is required"),
+  tradeLicense: z
+    .any()
+    .refine((file) => file?.length > 0, "Trade License is required"),
+  vatCertificate: z
+    .any()
+    .refine((file) => file?.length > 0, "VAT Certificate is required"),
   noc: z.any().refine((file) => file?.length > 0, "NOC is required"),
   eid: z.any().optional(),
   poa: z.any().optional(),
@@ -19,7 +25,7 @@ const schema = z.object({
   }),
 });
 
-export default function Details({ }) {
+export default function Details({}) {
   const {
     register,
     handleSubmit,
@@ -32,7 +38,7 @@ export default function Details({ }) {
     console.log("Form Data:", data);
     onNext();
   };
- const navigate = useNavigate();
+  const navigate = useNavigate();
 
   const onPrevious = () => {
     navigate("/"); // Route back to SignupForm
@@ -40,70 +46,92 @@ export default function Details({ }) {
 
   return (
     <div className={styles.container}>
-          {/* Steps Header */}
-          <div className={styles.stepsHeader}>
-            <div className={styles.step}>
-              <span>1</span>
-              <p>Basic Info</p>
-            </div>
-            <div className={styles.line}></div>
-            <div className={`${styles.step} ${styles.active}`}>
-              <span>2</span>
-              <p>Details</p>
-            </div>
-          </div>
-    
+      {/* Steps Header */}
+      <div className={styles.stepsHeader}>
+        <div className={styles.step}>
+          <span>1</span>
+          <p>Basic Info</p>
+        </div>
+        <div className={styles.line}></div>
+        <div className={`${styles.step} ${styles.active}`}>
+          <span>2</span>
+          <p>Details</p>
+        </div>
+      </div>
 
       <h2 className={styles.signupTitle}>Details</h2>
-      <p className={styles.signupSubtitle}>Provide your fleet and document details</p>
+      <p className={styles.signupSubtitle}>
+        Provide your fleet and document details
+      </p>
 
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
         {/* Car fleet size */}
         <div className={styles.formBlock}>
           <label>Car fleet size</label>
           <input
+            className={styles.input}
             type="text"
             placeholder="Up to 500 Cars"
             {...register("carFleetSize")}
           />
-          {errors.carFleetSize && <p className={styles.error}>{errors.carFleetSize.message}</p>}
+          {errors.carFleetSize && (
+            <p className={styles.error}>{errors.carFleetSize.message}</p>
+          )}
         </div>
 
         {/* Ejari Certificate */}
         <div className={styles.formBlock}>
           <label>Ejari Certificate *</label>
           <label className={styles.fileUpload}>
-            <input type="file" {...register("ejari")} />
+            <input
+              className={styles.input}
+              type="file"
+              {...register("ejari")}
+            />
             <span>Click to upload Ejari Certificate</span>
           </label>
-          {errors.ejari && <p className={styles.error}>{errors.ejari.message}</p>}
+          {errors.ejari && (
+            <p className={styles.error}>{errors.ejari.message}</p>
+          )}
         </div>
 
         {/* Trade License */}
         <div className={styles.formBlock}>
           <label>Trade License *</label>
           <label className={styles.fileUpload}>
-            <input type="file" {...register("tradeLicense")} />
+            <input
+              className={styles.input}
+              type="file"
+              {...register("tradeLicense")}
+            />
             <span>Click to upload Trade License</span>
           </label>
-          {errors.tradeLicense && <p className={styles.error}>{errors.tradeLicense.message}</p>}
+          {errors.tradeLicense && (
+            <p className={styles.error}>{errors.tradeLicense.message}</p>
+          )}
         </div>
 
         {/* VAT Certificate */}
         <div className={styles.formBlock}>
           <label>VAT Certificate *</label>
           <label className={styles.fileUpload}>
-            <input type="file" {...register("vatCertificate")} />
+            <input
+              className={styles.input}
+              type="file"
+              {...register("vatCertificate")}
+            />
             <span>Click to upload VAT Certificate</span>
           </label>
-          {errors.vatCertificate && <p className={styles.error}>{errors.vatCertificate.message}</p>}
+          {errors.vatCertificate && (
+            <p className={styles.error}>{errors.vatCertificate.message}</p>
+          )}
         </div>
 
         {/* NOC */}
         <div className={styles.formBlock}>
           <label>NOC *</label>
           <label className={styles.fileUpload}>
-            <input type="file" {...register("noc")} />
+            <input className={styles.input} type="file" {...register("noc")} />
             <span>Click to upload NOC</span>
           </label>
           {errors.noc && <p className={styles.error}>{errors.noc.message}</p>}
@@ -114,14 +142,22 @@ export default function Details({ }) {
           <div className={styles.formBlock}>
             <label>Emirates ID</label>
             <label className={styles.fileUpload}>
-              <input type="file" {...register("eid")} />
+              <input
+                className={styles.input}
+                type="file"
+                {...register("eid")}
+              />
               <span>Click to upload Emirates ID</span>
             </label>
           </div>
           <div className={styles.formBlock}>
             <label>POA</label>
             <label className={styles.fileUpload}>
-              <input type="file" {...register("poa")} />
+              <input
+                className={styles.input}
+                type="file"
+                {...register("poa")}
+              />
               <span>Click to upload POA</span>
             </label>
           </div>
@@ -130,10 +166,16 @@ export default function Details({ }) {
         {/* Terms */}
         <div className={styles.formBlock}>
           <label>
-            <input type="checkbox" {...register("termsAccepted")} /> I agree to the{" "}
-            <a href="#">Terms of Service</a>
+            <input
+              className={styles.input}
+              type="checkbox"
+              {...register("termsAccepted")}
+            />{" "}
+            I agree to the <a href="#">Terms of Service</a>
           </label>
-          {errors.termsAccepted && <p className={styles.error}>{errors.termsAccepted.message}</p>}
+          {errors.termsAccepted && (
+            <p className={styles.error}>{errors.termsAccepted.message}</p>
+          )}
         </div>
 
         {/* Navigation */}

@@ -1,12 +1,11 @@
+import { Box } from "@chakra-ui/react";
 import VendorProfile from "./VendorProfile";
-
 
 const Profile = () => {
   return (
-    <div style={{ marginLeft: "220px", padding: "20px" }}>
+    <Box ml={{ base: 0, md: "220px" }} p={{ base: 0, md: "20px" }}>
       <VendorProfile />
-      
-    </div>
+    </Box>
   );
 };
 

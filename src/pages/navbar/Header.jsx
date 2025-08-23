@@ -2,8 +2,10 @@ import React, { useState, useRef, useEffect } from "react";
 import styles from "./Header.module.css";
 import logo from "../../assets/logo.png";
 import { useNavigate } from "react-router-dom";
+import { Avatar, Button, Menu, Portal } from "@chakra-ui/react";
+import { FaBars } from "react-icons/fa";
 
-const Header = () => {
+const Header = ({ isOpen, setIsOpen }) => {
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
   const dropdownRef = useRef(null);
@@ -24,18 +26,20 @@ const Header = () => {
   }, []);
 
   return (
-    <div className={styles.topHeader}>
+    <div className={styles.topHeader} style={{ zIndex: 999 }}>
       <div className={styles.leftSection}>
         <img src={logo} alt="logo" className={styles.logo} />
-        <input
-          type="text"
-          placeholder="Search..."
-          className={styles.searchInput}
-        />
       </div>
 
+      <Button
+        display={{ base: "block", md: "none" }}
+        onClick={() => setIsOpen(!isOpen)}
+      >
+        <FaBars />
+      </Button>
+
       <div className={styles.rightSection} ref={dropdownRef}>
-        <div className={styles.avatarWrapper} onClick={() => setOpen(!open)}>
+        {/* <div className={styles.avatarWrapper} onClick={() => setOpen(!open)}>
           <img
             src="https://cdn-icons-png.flaticon.com/512/219/219986.png"
             alt="User Avatar"
@@ -50,7 +54,28 @@ const Header = () => {
               <li onClick={handleSignOut}>🚪 Sign Out</li>
             </ul>
           </div>
-        )}
+        )} */}
+        <Menu.Root positioning={{ placement: "bottom" }}>
+          <Menu.Trigger rounded="full">
+            <Avatar.Root size="sm">
+              <img
+                src="https://cdn-icons-png.flaticon.com/512/219/219986.png"
+                alt="User Avatar"
+                className={styles.avatar}
+              />
+            </Avatar.Root>
+          </Menu.Trigger>
+          <Portal>
+            <Menu.Positioner>
+              <Menu.Content>
+                <Menu.Item onClick={() => navigate("/profile")}>
+                  👤 Profile
+                </Menu.Item>
+                <Menu.Item onClick={handleSignOut}>🚪 Sign Out</Menu.Item>
+              </Menu.Content>
+            </Menu.Positioner>
+          </Portal>
+        </Menu.Root>
       </div>
     </div>
   );

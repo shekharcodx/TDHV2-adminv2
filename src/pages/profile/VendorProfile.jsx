@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import styles from "./VendorProfile.module.css";
 import DocumentCard from "./DocumentCard";
+import { Flex } from "@chakra-ui/react";
 
 const VendorProfile = () => {
   const [isEditing, setIsEditing] = useState(false);
@@ -56,7 +57,10 @@ const VendorProfile = () => {
   });
 
   const handleChange = (section, field, value) => {
-    if (typeof vendor[section] === "object" && !Array.isArray(vendor[section])) {
+    if (
+      typeof vendor[section] === "object" &&
+      !Array.isArray(vendor[section])
+    ) {
       setVendor((prev) => ({
         ...prev,
         [section]: {
@@ -191,7 +195,9 @@ const VendorProfile = () => {
           <div className={styles.infoRow}>
             {Object.entries(vendor.address).map(([field, value]) => (
               <div className={styles.infoItem} key={field}>
-                <strong>{field.charAt(0).toUpperCase() + field.slice(1)}</strong>
+                <strong>
+                  {field.charAt(0).toUpperCase() + field.slice(1)}
+                </strong>
                 {isEditing ? (
                   <input
                     type="text"
@@ -213,27 +219,25 @@ const VendorProfile = () => {
           </div>
         </div>
 
-       {/* Documents */}
-<div style={{ padding: "20px" }}>
-  <h2>Vendor Documents</h2>
-  <div style={{ display: "flex", flexWrap: "wrap", gap: "20px" }}>
-    {Object.values(vendor.documents).map((doc, index) => (
-      <DocumentCard key={index} doc={doc} />
-    ))}
-  </div>
-</div>
-
+        {/* Documents */}
+        <div style={{ padding: "20px" }}>
+          <h2>Vendor Documents</h2>
+          <Flex justify={"center"} flexWrap="wrap" gap="20px" mt="30px">
+            {Object.values(vendor.documents).map((doc, index) => (
+              <DocumentCard key={index} doc={doc} />
+            ))}
+          </Flex>
+        </div>
 
         {/* Buttons */}
         <button
-  className={`${styles.editBtn} ${
-    isEditing ? styles.saveBtn : styles.editModeBtn
-  }`}
-  onClick={toggleEdit}
->
-  {isEditing ? "Save" : "Edit"}
-</button>
-
+          className={`${styles.editBtn} ${
+            isEditing ? styles.saveBtn : styles.editModeBtn
+          }`}
+          onClick={toggleEdit}
+        >
+          {isEditing ? "Save" : "Edit"}
+        </button>
       </div>
     </div>
   );

@@ -2,10 +2,16 @@
 .wrapper {
   font-family: "Segoe UI", sans-serif;
   padding: 20px;
-  background: #efeeea; /* neutral */
   margin-left: 220px; /* space for sidebar */
   min-height: 100vh;
   color: #212529;
+}
+
+@media (max-width: 990px) {
+  .wrapper {
+    padding: 0px;
+    margin-left: 0px; /* space for sidebar */
+  }
 }
 
 /* Cards */
@@ -25,6 +31,7 @@
   gap: 15px;
   box-shadow: 0px 4px 12px rgba(137, 180, 188, 0.2); /* misty teal shadow */
   transition: transform 0.25s ease, box-shadow 0.25s ease;
+  margin-bottom: 10px;
 }
 
 .card:hover {
@@ -52,7 +59,7 @@
 /* Search Bar */
 .searchBar {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
   align-items: center;
   background: #fff;
   padding: 12px 16px;
@@ -92,34 +99,60 @@
   box-shadow: 0px 4px 10px rgba(137, 180, 188, 0.3);
 }
 
-/* Table */
+/* Table wrapper */
 .tableWrapper {
   background: #fff;
   border-radius: 12px;
   overflow: hidden;
   box-shadow: 0px 4px 12px rgba(137, 180, 188, 0.15);
+  width: 100%;
+  border: 1px solid #525c8d;
 }
 
-.table {
+/* Responsive scroll */
+.tableWrapper table {
   width: 100%;
   border-collapse: collapse;
+  min-width: 800px; /* ensures horizontal scroll on smaller screens */
 }
 
-.table th {
+/* Table Head */
+/* .table th {
   text-align: left;
-  padding: 14px;
+  padding: 16px 20px;
   font-size: 14px;
   background: #f1f3f6;
   color: #495057;
   font-weight: 600;
+  border-bottom: 2px solid #e0e0e0;
+} */
+
+.table th {
+  text-align: left;
+  padding: 16px 20px;
+  font-size: 14px;
+  background: #525c8d; /* deep blue */
+  color: #fff; /* white text */
+  font-weight: 600;
+  border-bottom: 2px solid #354ac0; /* darker border for contrast */
 }
 
+/* Table Body */
 .table td {
-  padding: 14px;
+  padding: 16px 20px;
   border-top: 1px solid #efeeea;
   vertical-align: middle;
+  font-size: 14px;
+  color: #333;
+  transition: background 0.2s;
 }
 
+/* Row hover */
+.table tbody tr:hover {
+  background: #f9fbfd;
+}
+
+/* Title Cell */
 .titleCell {
   display: flex;
   align-items: center;
@@ -138,10 +171,12 @@
 /* Status */
 .status {
   display: inline-block;
-  padding: 5px 12px;
+  padding: 6px 14px;
   border-radius: 20px;
   font-size: 12px;
   font-weight: 500;
+  text-transform: capitalize;
+  text-align: center;
 }
 
 .pending {
@@ -162,9 +197,9 @@
 /* Edit Button */
 .editBtn {
   border: none;
-  padding: 6px 12px;
+  padding: 6px 14px;
   border-radius: 6px;
-  background: #89b4bc;
+  background: #4460f1;
   color: #fff;
   font-size: 13px;
   cursor: pointer;
@@ -172,8 +207,8 @@
 }
 
 .editBtn:hover {
-  background: #6fa0a8;
-  box-shadow: 0px 4px 10px rgba(137, 180, 188, 0.3);
+  background: #354ac0;
+  box-shadow: 0px 4px 10px rgba(68, 96, 241, 0.3);
 }
 
 /* Pagination */
@@ -181,7 +216,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 14px 20px;
+  padding: 16px 20px;
   font-size: 14px;
   border-top: 1px solid #efeeea;
   background: #fafbfc;
@@ -190,14 +225,35 @@
 .pageBtn {
   border: 1px solid #cecccd;
   background: #fff;
-  padding: 6px 14px;
+  padding: 6px 16px;
   border-radius: 6px;
   cursor: pointer;
   transition: 0.25s;
 }
 
 .pageBtn:hover {
-  background: #89b4bc;
+  background: #4460f1;
   color: #fff;
-  border: 1px solid #89b4bc;
+  border: 1px solid #4460f1;
+}
+
+/* Responsive: horizontal scroll on small screens */
+@media (max-width: 768px) {
+  .tableWrapper {
+    overflow-x: auto;
+  }
+
+  .table th,
+  .table td {
+    padding: 12px 14px;
+  }
+
+  .titleCell {
+    gap: 8px;
+  }
+
+  .image {
+    width: 50px;
+    height: 50px;
+  }
 }
