@@ -1,0 +1,120 @@
+/* Variables */
+:root {
+  --charcoal-blue-grey: #27343A;
+  --slate-gray-secondary: #5B787C;
+  --misty-teal: #89B4BC;
+  --light-gray: #CECCCD;
+  --neutral: #EFEEEA;
+
+  --gradient-background: linear-gradient(
+    90deg,
+    rgba(91, 120, 124, 1) 0%,
+    rgba(137, 180, 188, 1) 35%
+  );
+}
+
+/* Wrapper */
+.resetWrapper {
+  min-height: 100vh;           /* take full viewport height */
+  display: flex;               /* use flexbox */
+  justify-content: center;     /* horizontal center */
+  align-items: center;         /* vertical center */
+  background: #f8f9fa;         /* optional light background */
+  padding-top: 0;              /* remove top padding */
+  margin-top: 0;               /* remove margin */
+}
+
+
+/* Card */
+.resetCard {
+  border-radius: 12px;
+  background: var(--neutral);
+  padding: 2rem;
+  width: 100%;
+  max-width: 400px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  text-align: center;
+  
+}
+
+.heading {
+  margin-bottom: 1.5rem;
+  color: var(--charcoal-blue-grey);
+}
+
+/* Form */
+.formGroup {
+  margin-bottom: 1rem;
+  text-align: left;
+}
+
+.formLabel {
+  font-weight: 600;
+  display: block;
+  margin-bottom: 0.5rem;
+  color: var(--charcoal-blue-grey);
+}
+
+/* Input */
+.inputField {
+  border-radius: 8px;
+  padding: 10px;
+  border: 1px solid var(--light-gray);
+  background: #fff;
+  width: 100%;
+  font-size: 15px;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.inputField:focus {
+  border-color: var(--misty-teal);
+  box-shadow: 0 0 6px rgba(137, 180, 188, 0.5);
+  outline: none;
+}
+
+/* Button */
+.submitBtn {
+  border-radius: 8px;
+  padding: 12px;
+  font-weight: 600;
+  font-size: 16px;
+  border: none;
+  background: var(--gradient-background);
+  color: #fff;
+  cursor: pointer;
+  width: 100%;
+  margin-top: 0.5rem;
+  transition: background 0.3s ease-in-out, transform 0.2s;
+}
+
+.submitBtn:hover {
+  background: var(--slate-gray-secondary);
+  transform: scale(1.02);
+}
+
+/* OR text */
+.orText {
+  margin: 1rem 0;
+  color: var(--charcoal-blue-grey);
+  font-size: 14px;
+}
+
+/* Link */
+.forgetLink {
+  display: block;
+  border-radius: 8px;
+  padding: 12px;
+  font-weight: 600;
+  font-size: 16px;
+  background: transparent;
+  border: 1px solid var(--slate-gray-secondary);
+  color: var(--slate-gray-secondary);
+  text-decoration: none;
+  text-align: center;
+  transition: all 0.3s ease-in-out;
+}
+
+.forgetLink:hover {
+  background: var(--slate-gray-secondary);
+  color: #fff;
+}

@@ -11,10 +11,13 @@ import ProtectedRoute from "@/components/ProtectedRoute";
 import UserForm from "@/pages/spam/UserForm";
 import Unauthorized from "@/components/unauthorised";
 import ErrorPage from "@/components/ErrorPage";
-import Login from "@/pages/Login";
+
 import SignupForm from "./pages/signup/SignupForm";
 import AllListings from "./pages/mycar/AllListings";
-
+import Login from "./pages/signup/Login";
+import ForgetPassword from "./pages/signup/Forgetpass";
+import Resetpass from "./pages/signup/Resetpass";
+import ChangePass from "./pages/signup/Changepass";
 // Optional: Keep only if used in future
 // import SignupForm from "./pages/signup/SignupForm";
 // import Details from "./pages/signup/DetailsForm";
@@ -42,10 +45,15 @@ function App() {
         },
       ],
     },
+
     { path: "/unauthorized", element: <Unauthorized /> },
     { path: "/login", element: <Login /> },
+    { path: "/Forgetpass", element: <ForgetPassword /> },
     { path: "/sign-up", element: <SignupForm /> },
     { path: "*", element: <ErrorPage /> },
+    { path: "/Resetpass", element: <Resetpass /> },
+    { path: "/ChangePass", element: <ChangePass /> },
+    { path: "/change-password", element: <ChangePass /> },
   ];
 
   return useRoutes(routes);

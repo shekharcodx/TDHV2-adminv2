@@ -8,7 +8,7 @@ function ProtectedRoute({ redirect }) {
   const token = getToken();
   const location = useLocation();
 
-  const devBypas = true;
+  const devBypas = false;
 
   const isAuthenticated = user && token;
 
@@ -25,7 +25,7 @@ function ProtectedRoute({ redirect }) {
         title: "Authentication required",
         description: "You need to log in to access this page.",
         closable: true,
-        duration: 5000000,
+        duration: 5000,
       });
     } else if (!hasRequiredRole && !devBypas) {
       toaster.create({
@@ -33,7 +33,7 @@ function ProtectedRoute({ redirect }) {
         title: "Access Denied",
         description: "You do not have permission to access this page.",
         closable: true,
-        duration: 5000000,
+        duration: 5000,
       });
     }
   }, [isAuthenticated, hasRequiredRole]);

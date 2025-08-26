@@ -4,6 +4,12 @@ import logo from "../../assets/logo.png";
 import { useNavigate } from "react-router-dom";
 import { Avatar, Button, Menu, Portal } from "@chakra-ui/react";
 import { FaBars } from "react-icons/fa";
+import { toaster } from "@/components/ui/toaster";
+import {
+  removeToken,
+  removeUserRole,
+  removeUser,
+} from "@/utils/localStorageMethods";
 
 const Header = ({ isOpen, setIsOpen }) => {
   const [open, setOpen] = useState(false);
@@ -11,7 +17,17 @@ const Header = ({ isOpen, setIsOpen }) => {
   const dropdownRef = useRef(null);
 
   const handleSignOut = () => {
-    alert("Signed out!"); // Replace with real signout logic
+    removeToken();
+    removeUserRole();
+    removeUser();
+    toaster.create({
+      type: "success",
+      title: "Signed out",
+      description: "You have been signed out successfully.",
+      closable: true,
+      duration: 5000,
+    });
+    navigate("/login");
   };
 
   // Close when clicking outside

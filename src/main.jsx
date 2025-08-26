@@ -4,10 +4,11 @@ import "./index.css";
 import App from "./App.jsx";
 import { ChakraProvider, defaultSystem } from "@chakra-ui/react";
 import chakraTheme from "./components/ui/theme";
-import { CacheProvider } from "@emotion/react";
 import createCache from "@emotion/cache";
 import { BrowserRouter } from "react-router-dom";
 import { Toaster } from "@/components/ui/toaster";
+import { Provider } from "react-redux";
+import { store } from "../app/store";
 
 const chakraCache = createCache({
   key: "chakra", // makes styles prefixed
@@ -16,11 +17,11 @@ const chakraCache = createCache({
 const root = createRoot(document.getElementById("root"));
 root.render(
   <BrowserRouter>
-    <CacheProvider value={chakraCache}>
-      <ChakraProvider value={chakraTheme}>
+    <ChakraProvider value={chakraTheme}>
+      <Provider store={store}>
         <App />
         <Toaster />
-      </ChakraProvider>
-    </CacheProvider>
+      </Provider>
+    </ChakraProvider>
   </BrowserRouter>
 );
