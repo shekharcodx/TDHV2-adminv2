@@ -13,15 +13,9 @@ import { toaster } from "@/components/ui/toaster";
 const schema = z
   .object({
     email: z.string().email("Enter a valid email address"),
-    oldPassword: z
-      .string()
-      .min(6, "Old password must be at least 6 characters"),
-    newPassword: z
-      .string()
-      .min(6, "New password must be at least 6 characters"),
-    confirmPassword: z
-      .string()
-      .min(6, "Confirm password must be at least 6 characters"),
+    oldPassword: z.string().min(6, "Old password must be at least 6 characters"),
+    newPassword: z.string().min(6, "New password must be at least 6 characters"),
+    confirmPassword: z.string().min(6, "Confirm password must be at least 6 characters"),
   })
   .refine((data) => data.newPassword === data.confirmPassword, {
     path: ["confirmPassword"],
@@ -53,12 +47,13 @@ const ChangePass = () => {
       }).unwrap(),
       {
         loading: { title: "Changing Password...", description: "Please wait" },
-        success: (res) => {
-          return { title: res?.message || "Password changed successfully!" };
-          if (err?.data?.code === 9012) {
-            navigate("/login");
-          }
-        },
+      success: (res) => {
+  if (res?.code === 9012) {
+    navigate("/login");
+  }
+  return { title: res?.message || "Password changed successfully!" };
+},
+ 
         error: (err) => {
           return { title: err?.data?.message || "Failed to change password." };
         },
@@ -76,14 +71,11 @@ const ChangePass = () => {
           <label className={styles.label}>Email</label>
           <input
             type="email"
-            className={styles.inputField}
-            style={{ marginBottom: "15px" }}
+            className={styles.inputField} style={{ marginBottom: "15px" }}
             placeholder="Enter your email"
             {...register("email")}
           />
-          {errors.email && (
-            <p className={styles.error}>{errors.email.message}</p>
-          )}
+          {errors.email && <p className={styles.error}>{errors.email.message}</p>}
 
           {/* Old Password */}
           <label className={styles.label}>Old Password</label>

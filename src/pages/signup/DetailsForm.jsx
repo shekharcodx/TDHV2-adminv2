@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { resetRegistration } from "../../../app/slices/registrationSlice";
 import { useRegisterMutation } from "../../../app/api/authApi";
 import { toaster } from "@/components/ui/toaster";
-import styles from "./SignupForm.module.css";
+import styles from "./signup.module.css";
 import { de } from "zod/v4/locales";
 
 // ✅ Zod schema for step 2
@@ -92,6 +92,7 @@ export default function DetailsForm() {
   };
 
   return (
+    <div className={styles.pageWrapper}>
     <div className={styles.container}>
       <div className={styles.stepsHeader}>
         <div className={styles.step}>
@@ -110,32 +111,64 @@ export default function DetailsForm() {
 
       <form className={styles.grid} onSubmit={handleSubmit(onSubmit)}>
         {/* Fleet Size */}
-        <div className={styles.inputFull}>
-          <label className={styles.label}>Fleet size</label>
-          <input
-            type="text"
-            className={styles.inputFull}
-            {...register("fleetSize")}
-            placeholder="Up to 500 Cars"
-          />
-          {errors.fleetSize && <p className={styles.error}>{errors.fleetSize.message}</p>}
-        </div>
+      <div className={styles.flexRow}>
+  <div className={styles.halfInput}>
+    <label className={styles.label}>Fleet Size *</label>
+    <input
+      type="number"
+      className={styles.input}
+      {...register("fleetSize")}
+      placeholder="e.g. 50"
+    />
+    {errors.fleetSize && <p className={styles.error}>{errors.fleetSize.message}</p>}
+  </div>
+</div>
+
 
         {/* File Uploads */}
-        {[
-          { name: "ijariCertificate", label: "Ijari Certificate *" },
-          { name: "tradeLicense", label: "Trade License *" },
-          { name: "vatCertificate", label: "VAT Certificate *" },
-          { name: "noc", label: "NOC *" },
-          { name: "emiratesId", label: "Emirates ID" },
-          { name: "poa", label: "POA" },
-        ].map((file, idx) => (
-          <div key={idx} className={styles.inputFull}>
-            <label className={styles.label}>{file.label}</label>
-            <input type="file" className={styles.inputFull} {...register(file.name)} />
-            {errors[file.name] && <p className={styles.error}>{errors[file.name].message}</p>}
-          </div>
-        ))}
+       {/* File Uploads in Flex Rows */}
+<div className={styles.flexRow}>
+  <div className={styles.halfInput}>
+    <label className={styles.label}>Ijari Certificate *</label>
+    <input type="file" className={styles.input} {...register("ijariCertificate")} />
+    {errors.ijariCertificate && <p className={styles.error}>{errors.ijariCertificate.message}</p>}
+  </div>
+
+  <div className={styles.halfInput}>
+    <label className={styles.label}>Trade License *</label>
+    <input type="file" className={styles.input} {...register("tradeLicense")} />
+    {errors.tradeLicense && <p className={styles.error}>{errors.tradeLicense.message}</p>}
+  </div>
+</div>
+
+<div className={styles.flexRow}>
+  <div className={styles.halfInput}>
+    <label className={styles.label}>VAT Certificate *</label>
+    <input type="file" className={styles.input} {...register("vatCertificate")} />
+    {errors.vatCertificate && <p className={styles.error}>{errors.vatCertificate.message}</p>}
+  </div>
+
+  <div className={styles.halfInput}>
+    <label className={styles.label}>NOC *</label>
+    <input type="file" className={styles.input} {...register("noc")} />
+    {errors.noc && <p className={styles.error}>{errors.noc.message}</p>}
+  </div>
+</div>
+
+<div className={styles.flexRow}>
+  <div className={styles.halfInput}>
+    <label className={styles.label}>Emirates ID</label>
+    <input type="file" className={styles.input} {...register("emiratesId")} />
+    {errors.emiratesId && <p className={styles.error}>{errors.emiratesId.message}</p>}
+  </div>
+
+  <div className={styles.halfInput}>
+    <label className={styles.label}>POA</label>
+    <input type="file" className={styles.input} {...register("poa")} />
+    {errors.poa && <p className={styles.error}>{errors.poa.message}</p>}
+  </div>
+</div>
+
 
         {/* Terms */}
         <div className={styles.inputFull}>
@@ -148,14 +181,13 @@ export default function DetailsForm() {
 
         {/* Buttons */}
         <div className={styles.inputFull} style={{ display: "flex", justifyContent: "space-between" }}>
-          <button type="button" className={styles.backBtn} onClick={() => navigate("/")}>
-            Back
-          </button>
+         
           <button type="submit" className={styles.nextButton} disabled={isLoading}>
             {isLoading ? "Submitting..." : "Sign up as Vendor"}
           </button>
         </div>
       </form>
+    </div>
     </div>
   );
 }
