@@ -12,11 +12,13 @@
     rgba(137, 180, 188, 1) 35%
   );
 }
+
 .errorText {
   color: red;
   font-size: 0.85rem;
-  margin-top: 4px;
+  margin-top: 6px; /* slightly increased spacing */
 }
+
 .eyeToggle {
   position: absolute;
   right: 10px;
@@ -29,58 +31,59 @@
   color: #555;
 }
 
-
 /* Wrapper */
 .resetWrapper {
-  min-height: 100vh;           /* take full viewport height */
-  display: flex;               /* use flexbox */
-  justify-content: center;     /* horizontal center */
-  align-items: center;         /* vertical center */
-  background: #f8f9fa;         /* optional light background */
-  padding-top: 0;              /* remove top padding */
-  margin-top: 0;               /* remove margin */
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #f8f9fa;
+  padding: 20px; /* added padding for better spacing on small screens */
+  margin-top: 0;
 }
-
 
 /* Card */
 .resetCard {
   border-radius: 12px;
   background: var(--neutral);
-  padding: 2rem;
+  padding: 2.5rem 2.25rem; /* slightly more padding */
   width: 100%;
   max-width: 400px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   text-align: center;
-  
+  border: 1px solid #ddd;
 }
 
 .heading {
-  margin-bottom: 1.5rem;
+  margin-bottom: 1.75rem; /* increased space below heading */
   color: var(--charcoal-blue-grey);
+  font-size: 1.25rem;
+  font-weight: 600;
 }
 
 /* Form */
 .formGroup {
-  margin-bottom: 1rem;
+  margin-bottom: 1.25rem; /* slightly more vertical spacing */
   text-align: left;
 }
 
 .formLabel {
   font-weight: 600;
   display: block;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.6rem; /* small tweak for breathing room */
   color: var(--charcoal-blue-grey);
 }
 
 /* Input */
 .inputField {
   border-radius: 8px;
-  padding: 10px;
+  padding: 12px; /* slightly bigger padding */
   border: 1px solid var(--light-gray);
   background: #fff;
   width: 100%;
   font-size: 15px;
   transition: border-color 0.3s, box-shadow 0.3s;
+  margin-bottom: 6px; /* space below inputs for error messages */
 }
 
 .inputField:focus {
@@ -92,7 +95,7 @@
 /* Button */
 .submitBtn {
   border-radius: 8px;
-  padding: 12px;
+  padding: 14px; /* slightly bigger button for better click area */
   font-weight: 600;
   font-size: 16px;
   border: none;
@@ -100,7 +103,7 @@
   color: #fff;
   cursor: pointer;
   width: 100%;
-  margin-top: 0.5rem;
+  margin-top: 1rem; /* increased space above button */
   transition: background 0.3s ease-in-out, transform 0.2s;
 }
 
@@ -111,7 +114,7 @@
 
 /* OR text */
 .orText {
-  margin: 1rem 0;
+  margin: 1.25rem 0; /* slightly more spacing */
   color: var(--charcoal-blue-grey);
   font-size: 14px;
 }
@@ -129,6 +132,7 @@
   text-decoration: none;
   text-align: center;
   transition: all 0.3s ease-in-out;
+  margin-top: 12px; /* add some space above link */
 }
 
 .forgetLink:hover {

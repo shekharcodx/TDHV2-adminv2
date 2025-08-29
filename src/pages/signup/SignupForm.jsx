@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import styles from "./SignupForm.module.css";
+import styles from "./signup.module.css";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";

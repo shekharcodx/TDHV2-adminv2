@@ -47,12 +47,13 @@ const ChangePass = () => {
       }).unwrap(),
       {
         loading: { title: "Changing Password...", description: "Please wait" },
-        success: (res) => {
-          return { title: res?.message || "Password changed successfully!" };
-           if (err?.data?.code === 9012) {
-          navigate("/login");
-        }
-        },
+      success: (res) => {
+  if (res?.code === 9012) {
+    navigate("/login");
+  }
+  return { title: res?.message || "Password changed successfully!" };
+},
+ 
         error: (err) => {
           return { title: err?.data?.message || "Failed to change password." };
         },

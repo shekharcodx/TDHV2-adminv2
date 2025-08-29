@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { resetRegistration } from "../../../app/slices/registrationSlice";
 import { useRegisterMutation } from "../../../app/api/authApi";
 import { toaster } from "@/components/ui/toaster";
-import styles from "./SignupForm.module.css";
+import styles from "./signup.module.css";
 import { de } from "zod/v4/locales";
 
 // ✅ Zod schema for step 2

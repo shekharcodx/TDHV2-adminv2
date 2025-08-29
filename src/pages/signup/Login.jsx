@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import styles from "./SigninC.module.css";
+import styles from "./login.module.css";
 import { Link, useNavigate } from "react-router-dom";
 import { useLoginMutation } from "../../../app/api/authApi";
 import { toaster } from "@/components/ui/toaster";
