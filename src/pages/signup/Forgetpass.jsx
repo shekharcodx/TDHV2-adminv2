@@ -2,19 +2,48 @@
 
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import { useForgetPasswordMutation } from "../../../app/api/authApi";
+import { toaster } from "@/components/ui/toaster";
 import styles from "./Forget.module.css";
 
 const ForgetPassword = () => {
   const [email, setEmail] = useState("");
 
-  const handleSubmit = (e) => {
+  const [forgetPassword, { isLoading }] = useForgetPasswordMutation();
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
+
     if (!email) {
       alert("Please enter your email address.");
       return;
     }
-    console.log("Password reset link sent to:", email);
-    // Add API call here
+
+    // ✅ call API with proper toaster options
+    toaster.promise(
+      forgetPassword(email).unwrap(),
+      {
+        loading: { title: "Sending Reset Link", description: " " },
+        success: (res) => {
+          console.log("Forget Password Response:", res);
+          return {
+            title: res?.message || "Reset link sent!",
+            description: "Check your email inbox.",
+          };
+        },
+        error: (err) => {
+          console.error("Forget Password Error:", err);
+          return {
+            title: err?.message || "Failed to send reset link",
+            description: "",
+          };
+        },
+      },
+      {
+        position: "top-right", // ensures toaster stays in corner
+        duration: 5000,        // auto-close after 5s
+      }
+    );
   };
 
   return (
@@ -36,8 +65,17 @@ const ForgetPassword = () => {
             required
           />
 
-          <button type="submit" className={styles.submitBtn}>
-            Send Reset Link
+          <button
+            type="submit"
+            disabled={isLoading}
+            className={styles.submitBtn}
+            style={
+              isLoading
+                ? { backgroundColor: "#ccc", cursor: "not-allowed" }
+                : {}
+            }
+          >
+            {isLoading ? "Sending..." : "Send Reset Link"}
           </button>
 
           <h6 className={styles.orText}>OR</h6>

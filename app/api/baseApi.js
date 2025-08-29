@@ -9,12 +9,12 @@ export const baseApi = createApi({
       const userToken = getToken();
       if (userToken) {
         headers.set("Authorization", `Bearer ${userToken}`);
-        headers.set("Content-Type", "application/json");
+
       } else {
       }
       return headers;
     },
   }),
   endpoints: () => ({}),
-  tagTypes: ["Use"],
+  tagTypes: ["User", "countries","states","cities"],
 });

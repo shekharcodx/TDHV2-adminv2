@@ -79,6 +79,21 @@
   box-shadow: 0 0 4px rgba(137, 180, 188, 0.5);
 }
 
+/* 👁️ Password eye toggle */
+.eyeIcon {
+  position: absolute;
+  right: 12px;
+  top: 38px;
+  cursor: pointer;
+  color: var(--light-gray-four-color);
+  transition: color 0.3s ease;
+  padding: 4px; /* bigger touch area */
+}
+
+.eyeIcon:hover {
+  color: var(--charcoal-blue-grey-one-color);
+}
+
 /* Button */
 .submitBtn {
   border-radius: 8px;
@@ -96,10 +111,10 @@
   color: #fff;
 }
 
-/* Links */
+/* Forget Password Link */
 .forgetLink {
   display: block;
-  margin-top: 10px;
+  margin-top: 12px;
   text-align: center;
   color: var(--charcoal-blue-grey-one-color);
   font-weight: 500;

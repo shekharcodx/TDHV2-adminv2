@@ -1,52 +1,98 @@
 import React from "react";
-import styles from "./DetailsForm.module.css";
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useSelector, useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { resetRegistration } from "../../../app/slices/registrationSlice";
+import { useRegisterMutation } from "../../../app/api/authApi";
+import { toaster } from "@/components/ui/toaster";
+import styles from "./SignupForm.module.css";
+import { de } from "zod/v4/locales";
 
-// Zod schema
+// ✅ Zod schema for step 2
 const schema = z.object({
-  carFleetSize: z.string().min(1, "Car fleet size is required"),
-  ejari: z
+  fleetSize: z
+    .string()
+    .refine(val => Number(val) > 0, "Fleet size must be a positive number"),
+  ijariCertificate: z
     .any()
-    .refine((file) => file?.length > 0, "Ejari Certificate is required"),
+    .refine(file => file?.length > 0, "Ijari Certificate is required"),
   tradeLicense: z
     .any()
-    .refine((file) => file?.length > 0, "Trade License is required"),
+    .refine(file => file?.length > 0, "Trade License is required"),
   vatCertificate: z
     .any()
-    .refine((file) => file?.length > 0, "VAT Certificate is required"),
-  noc: z.any().refine((file) => file?.length > 0, "NOC is required"),
-  eid: z.any().optional(),
+    .refine(file => file?.length > 0, "VAT Certificate is required"),
+  noc: z.any().refine(file => file?.length > 0, "NOC is required"),
+  emiratesId: z.any().optional(),
   poa: z.any().optional(),
   termsAccepted: z.literal(true, {
     errorMap: () => ({ message: "You must accept the terms" }),
   }),
 });
 
-export default function Details({}) {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm({
+export default function DetailsForm() {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const registration = useSelector(state => state.registration);
+  const [registerVendor, { isLoading }] = useRegisterMutation();
+
+  const { register, handleSubmit, formState: { errors } } = useForm({
     resolver: zodResolver(schema),
   });
 
-  const onSubmit = (data) => {
-    console.log("Form Data:", data);
-    onNext();
-  };
-  const navigate = useNavigate();
+  const onSubmit = async (data) => {
+    try {
+      const formData = new FormData();
 
-  const onPrevious = () => {
-    navigate("/"); // Route back to SignupForm
+      // ✅ Flatten Step 1 fields
+      formData.append("name", registration.name);
+      formData.append("email", registration.email);
+      formData.append("role", registration.role || "2");
+      formData.append("businessName", registration.businessName);
+
+      formData.append("address.street", registration.address.street);
+      formData.append("address.city", registration.address.city); // ID
+      formData.append("address.state", registration.address.state); // ID
+      formData.append("address.country", registration.address.country); // ID
+      formData.append("address.mapUrl", registration.address.mapUrl);
+
+      formData.append("contact.mobileNum", registration.contact.mobileNum);
+      formData.append("contact.whatsappNum", registration.contact.whatsappNum);
+      formData.append("contact.landlineNum", registration.contact.landlineNum);
+
+      // ✅ Step 2 fields
+      formData.append("vendorInformation.fleetSize", data.fleetSize);
+      formData.append("ijariCertificate", data.ijariCertificate[0]);
+      formData.append("tradeLicense", data.tradeLicense[0]);
+      formData.append("vatCertificate", data.vatCertificate[0]);
+      formData.append("noc", data.noc[0]);
+
+      if (data.emiratesId?.[0]) formData.append("emiratesId", data.emiratesId[0]);
+      if (data.poa?.[0]) formData.append("poa", data.poa[0]);
+
+      // ✅ API call with toaster
+      await toaster.promise(
+        registerVendor(formData).unwrap(),
+        {
+          loading: { title: "Registering...", description: "Please wait" },
+          success: (res) => {
+            dispatch(resetRegistration());
+            navigate("/login");
+            return{ title:res?.message || "Registration successful!", description: " " };
+          },
+          error: (err) => {return {title:err?.data?.message || "Registration failed", description: "Please try again"}}
+        }
+      );
+    } catch (err) {
+      console.error("Register Error:", err);
+    }
   };
 
   return (
     <div className={styles.container}>
-      {/* Steps Header */}
       <div className={styles.stepsHeader}>
         <div className={styles.step}>
           <span>1</span>
@@ -59,132 +105,54 @@ export default function Details({}) {
         </div>
       </div>
 
-      <h2 className={styles.signupTitle}>Details</h2>
-      <p className={styles.signupSubtitle}>
-        Provide your fleet and document details
-      </p>
+      <h2 className={styles.heading}>Details</h2>
+      <p className={styles.signupSubtitle}>Provide your fleet and document details</p>
 
-      <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
-        {/* Car fleet size */}
-        <div className={styles.formBlock}>
-          <label>Car fleet size</label>
+      <form className={styles.grid} onSubmit={handleSubmit(onSubmit)}>
+        {/* Fleet Size */}
+        <div className={styles.inputFull}>
+          <label className={styles.label}>Fleet size</label>
           <input
-            className={styles.input}
             type="text"
+            className={styles.inputFull}
+            {...register("fleetSize")}
             placeholder="Up to 500 Cars"
-            {...register("carFleetSize")}
           />
-          {errors.carFleetSize && (
-            <p className={styles.error}>{errors.carFleetSize.message}</p>
-          )}
+          {errors.fleetSize && <p className={styles.error}>{errors.fleetSize.message}</p>}
         </div>
 
-        {/* Ejari Certificate */}
-        <div className={styles.formBlock}>
-          <label>Ejari Certificate *</label>
-          <label className={styles.fileUpload}>
-            <input
-              className={styles.input}
-              type="file"
-              {...register("ejari")}
-            />
-            <span>Click to upload Ejari Certificate</span>
-          </label>
-          {errors.ejari && (
-            <p className={styles.error}>{errors.ejari.message}</p>
-          )}
-        </div>
-
-        {/* Trade License */}
-        <div className={styles.formBlock}>
-          <label>Trade License *</label>
-          <label className={styles.fileUpload}>
-            <input
-              className={styles.input}
-              type="file"
-              {...register("tradeLicense")}
-            />
-            <span>Click to upload Trade License</span>
-          </label>
-          {errors.tradeLicense && (
-            <p className={styles.error}>{errors.tradeLicense.message}</p>
-          )}
-        </div>
-
-        {/* VAT Certificate */}
-        <div className={styles.formBlock}>
-          <label>VAT Certificate *</label>
-          <label className={styles.fileUpload}>
-            <input
-              className={styles.input}
-              type="file"
-              {...register("vatCertificate")}
-            />
-            <span>Click to upload VAT Certificate</span>
-          </label>
-          {errors.vatCertificate && (
-            <p className={styles.error}>{errors.vatCertificate.message}</p>
-          )}
-        </div>
-
-        {/* NOC */}
-        <div className={styles.formBlock}>
-          <label>NOC *</label>
-          <label className={styles.fileUpload}>
-            <input className={styles.input} type="file" {...register("noc")} />
-            <span>Click to upload NOC</span>
-          </label>
-          {errors.noc && <p className={styles.error}>{errors.noc.message}</p>}
-        </div>
-
-        {/* Emirates ID + POA */}
-        <div className={styles.formRow}>
-          <div className={styles.formBlock}>
-            <label>Emirates ID</label>
-            <label className={styles.fileUpload}>
-              <input
-                className={styles.input}
-                type="file"
-                {...register("eid")}
-              />
-              <span>Click to upload Emirates ID</span>
-            </label>
+        {/* File Uploads */}
+        {[
+          { name: "ijariCertificate", label: "Ijari Certificate *" },
+          { name: "tradeLicense", label: "Trade License *" },
+          { name: "vatCertificate", label: "VAT Certificate *" },
+          { name: "noc", label: "NOC *" },
+          { name: "emiratesId", label: "Emirates ID" },
+          { name: "poa", label: "POA" },
+        ].map((file, idx) => (
+          <div key={idx} className={styles.inputFull}>
+            <label className={styles.label}>{file.label}</label>
+            <input type="file" className={styles.inputFull} {...register(file.name)} />
+            {errors[file.name] && <p className={styles.error}>{errors[file.name].message}</p>}
           </div>
-          <div className={styles.formBlock}>
-            <label>POA</label>
-            <label className={styles.fileUpload}>
-              <input
-                className={styles.input}
-                type="file"
-                {...register("poa")}
-              />
-              <span>Click to upload POA</span>
-            </label>
-          </div>
-        </div>
+        ))}
 
         {/* Terms */}
-        <div className={styles.formBlock}>
-          <label>
-            <input
-              className={styles.input}
-              type="checkbox"
-              {...register("termsAccepted")}
-            />{" "}
-            I agree to the <a href="#">Terms of Service</a>
+        <div className={styles.inputFull}>
+          <label className={styles.label}>
+            <input type="checkbox" {...register("termsAccepted")} /> I agree to the{" "}
+            <a href="#">Terms of Service</a>
           </label>
-          {errors.termsAccepted && (
-            <p className={styles.error}>{errors.termsAccepted.message}</p>
-          )}
+          {errors.termsAccepted && <p className={styles.error}>{errors.termsAccepted.message}</p>}
         </div>
 
-        {/* Navigation */}
-        <div className={styles.formNavigation}>
-          <button type="button" className={styles.backBtn} onClick={onPrevious}>
+        {/* Buttons */}
+        <div className={styles.inputFull} style={{ display: "flex", justifyContent: "space-between" }}>
+          <button type="button" className={styles.backBtn} onClick={() => navigate("/")}>
             Back
           </button>
-          <button type="submit" className={styles.nextBtn}>
-            Sign up as Vendor
+          <button type="submit" className={styles.nextButton} disabled={isLoading}>
+            {isLoading ? "Submitting..." : "Sign up as Vendor"}
           </button>
         </div>
       </form>

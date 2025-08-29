@@ -2,56 +2,60 @@
 
 import React, { useState } from "react";
 import styles from "./SigninC.module.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useLoginMutation } from "../../../app/api/authApi";
 import { toaster } from "@/components/ui/toaster";
-import { success } from "zod";
-import { useNavigate } from "react-router-dom";
 import {
-  getToken,
   setToken,
   setUserRole,
   setUser,
 } from "@/utils/localStorageMethods";
+import { Eye, EyeOff } from "lucide-react";
+
+// form + validation
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+
+// ✅ validation schema
+const loginSchema = z.object({
+  email: z.string().email("Enter a valid email"),
+  password: z
+    .string()
+    .min(6, "Password must be at least 6 characters")
+    .max(30, "Password must not exceed 30 characters"),
+});
 
 const Login = () => {
-  const [formData, setFormData] = useState({
-    email: "",
-    password: "",
-  });
-
+  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
-
   const [login, { isLoading }] = useLoginMutation();
 
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
+  // ✅ hook form setup
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: zodResolver(loginSchema),
+  });
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    console.log("Form Data:", formData);
-    // API call here
+  const onSubmit = async (formData) => {
     toaster.promise(login(formData).unwrap(), {
       success: (res) => {
-        console.log("Login Response:", res);
         if (res.code === 9011) {
           setToken(res.data?.token);
           setUserRole(res.data?.role);
           setUser(res.data);
           navigate("/");
         }
-        return {
-          title: res.message || "Successfully logged in!",
-          description: "",
-        };
+        return { title: res.message || "Successfully logged in!" };
       },
       error: (err) => {
-        console.error("Login Error:", err);
-        return {
-          title: err?.message || "Failed to login.",
-          description: "",
-        };
+        if (err?.data?.code === 9010) {
+          navigate("/change-password");
+        }
+        return { title: err?.data?.message || "Failed to login." };
       },
       loading: { title: "Logging in", description: "Please wait" },
     });
@@ -62,7 +66,7 @@ const Login = () => {
       <div className={styles.cardWrapper}>
         <div className={styles.signinCard}>
           <h3 className={styles.title}>Login</h3>
-          <form onSubmit={handleSubmit} className={styles.form}>
+          <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
             {/* Email */}
             <div className={styles.formGroup}>
               <label htmlFor="email" className={styles.label}>
@@ -71,30 +75,40 @@ const Login = () => {
               <input
                 type="email"
                 id="email"
-                name="email"
+                {...register("email")}
                 className={styles.inputField}
                 placeholder="Enter your email"
-                value={formData.email}
-                onChange={handleChange}
-                required
               />
+              {errors.email && (
+                <span className={styles.errorMsg}>
+                  {errors.email.message}
+                </span>
+              )}
             </div>
 
-            {/* Password */}
-            <div className={styles.formGroup}>
+            {/* Password with Show/Hide */}
+            <div className={styles.formGroup} style={{ position: "relative" }}>
               <label htmlFor="password" className={styles.label}>
                 Password
               </label>
               <input
-                type="password"
+                type={showPassword ? "text" : "password"}
                 id="password"
-                name="password"
+                {...register("password")}
                 className={styles.inputField}
                 placeholder="Enter your password"
-                value={formData.password}
-                onChange={handleChange}
-                required
               />
+              <span
+                className={styles.eyeIcon}
+                onClick={() => setShowPassword(!showPassword)}
+              >
+                {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+              </span>
+              {errors.password && (
+                <span className={styles.errorMsg}>
+                  {errors.password.message}
+                </span>
+              )}
             </div>
 
             {/* Submit Button */}
@@ -111,15 +125,9 @@ const Login = () => {
               Sign In
             </button>
 
-            {/* Links */}
+            {/* Only Forget Password link */}
             <Link to="/forget-password" className={styles.forgetLink}>
-              Forget Password?
-            </Link>
-            <Link to="/sign-up" className={styles.forgetLink}>
-              Sign Up?
-            </Link>
-            <Link to="/password-reset" className={styles.forgetLink}>
-              Reset Password?
+              Forgot Password?
             </Link>
           </form>
         </div>

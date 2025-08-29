@@ -1,100 +1,153 @@
 "use client";
 
 import React, { useState } from "react";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Eye, EyeOff } from "lucide-react";
 import styles from "./Changepass.module.css";
+import { useChangePasswordMutation } from "../../../app/api/authApi";
+import { toaster } from "@/components/ui/toaster";
 
-const ChangePass = () => {
-  const [formData, setFormData] = useState({
-    email: "",
-    tempPassword: "",
-    newPassword: "",
-    confirmPassword: "",
+// ✅ Zod schema
+const schema = z
+  .object({
+    email: z.string().email("Enter a valid email address"),
+    oldPassword: z.string().min(6, "Old password must be at least 6 characters"),
+    newPassword: z.string().min(6, "New password must be at least 6 characters"),
+    confirmPassword: z.string().min(6, "Confirm password must be at least 6 characters"),
+  })
+  .refine((data) => data.newPassword === data.confirmPassword, {
+    path: ["confirmPassword"],
+    message: "Passwords do not match",
   });
 
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
+const ChangePass = () => {
+  const [changePassword, { isLoading }] = useChangePasswordMutation();
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const { email, tempPassword, newPassword, confirmPassword } = formData;
+  const [showOld, setShowOld] = useState(false);
+  const [showNew, setShowNew] = useState(false);
+  const [showConfirm, setShowConfirm] = useState(false);
 
-    if (!email || !tempPassword || !newPassword || !confirmPassword) {
-      alert("Please fill in all fields.");
-      return;
-    }
-    if (newPassword !== confirmPassword) {
-      alert("New password and confirm password do not match.");
-      return;
-    }
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm({
+    resolver: zodResolver(schema),
+  });
 
-    console.log("Password changed for:", email);
-    // 🔗 Add API call here
+  const onSubmit = async (data) => {
+    console.log("Form Data Submitted:", data);
+    toaster.promise(
+      changePassword({
+        email: data.email,
+        oldPassword: data.oldPassword,
+        newPassword: data.newPassword,
+      }).unwrap(),
+      {
+        loading: { title: "Changing Password...", description: "Please wait" },
+        success: (res) => {
+          return { title: res?.message || "Password changed successfully!" };
+           if (err?.data?.code === 9012) {
+          navigate("/login");
+        }
+        },
+        error: (err) => {
+          return { title: err?.data?.message || "Failed to change password." };
+        },
+      }
+    );
   };
 
   return (
     <div className={styles.resetWrapper}>
       <div className={styles.resetCard}>
         <h3 className={styles.title}>Change Password</h3>
-        <form onSubmit={handleSubmit} className={styles.form}>
-          <label htmlFor="email" className={styles.label}>
-            Email Address
-          </label>
+
+        <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
+          {/* Email */}
+          <label className={styles.label}>Email</label>
           <input
             type="email"
-            id="email"
-            name="email"
-            className={styles.inputField}
+            className={styles.inputField} style={{ marginBottom: "15px" }}
             placeholder="Enter your email"
-            value={formData.email}
-            onChange={handleChange}
-            required
+            {...register("email")}
           />
+          {errors.email && <p className={styles.error}>{errors.email.message}</p>}
 
-          <label htmlFor="tempPassword" className={styles.label}>
-            Temporary Password
-          </label>
-          <input
-            type="password"
-            id="tempPassword"
-            name="tempPassword"
-            className={styles.inputField}
-            placeholder="Enter temporary password"
-            value={formData.tempPassword}
-            onChange={handleChange}
-            required
-          />
+          {/* Old Password */}
+          <label className={styles.label}>Old Password</label>
+          <div className={styles.passwordWrapper}>
+            <input
+              type={showOld ? "text" : "password"}
+              className={styles.inputField}
+              placeholder="Enter old password"
+              {...register("oldPassword")}
+            />
+            <span
+              className={styles.eyeIcon}
+              onClick={() => setShowOld(!showOld)}
+            >
+              {showOld ? <EyeOff size={18} /> : <Eye size={18} />}
+            </span>
+          </div>
+          {errors.oldPassword && (
+            <p className={styles.error}>{errors.oldPassword.message}</p>
+          )}
 
-          <label htmlFor="newPassword" className={styles.label}>
-            New Password
-          </label>
-          <input
-            type="password"
-            id="newPassword"
-            name="newPassword"
-            className={styles.inputField}
-            placeholder="Enter new password"
-            value={formData.newPassword}
-            onChange={handleChange}
-            required
-          />
+          {/* New Password */}
+          <label className={styles.label}>New Password</label>
+          <div className={styles.passwordWrapper}>
+            <input
+              type={showNew ? "text" : "password"}
+              className={styles.inputField}
+              placeholder="Enter new password"
+              {...register("newPassword")}
+            />
+            <span
+              className={styles.eyeIcon}
+              onClick={() => setShowNew(!showNew)}
+            >
+              {showNew ? <EyeOff size={18} /> : <Eye size={18} />}
+            </span>
+          </div>
+          {errors.newPassword && (
+            <p className={styles.error}>{errors.newPassword.message}</p>
+          )}
 
-          <label htmlFor="confirmPassword" className={styles.label}>
-            Confirm Password
-          </label>
-          <input
-            type="password"
-            id="confirmPassword"
-            name="confirmPassword"
-            className={styles.inputField}
-            placeholder="Re-enter new password"
-            value={formData.confirmPassword}
-            onChange={handleChange}
-            required
-          />
+          {/* Confirm Password */}
+          <label className={styles.label}>Confirm Password</label>
+          <div className={styles.passwordWrapper}>
+            <input
+              type={showConfirm ? "text" : "password"}
+              className={styles.inputField}
+              placeholder="Confirm new password"
+              {...register("confirmPassword")}
+            />
+            <span
+              className={styles.eyeIcon}
+              onClick={() => setShowConfirm(!showConfirm)}
+            >
+              {showConfirm ? <EyeOff size={18} /> : <Eye size={18} />}
+            </span>
+          </div>
+          {errors.confirmPassword && (
+            <p className={styles.error}>{errors.confirmPassword.message}</p>
+          )}
 
-          <button type="submit" className={styles.submitBtn}>
-            Change Password
+          {/* Submit button */}
+          <button
+            type="submit"
+            disabled={isSubmitting}
+            className={styles.submitBtn}
+            style={
+              isSubmitting
+                ? { backgroundColor: "#ccc", cursor: "not-allowed" }
+                : {}
+            }
+          >
+            {isSubmitting ? "Changing..." : "Change Password"}
           </button>
         </form>
       </div>

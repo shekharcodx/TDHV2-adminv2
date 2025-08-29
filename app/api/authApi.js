@@ -1,3 +1,4 @@
+// src/app/api/authApi.js
 import { baseApi } from "./baseApi";
 
 const authApi = baseApi.injectEndpoints({
@@ -11,7 +12,47 @@ const authApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ["User"],
     }),
+
+    forgetPassword: builder.mutation({
+      query: (email) => ({
+        url: "/forgetPassword",
+        method: "POST",
+        body: { email },
+      }),
+    }),
+
+    changePassword: builder.mutation({
+      query: ({ email, oldPassword, newPassword }) => ({
+        url: "/createNewPassword",
+        method: "PUT",
+        body: { email, oldPassword, newPassword },
+      }),
+    }),
+
+    resetPassword: builder.mutation({
+      query: ({ token, newPassword }) => ({
+        url: "/resetPassword",
+        method: "PUT",
+        body: { token, newPassword },
+      }),
+    }),
+
+    register: builder.mutation({
+      query: (formData) => ({
+        url: "/register",
+        method: "POST",
+        body: formData, // ✅ FormData for file upload
+      }),
+    }),
   }),
 });
 
-export const { useLoginMutation } = authApi;
+export const {
+  useLoginMutation,
+  useForgetPasswordMutation,
+  useChangePasswordMutation,
+  useResetPasswordMutation,
+  useRegisterMutation,
+} = authApi;
+
+export default authApi;
