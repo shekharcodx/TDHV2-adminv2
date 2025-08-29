@@ -48,7 +48,7 @@ function App() {
 
     { path: "/unauthorized", element: <Unauthorized /> },
     { path: "/login", element: <Login /> },
-    { path: "/Forgetpass", element: <ForgetPassword /> },
+    { path: "/forget-password", element: <ForgetPassword /> },
     { path: "/sign-in", element: <SignupForm /> },
     { path: "/details", element: <DetailsForm /> },
     { path: "*", element: <ErrorPage /> },
