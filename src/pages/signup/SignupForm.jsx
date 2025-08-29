@@ -52,11 +52,11 @@ const SignupForm = () => {
     resolver: zodResolver(schema),
     mode: "onChange",
   });
+
   useEffect(() => {
     console.log("Form Errors:", errors);
   }, [errors]);
 
-  // ✅ Handle country change
   const handleCountryChange = async (e) => {
     const countryId = e.target.value;
     setSelectedCountry(countryId);
@@ -67,7 +67,6 @@ const SignupForm = () => {
     if (countryId) await fetchStates(countryId);
   };
 
-  // ✅ Handle state change
   const handleStateChange = async (e) => {
     const stateId = e.target.value;
     setSelectedState(stateId);
@@ -76,7 +75,6 @@ const SignupForm = () => {
     if (stateId) await fetchCities(stateId);
   };
 
-  // ✅ Handle city change
   const handleCityChange = (e) => {
     setValue("address.city", e.target.value);
   };
@@ -88,6 +86,7 @@ const SignupForm = () => {
   };
 
   return (
+     <div className={styles.pageWrapper}>
     <div className={styles.container}>
       <div className={styles.stepsHeader}>
         <div className={`${styles.step} ${styles.active}`}>
@@ -125,11 +124,18 @@ const SignupForm = () => {
           {errors.businessName && <p className={styles.error}>{errors.businessName.message}</p>}
         </div>
 
-        {/* Street */}
-        <div className={styles.inputFull}>
-          <label className={styles.label}>Street</label>
-          <input {...register("address.street")} placeholder="Street" className={styles.input} />
-          {errors.address?.street && <p className={styles.error}>{errors.address.street.message}</p>}
+        {/* Street & Map URL side by side */}
+        <div className={styles.flexRow}>
+          <div className={styles.halfInput}>
+            <label className={styles.label}>Street</label>
+            <input {...register("address.street")} placeholder="Street" className={styles.input} />
+            {errors.address?.street && <p className={styles.error}>{errors.address.street.message}</p>}
+          </div>
+          <div className={styles.halfInput}>
+            <label className={styles.label}>Map URL</label>
+            <input {...register("address.mapUrl")} placeholder="Map URL" className={styles.input} />
+            {errors.address?.mapUrl && <p className={styles.error}>{errors.address.mapUrl.message}</p>}
+          </div>
         </div>
 
         {/* Country */}
@@ -168,30 +174,30 @@ const SignupForm = () => {
           {errors.address?.city && <p className={styles.error}>{errors.address.city.message}</p>}
         </div>
 
-        {/* Contact numbers */}
-        {["landlineNum", "mobileNum", "whatsappNum"].map((field) => (
-          <div key={field} className={styles.inputFull}>
-            <label className={styles.label}>{field.replace("Num", " Number")}</label>
-            <input
-              type="tel"
-              {...register(`contact.${field}`)}
-              placeholder={`Enter ${field.replace("Num", " Number")}`}
-              className={styles.input}
-            />
-            {errors.contact?.[field] && <p className={styles.error}>{errors.contact[field].message}</p>}
-          </div>
-        ))}
+        {/* Contact numbers in two-column layout */}
+{/* Contact Numbers in Two Columns */}
+<div className={styles.flexRow}>
+  {["landlineNum", "mobileNum", "whatsappNum"].map((field) => (
+    <div key={field} className={styles.halfInput}>
+      <label className={styles.label}>{field.replace("Num", " Number")}</label>
+      <input
+        type="tel"
+        {...register(`contact.${field}`)}
+        placeholder={`Enter ${field.replace("Num", " Number")}`}
+        className={styles.input}
+      />
+      {errors.contact?.[field] && (
+        <p className={styles.error}>{errors.contact[field].message}</p>
+      )}
+    </div>
+  ))}
+</div>
 
-        {/* Map URL */}
-        <div className={styles.inputFull}>
-          <label className={styles.label}>Map URL</label>
-          <input {...register("address.mapUrl")} placeholder="Map URL" className={styles.input} />
-          {errors.address?.mapUrl && <p className={styles.error}>{errors.address.mapUrl.message}</p>}
-        </div>
 
         <button type="submit" className={styles.nextButton} disabled={!isValid}>Next</button>
       </form>
     </div>
+     </div>
   );
 };
 
