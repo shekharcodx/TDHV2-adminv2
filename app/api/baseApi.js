@@ -9,12 +9,30 @@ export const baseApi = createApi({
       const userToken = getToken();
       if (userToken) {
         headers.set("Authorization", `Bearer ${userToken}`);
-
-      } else {
       }
       return headers;
     },
   }),
   endpoints: () => ({}),
-  tagTypes: ["User", "countries","states","cities"],
+  tagTypes: [
+    "User",
+    "countries",
+    "states",
+    "cities",
+    // Add all your car-related tag types here:
+    "CarBrands",
+    "CarModels",
+    "CarTrims",
+    "CarYears",
+    "BodyTypes",
+    "RegionalSpecs",
+    "HorsePowers",
+    "SeatingCapacities",
+    "Colors",
+    "Doors",
+    "Transmissions",
+    "FuelTypes",
+    "TechFeatures",
+    "OtherFeatures",
+  ],
 });

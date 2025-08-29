@@ -35,7 +35,7 @@ function App() {
           path: "/",
           element: <Layout />,
           children: [
-            { path:"dashboard", element: <DashboardPage /> },
+            { index:true, element: <DashboardPage /> },
             { path: "profile", element: <Profile /> },
             { path: "user-form", element: <UserForm /> },
             { path: "create-listing", element: <CarListing /> },
@@ -45,11 +45,11 @@ function App() {
         },
       ],
     },
- { index:true, element: <SignupForm /> },
+
     { path: "/unauthorized", element: <Unauthorized /> },
     { path: "/login", element: <Login /> },
     { path: "/Forget-pass", element: <ForgetPassword /> },
-    { path:"/register", element: <SignupForm /> },
+     { path:"/register", element: <SignupForm /> },
      { path: "/details", element: <DetailsForm /> },
     { path: "*", element: <ErrorPage /> },
     { path: "/reset-pass", element: <Resetpass /> },

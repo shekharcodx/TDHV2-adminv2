@@ -1,54 +1,50 @@
 import React, { useState } from "react";
-import styles from "./CarListing.module.css";
+import styles from "./carlist.module.css";
 
-const carData = {
-  Audi: {
-    models: ["A3", "A4", "Q7"],
-    trims: {
-      A3: ["Premium", "Sport"],
-      A4: ["Premium", "Luxury"],
-      Q7: ["Base", "Advanced"],
-    },
-    years: {
-      A3: ["2020", "2021", "2022"],
-      A4: ["2019", "2020"],
-      Q7: ["2021", "2022"],
-    },
-  },
-  BMW: {
-    models: ["X5", "M3", "i8"],
-    trims: {
-      X5: ["xLine", "M"],
-      M3: ["Competition", "Standard"],
-      i8: ["Base"],
-    },
-    years: { X5: ["2021", "2022"], M3: ["2020", "2021"], i8: ["2022"] },
-  },
-};
-
-const technicalFeaturesList = [
-  "ABS",
-  "Airbags",
-  "Cruise Control",
-  "Navigation",
-  "Sunroof",
-  "Lane Assist",
-  "Rear Camera",
-  "Parking Sensors",
-  "Blind Spot Monitor",
-];
+import {
+  useGetCarBrandsQuery,
+  useLazyGetModelsQuery,
+  useLazyGetCarTrimsQuery,
+  useLazyGetYearsQuery,
+  useGetCarRegionalSpecsQuery,
+  useGetCarHorsePowersQuery,
+  useGetCarSeatingCapacitiesQuery,
+  useGetCarColorsQuery,
+  useGetCarDoorsQuery,
+  useGetTransmissionsQuery,
+  useGetFuelTypesQuery,
+  useGetCarTechFeaturesQuery,
+  useGetCarOtherFeaturesQuery,
+} from "../../../app/api/carListingApi";
 
 const CarListing = () => {
+  // 🔹 Brand → Model → Trim → Year
+  const { data: brands } = useGetCarBrandsQuery();
+  const [fetchModels, { data: models }] = useLazyGetModelsQuery();
+  const [fetchTrims, { data: trims }] = useLazyGetCarTrimsQuery();
+  const [fetchYears, { data: years }] = useLazyGetYearsQuery();
+
+  // 🔹 Static dropdowns
+  const { data: regionalSpecs } = useGetCarRegionalSpecsQuery();
+  const { data: horsePowers } = useGetCarHorsePowersQuery();
+  const { data: seatingCapacities } = useGetCarSeatingCapacitiesQuery();
+  const { data: colors } = useGetCarColorsQuery();
+  const { data: doors } = useGetCarDoorsQuery();
+  const { data: transmissions } = useGetTransmissionsQuery();
+  const { data: fuelTypes } = useGetFuelTypesQuery();
+  const { data: techFeatures } = useGetCarTechFeaturesQuery();
+  const { data: otherFeatures } = useGetCarOtherFeaturesQuery();
+
+  // 🔹 State
   const [selectedBrand, setSelectedBrand] = useState("");
   const [selectedModel, setSelectedModel] = useState("");
   const [selectedTrim, setSelectedTrim] = useState("");
   const [selectedYear, setSelectedYear] = useState("");
-  const [models, setModels] = useState([]);
-  const [trims, setTrims] = useState([]);
-  const [years, setYears] = useState([]);
+
   const [showTechFeatures, setShowTechFeatures] = useState(false);
-  const [technicalFeatures, setTechnicalFeatures] = useState([]);
-  const [otherFeatures, setOtherFeatures] = useState("");
+  const [showOtherFeatures, setShowOtherFeatures] = useState(false);
+  const [selectedTechFeatures, setSelectedTechFeatures] = useState([]);
+  const [selectedOtherFeatures, setSelectedOtherFeatures] = useState([]);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [rentPerDay, setRentPerDay] = useState("");
@@ -56,35 +52,42 @@ const CarListing = () => {
   const [insurance, setInsurance] = useState("");
   const [warranty, setWarranty] = useState("");
   const [images, setImages] = useState([]);
+const [showImages, setShowImages] = useState(false);
 
-  const handleBrandChange = (e) => {
-    const brand = e.target.value;
-    setSelectedBrand(brand);
+  // Handlers
+  const handleBrandChange = async (e) => {
+    const brandId = e.target.value;
+    setSelectedBrand(brandId);
     setSelectedModel("");
     setSelectedTrim("");
     setSelectedYear("");
-    setModels(brand ? carData[brand].models : []);
-    setTrims([]);
-    setYears([]);
+    if (brandId) await fetchModels(brandId);
   };
 
-  const handleModelChange = (e) => {
-    const model = e.target.value;
-    setSelectedModel(model);
+  const handleModelChange = async (e) => {
+    const modelId = e.target.value;
+    setSelectedModel(modelId);
     setSelectedTrim("");
     setSelectedYear("");
-    setTrims(model ? carData[selectedBrand].trims[model] : []);
-    setYears(model ? carData[selectedBrand].years[model] : []);
+    if (modelId) {
+      await fetchTrims(modelId);
+      await fetchYears(modelId);
+    }
   };
 
-  const handleTrimChange = (e) => setSelectedTrim(e.target.value);
-  const handleYearChange = (e) => setSelectedYear(e.target.value);
+  const handleTechFeatureChange = (featureId) => {
+    setSelectedTechFeatures((prev) =>
+      prev.includes(featureId)
+        ? prev.filter((f) => f !== featureId)
+        : [...prev, featureId]
+    );
+  };
 
-  const handleTechnicalFeatureChange = (feature) => {
-    setTechnicalFeatures((prev) =>
-      prev.includes(feature)
-        ? prev.filter((f) => f !== feature)
-        : [...prev, feature]
+  const handleOtherFeatureChange = (featureId) => {
+    setSelectedOtherFeatures((prev) =>
+      prev.includes(featureId)
+        ? prev.filter((f) => f !== featureId)
+        : [...prev, featureId]
     );
   };
 
@@ -101,113 +104,152 @@ const CarListing = () => {
     <div className={styles.page}>
       <main className={styles.container}>
         <h2 className={styles.title}>Add Car Details</h2>
+
         <form className={styles.form}>
           {/* Brand → Model → Trim → Year */}
           <div className={styles.grid}>
-            <select
-              value={selectedBrand}
-              onChange={handleBrandChange}
-              className={styles.select}
-            >
-              <option value="">Select Brand</option>
-              {Object.keys(carData).map((brand) => (
-                <option key={brand} value={brand}>
-                  {brand}
-                </option>
-              ))}
-            </select>
+            <div className={styles.selectWrapper}>
+              <select
+                value={selectedBrand}
+                onChange={handleBrandChange}
+                className={styles.select}
+              >
+                <option value="">Select Brand</option>
+                {brands?.carBrands?.map((brand) => (
+                  <option key={brand._id} value={brand._id}>
+                    {brand.name}
+                  </option>
+                ))}
+              </select>
+            </div>
 
-            <select
-              value={selectedModel}
-              onChange={handleModelChange}
-              className={styles.select}
-              disabled={!selectedBrand}
-            >
-              <option value="">
-                {selectedBrand ? "Select Model" : "Select Brand First"}
-              </option>
-              {models.map((model) => (
-                <option key={model} value={model}>
-                  {model}
-                </option>
-              ))}
-            </select>
+            <div className={styles.selectWrapper}>
+              <select
+                value={selectedModel}
+                onChange={handleModelChange}
+                className={styles.select}
+                disabled={!selectedBrand}
+              >
+                <option value="">Select Model</option>
+                {models?.carModels?.map((model) => (
+                  <option key={model._id} value={model._id}>
+                    {model.name}
+                  </option>
+                ))}
+              </select>
+            </div>
 
-            <select
-              value={selectedTrim}
-              onChange={handleTrimChange}
-              className={styles.select}
-              disabled={!selectedModel}
-            >
-              <option value="">
-                {selectedModel ? "Select Trim" : "Select Model First"}
-              </option>
-              {trims.map((trim) => (
-                <option key={trim} value={trim}>
-                  {trim}
-                </option>
-              ))}
-            </select>
+            <div className={styles.selectWrapper}>
+              <select
+                value={selectedTrim}
+                onChange={(e) => setSelectedTrim(e.target.value)}
+                className={styles.select}
+                disabled={!selectedModel}
+              >
+                <option value="">Select Trim</option>
+                {trims?.carTrims?.map((trim) => (
+                  <option key={trim._id} value={trim._id}>
+                    {trim.name}
+                  </option>
+                ))}
+              </select>
+            </div>
 
-            <select
-              value={selectedYear}
-              onChange={handleYearChange}
-              className={styles.select}
-              disabled={!selectedTrim}
-            >
-              <option value="">
-                {selectedTrim ? "Select Year" : "Select Trim First"}
-              </option>
-              {years.map((year) => (
-                <option key={year} value={year}>
-                  {year}
-                </option>
-              ))}
-            </select>
+            <div className={styles.selectWrapper}>
+              <select
+                value={selectedYear}
+                onChange={(e) => setSelectedYear(e.target.value)}
+                className={styles.select}
+                disabled={!selectedModel}
+              >
+                <option value="">Select Year</option>
+                {years?.years?.map((year, idx) => (
+                  <option key={idx} value={year}>
+                    {year}
+                  </option>
+                ))}
+              </select>
+            </div>
           </div>
 
           {/* Specs dropdowns */}
           <div className={styles.grid}>
-            <select className={styles.select}>
-              <option value="">Body Type</option>
-              <option value="SUV">SUV</option>
-              <option value="Sedan">Sedan</option>
-            </select>
-            <select className={styles.select}>
-              <option value="">Regional Specs</option>
-              <option value="EU">EU</option>
-              <option value="US">US</option>
-            </select>
-            <select className={styles.select}>
-              <option value="">Horsepower</option>
-              <option value="100-150">100-150</option>
-              <option value="150-200">150-200</option>
-            </select>
-            <select className={styles.select}>
-              <option value="">Seating Capacity</option>
-              <option value="2">2</option>
-              <option value="4">4</option>
-            </select>
-            <select className={styles.select}>
-              <option value="">Colors</option>
-              <option value="Black">Black</option>
-              <option value="White">White</option>
-            </select>
-            <select className={styles.select}>
-              <option value="">Doors</option>
-              <option value="2">2</option>
-              <option value="4">4</option>
-            </select>
-            <select className={styles.select}>
-              <option value="">Transmission</option>
-              <option value="Automatic">Automatic</option>
-              <option value="Manual">Manual</option>
-            </select>
-            <select className={styles.select}>
-              <option value="">Fuel Type</option>
-              <option value="Petrol">Petrol</option>
-              <option value="Diesel">Diesel</option>
-            </select>
+            <div className={styles.selectWrapper}>
+              <select className={styles.select}>
+                <option value="">Select Regional Specs</option>
+                {regionalSpecs?.specs?.map((spec) => (
+                  <option key={spec._id} value={spec._id}>
+                    {spec.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div className={styles.selectWrapper}>
+              <select className={styles.select}>
+                <option value="">Select Horse Power</option>
+                {horsePowers?.horsePowers?.map((hp) => (
+                  <option key={hp._id} value={hp._id}>
+                    {hp.power}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div className={styles.selectWrapper}>
+              <select className={styles.select}>
+                <option value="">Select Seating Capacity</option>
+                {seatingCapacities?.seatingCapacities?.map((sc) => (
+                  <option key={sc._id} value={sc._id}>
+                    {sc.seats}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div className={styles.selectWrapper}>
+              <select className={styles.select}>
+                <option value="">Select Color</option>
+                {colors?.colors?.map((c) => (
+                  <option key={c._id} value={c._id}>
+                    {c.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div className={styles.selectWrapper}>
+              <select className={styles.select}>
+                <option value="">Select Doors</option>
+                {doors?.doors?.map((d) => (
+                  <option key={d._id} value={d._id}>
+                    {d.doors}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div className={styles.selectWrapper}>
+              <select className={styles.select}>
+                <option value="">Select Transmission</option>
+                {transmissions?.transmissions?.map((t) => (
+                  <option key={t._id} value={t._id}>
+                    {t.transmission}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div className={styles.selectWrapper}>
+              <select className={styles.select}>
+                <option value="">Select Fuel Type</option>
+                {fuelTypes?.fuelTypes?.map((f) => (
+                  <option key={f._id} value={f._id}>
+                    {f.name}
+                  </option>
+                ))}
+              </select>
+            </div>
           </div>
 
           {/* Technical Features */}
@@ -222,54 +264,93 @@ const CarListing = () => {
             </button>
           </div>
           {showTechFeatures && (
-            <div className={styles.techFeaturesGrid}>
-              {technicalFeaturesList.map((feature) => (
-                <label key={feature} className={styles.checkboxLabel}>
-                  <input
-                    className={styles.checkBox}
-                    type="checkbox"
-                    checked={technicalFeatures.includes(feature)}
-                    onChange={() => handleTechnicalFeatureChange(feature)}
-                  />
-                  {feature}
-                </label>
+            <div className={styles.featuresGrid}>
+              {techFeatures?.features?.map((f) => (
+                <div key={f._id} className={styles.featureBox}>
+                  <label>
+                    <input
+                      type="checkbox"
+                      checked={selectedTechFeatures.includes(f._id)}
+                      onChange={() => handleTechFeatureChange(f._id)}
+                    />
+                    <span>{f.name}</span>
+                  </label>
+                </div>
               ))}
             </div>
           )}
-          {/* Other Features */}
-          <input
-            className={styles.input}
-            placeholder="Other Features"
-            value={otherFeatures}
-            onChange={(e) => setOtherFeatures(e.target.value)}
-          />
 
-          {/* Image Upload */}
-          <div className={styles.imageUploadSection}>
-            <div className={styles.addImagesLabel}>Add Images</div>
-            <input
-              id="file-upload"
-              type="file"
-              className={styles.fileInput}
-              onChange={handleImageChange}
-              multiple
-            />
-            <div>
-              <label htmlFor="file-upload" className={styles.uploadLabel}>
-                Choose Files
-              </label>
-            </div>
-            <div className={styles.imagePreviewGrid}>
-              {images.map((img, idx) => (
-                <img
-                  key={idx}
-                  src={img.url}
-                  alt={img.name}
-                  className={styles.imagePreview}
-                />
+          {/* Other Features */}
+          <div className={styles.sectionHeader}>Other Features</div>
+          <div style={{ marginBottom: "10px" }}>
+            <button
+              type="button"
+              onClick={() => setShowOtherFeatures(!showOtherFeatures)}
+              className={`${styles.toggleButton} ${styles.button}`}
+            >
+              {showOtherFeatures ? "Hide Features" : "Add Features"}
+            </button>
+          </div>
+          {showOtherFeatures && (
+            <div className={styles.featuresGrid}>
+              {otherFeatures?.features?.map((f) => (
+                <div key={f._id} className={styles.featureBox}>
+                  <label>
+                    <input
+                      type="checkbox"
+                      checked={selectedOtherFeatures.includes(f._id)}
+                      onChange={() => handleOtherFeatureChange(f._id)}
+                    />
+                    <span>{f.name}</span>
+                  </label>
+                </div>
               ))}
             </div>
-          </div>
+          )}
+
+          {/* Image Upload */}
+          {/* Image Upload */}
+<div className={styles.imageUploadSection}>
+  <div className={styles.sectionHeader}>Add Images</div>
+
+  <input
+    id="file-upload"
+    type="file"
+    className={styles.fileInput}
+    onChange={handleImageChange}
+    multiple
+    hidden
+  />
+
+  <label htmlFor="file-upload" className={`${styles.uploadLabel} ${styles.button}`}>
+    Choose Files
+  </label>
+
+  {images.length > 0 && (
+    <div style={{ marginTop: '10px', marginBottom: '10px' }}>
+      <button
+        type="button"
+        onClick={() => setShowImages(!showImages)}
+        className={`${styles.toggleButton} ${styles.button}`}
+      >
+        {showImages ? "Hide Images" : "Show Images"}
+      </button>
+    </div>
+  )}
+
+  {showImages && (
+    <div className={styles.imagePreviewGrid}>
+      {images.map((img, idx) => (
+        <img
+          key={idx}
+          src={img.url}
+          alt={img.name}
+          className={styles.imagePreview}
+        />
+      ))}
+    </div>
+  )}
+</div>
 
           {/* Title & Description */}
           <div className={styles.formGroup}>
@@ -286,44 +367,49 @@ const CarListing = () => {
               value={description}
               onChange={(e) => setDescription(e.target.value)}
             />
+          </div>
 
-            {/* Rent */}
-            <div className={styles.grid}>
-              <input
-                className={styles.input}
-                placeholder="Rent per Day"
-                value={rentPerDay}
-                onChange={(e) => setRentPerDay(e.target.value)}
-              />
-              <input
-                className={styles.input}
-                placeholder="Rent per Month"
-                value={rentPerMonth}
-                onChange={(e) => setRentPerMonth(e.target.value)}
-              />
-            </div>
+          {/* Rent */}
+          <div className={`${styles.grid} ${styles.gapTop}`}>
+            <input
+              className={styles.input}
+              placeholder="Rent per Day"
+              value={rentPerDay}
+              onChange={(e) => setRentPerDay(e.target.value)}
+            />
+            <input
+              className={styles.input}
+              placeholder="Rent per Month"
+              value={rentPerMonth}
+              onChange={(e) => setRentPerMonth(e.target.value)}
+            />
           </div>
 
           {/* Insurance & Warranty */}
           <div className={styles.grid}>
-            <select
-              className={styles.select}
-              value={insurance}
-              onChange={(e) => setInsurance(e.target.value)}
-            >
-              <option value="">Car Insurance</option>
-              <option value="yes">Yes</option>
-              <option value="no">No</option>
-            </select>
-            <select
-              className={styles.select}
-              value={warranty}
-              onChange={(e) => setWarranty(e.target.value)}
-            >
-              <option value="">Warranty</option>
-              <option value="yes">Yes</option>
-              <option value="no">No</option>
-            </select>
+            <div className={styles.selectWrapper}>
+              <select
+                className={styles.select}
+                value={insurance}
+                onChange={(e) => setInsurance(e.target.value)}
+              >
+                <option value="">Car Insurance</option>
+                <option value="yes">Yes</option>
+                <option value="no">No</option>
+              </select>
+            </div>
+
+            <div className={styles.selectWrapper}>
+              <select
+                className={styles.select}
+                value={warranty}
+                onChange={(e) => setWarranty(e.target.value)}
+              >
+                <option value="">Warranty</option>
+                <option value="yes">Yes</option>
+                <option value="no">No</option>
+              </select>
+            </div>
           </div>
 
           <div style={{ textAlign: "right", marginTop: "20px" }}>

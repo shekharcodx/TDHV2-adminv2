@@ -1,0 +1,315 @@
+:root {
+  --charcoal-blue-grey-one-color: #27343A;
+  --slate-gray-secondary-two-color: #5B787C;
+  --misty-teal-three-color: #89B4BC;
+  --light-gray-four-color: #CECCCD;
+  --neutral-five-color: #EFEEEA;
+
+  --gradient-background: linear-gradient(
+    90deg,
+    rgba(91, 120, 124, 1) 0%,
+    rgba(137, 180, 188, 1) 35%
+  );
+}
+
+.page {
+  font-family: "Segoe UI", sans-serif;
+  margin-left: 220px;
+  box-sizing: border-box;
+  width: calc(100% - 220px);
+  color: #333;
+}
+
+@media (max-width: 990px) {
+  .page {
+    padding: 0px;
+    margin-left: 0px;
+    width: 100%;
+  }
+}
+
+.container {
+  width: 100%;
+  margin: 0 auto;
+}
+
+.title {
+  font-size: 24px;
+  font-weight: 600;
+  color: var(--charcoal-blue-grey-one-color);
+  margin-bottom: 24px;
+}
+
+.form {
+  background: #fff;
+  border-radius: 14px;
+  padding: 30px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
+  transition: box-shadow 0.3s ease-in-out;
+}
+
+.form:hover {
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.18);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.input,
+.select,
+.textarea {
+  padding: 12px 14px;
+  font-size: 14px;
+  border-radius: 8px;
+  border: 1px solid var(--light-gray-four-color);
+  transition: all 0.3s ease;
+  background-color: #fff;
+  width: 100%;
+  box-sizing: border-box;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+}
+
+.input:focus,
+.select:focus,
+.textarea:focus {
+  border-color: var(--misty-teal-three-color);
+  box-shadow: 0 0 6px rgba(137, 180, 188, 0.5);
+  outline: none;
+}
+
+.textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+.gapTop {
+  margin-top: 20px;
+}
+
+.techFeaturesGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 12px;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #fafafa;
+  margin-bottom: 20px;
+  max-height: 180px;
+  overflow-y: auto;
+}
+
+.featureBox {
+  border: 1px solid #ddd;
+  padding: 8px 12px;
+  border-radius: 8px;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.06);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.featureBox:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.12);
+}
+
+.checkBox {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--misty-teal-three-color);
+  cursor: pointer;
+}
+
+.featuresGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.imageUploadSection {
+  margin: 20px 0;
+}
+
+.addImagesLabel {
+  display: inline-block;
+  padding: 10px 16px;
+  background: var(--gradient-background);
+  color: white;
+  border-radius: 8px;
+  font-weight: 600;
+  margin-bottom: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.15);
+}
+
+.addImagesLabel:hover {
+  background: var(--slate-gray-secondary-two-color);
+}
+
+.uploadLabel {
+  display: inline-block;
+  padding: 10px 18px;
+  background: #f0f0f0;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+  border: 1px solid #ccc;
+  transition: all 0.3s ease;
+}
+
+.uploadLabel:hover {
+  background: #e0e0e0;
+  border-color: var(--misty-teal-three-color);
+}
+
+.imagePreviewGrid {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 10px;
+}
+
+.imagePreview {
+  width: 100px;
+  height: 70px;
+  object-fit: cover;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.08);
+}
+
+/* ✅ Unified Action Buttons */
+.button,
+.toggleButton,
+.uploadLabel {
+  background: var(--gradient-background);
+  color: #fff;
+  padding: 12px 22px;
+  font-size: 14px;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  min-width: 140px;
+  text-align: center;
+  display: inline-block;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
+}
+
+.button:hover,
+.toggleButton:hover,
+.uploadLabel:hover {
+  background: var(--slate-gray-secondary-two-color); /* 🔁 updated here */
+  color: #fff;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 14px rgba(0, 0, 0, 0.25);
+}
+
+.button:active,
+.toggleButton:active,
+.uploadLabel:active {
+  transform: scale(0.97);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+.button:disabled,
+.toggleButton:disabled,
+.uploadLabel:disabled {
+  background: var(--light-gray-four-color);
+  color: #999;
+  cursor: not-allowed;
+  box-shadow: none;
+  transform: none;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.selectWrapper {
+  position: relative;
+  width: 100%;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.selectWrapper:hover {
+  background: var(--gradient-background);
+}
+
+.select {
+  padding: 12px 14px;
+  font-size: 14px;
+  border: 1px solid var(--light-gray-four-color);
+  border-radius: 8px;
+  width: 100%;
+  box-sizing: border-box;
+  cursor: pointer;
+  background-color: transparent;
+  color: inherit;
+  appearance: auto;
+}
+
+.toggleButton {
+  padding: 8px 14px;
+  border: none;
+  border-radius: 6px;
+  background-color: var(--gradient-background);
+  color: white;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.imageUploadInner {
+  margin-top: 10px;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+}
+
+.uploadLabel {
+  display: inline-block;
+  margin-top: 5px;
+  padding: 6px 12px;
+  background-color: #f0f4f5;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.imagePreviewGrid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.imagePreview {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+.fileInput {
+  display: none;
+}
