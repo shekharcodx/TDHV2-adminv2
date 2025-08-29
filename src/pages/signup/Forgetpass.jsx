@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { useForgetPasswordMutation } from "../../../app/api/authApi";
 import { toaster } from "@/components/ui/toaster";
-import styles from "./Forget.module.css";
+import styles from "./forget.module.css";
 
 const ForgetPassword = () => {
   const [email, setEmail] = useState("");
@@ -41,7 +41,7 @@ const ForgetPassword = () => {
       },
       {
         position: "top-right", // ensures toaster stays in corner
-        duration: 5000,        // auto-close after 5s
+        duration: 5000, // auto-close after 5s
       }
     );
   };
