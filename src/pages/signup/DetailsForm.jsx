@@ -53,11 +53,11 @@ export default function DetailsForm() {
       formData.append("role", registration.role || "2");
       formData.append("businessName", registration.businessName);
 
-      formData.append("address.street", registration.address.street);
       formData.append("address.city", registration.address.city); // ID
+      formData.append("address.street", registration.address.street);
       formData.append("address.state", registration.address.state); // ID
       formData.append("address.country", registration.address.country); // ID
-      formData.append("address.mapUrl", registration.address.mapUrl);
+      formData.append("mapUrl", registration.address.mapUrl);
 
       formData.append("contact.mobileNum", registration.contact.mobileNum);
       formData.append("contact.whatsappNum", registration.contact.whatsappNum);

@@ -126,9 +126,14 @@ const Login = () => {
             </button>
 
             {/* Only Forget Password link */}
-            <Link to="/forget-password" className={styles.forgetLink}>
+            <Link to="/forget-passgit" className={styles.forgetLink}>
               Forgot Password?
             </Link>
+            {/* Register Link */}
+<Link to="/register" className={styles.forgetLink} style={{ marginTop: "8px" }}>
+  Create Account
+</Link>
+
           </form>
         </div>
       </div>

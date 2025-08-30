@@ -172,18 +172,14 @@
 /* Flex Row for Groups */
 .flexRow {
   grid-column: span 2;
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* force two equal columns */
   gap: 1.5rem;
-  flex-wrap: wrap;
-  margin-bottom: 1rem;
+}
+.halfInput {
+  min-width: unset; /* remove forced 250px */
 }
 
-/* Half Width */
-.halfInput {
-  flex: 1 1 48%;
-  min-width: 250px;
-  box-sizing: border-box;
-}
 
 /* Responsive */
 @media (max-width: 768px) {
