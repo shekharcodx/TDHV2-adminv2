@@ -52,7 +52,7 @@ const CarListing = () => {
   const [insurance, setInsurance] = useState("");
   const [warranty, setWarranty] = useState("");
   const [images, setImages] = useState([]);
-const [showImages, setShowImages] = useState(false);
+  const [showImages, setShowImages] = useState(false);
 
   // Handlers
   const handleBrandChange = async (e) => {
@@ -99,6 +99,8 @@ const [showImages, setShowImages] = useState(false);
     }));
     setImages((prev) => [...prev, ...newImages]);
   };
+
+  console.log("CarListing:", { models, trims, years });
 
   return (
     <div className={styles.page}>
@@ -164,8 +166,8 @@ const [showImages, setShowImages] = useState(false);
               >
                 <option value="">Select Year</option>
                 {years?.years?.map((year, idx) => (
-                  <option key={idx} value={year}>
-                    {year}
+                  <option key={idx} value={year.year}>
+                    {year.year}
                   </option>
                 ))}
               </select>
@@ -310,47 +312,50 @@ const [showImages, setShowImages] = useState(false);
 
           {/* Image Upload */}
           {/* Image Upload */}
-<div className={styles.imageUploadSection}>
-  <div className={styles.sectionHeader}>Add Images</div>
+          <div className={styles.imageUploadSection}>
+            <div className={styles.sectionHeader}>Add Images</div>
 
-  <input
-    id="file-upload"
-    type="file"
-    className={styles.fileInput}
-    onChange={handleImageChange}
-    multiple
-    hidden
-  />
+            <input
+              id="file-upload"
+              type="file"
+              className={styles.fileInput}
+              onChange={handleImageChange}
+              multiple
+              hidden
+            />
 
-  <label htmlFor="file-upload" className={`${styles.uploadLabel} ${styles.button}`}>
-    Choose Files
-  </label>
+            <label
+              htmlFor="file-upload"
+              className={`${styles.uploadLabel} ${styles.button}`}
+            >
+              Choose Files
+            </label>
 
-  {images.length > 0 && (
-    <div style={{ marginTop: '10px', marginBottom: '10px' }}>
-      <button
-        type="button"
-        onClick={() => setShowImages(!showImages)}
-        className={`${styles.toggleButton} ${styles.button}`}
-      >
-        {showImages ? "Hide Images" : "Show Images"}
-      </button>
-    </div>
-  )}
+            {images.length > 0 && (
+              <div style={{ marginTop: "10px", marginBottom: "10px" }}>
+                <button
+                  type="button"
+                  onClick={() => setShowImages(!showImages)}
+                  className={`${styles.toggleButton} ${styles.button}`}
+                >
+                  {showImages ? "Hide Images" : "Show Images"}
+                </button>
+              </div>
+            )}
 
-  {showImages && (
-    <div className={styles.imagePreviewGrid}>
-      {images.map((img, idx) => (
-        <img
-          key={idx}
-          src={img.url}
-          alt={img.name}
-          className={styles.imagePreview}
-        />
-      ))}
-    </div>
-  )}
-</div>
+            {showImages && (
+              <div className={styles.imagePreviewGrid}>
+                {images.map((img, idx) => (
+                  <img
+                    key={idx}
+                    src={img.url}
+                    alt={img.name}
+                    className={styles.imagePreview}
+                  />
+                ))}
+              </div>
+            )}
+          </div>
 
           {/* Title & Description */}
           <div className={styles.formGroup}>
