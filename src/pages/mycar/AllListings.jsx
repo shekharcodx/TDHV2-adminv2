@@ -1,117 +1,79 @@
 import styles from "./DashboardPage.module.css";
-import car1 from "../../assets/car1.jpeg";
-import car2 from "../../assets/car2.jpeg";
-import car3 from "../../assets/car3.jpeg";
 import { useNavigate } from "react-router-dom";
 import { Flex } from "@chakra-ui/react";
-
-const cars = [
-  {
-    id: 1,
-    name: "Toyota Camry",
-    category: "Sedan",
-    image: car1,
-    kmDay: "AED 100 / Day",
-    kmDayLimit: "22 KM / Day",
-    kmWeek: "AED 600 / Week",
-    kmWeekLimit: "150 KM / Week",
-    kmMonth: "AED 1800 / Month",
-    kmMonthLimit: "600 KM / Month",
-    status: "pending",
-  },
-  {
-    id: 2,
-    name: "Nissan Patrol",
-    category: "SUV",
-    image: car2,
-    kmDay: "AED 150 / Day",
-    kmDayLimit: "30 KM / Day",
-    kmWeek: "AED 900 / Week",
-    kmWeekLimit: "200 KM / Week",
-    kmMonth: "AED 2500 / Month",
-    kmMonthLimit: "800 KM / Month",
-    status: "approved",
-  },
-  {
-    id: 3,
-    name: "BMW X5",
-    category: "Luxury",
-    image: car3,
-    kmDay: "AED 300 / Day",
-    kmDayLimit: "50 KM / Day",
-    kmWeek: "AED 1800 / Week",
-    kmWeekLimit: "300 KM / Week",
-    kmMonth: "AED 5000 / Month",
-    kmMonthLimit: "1000 KM / Month",
-    status: "hold",
-  },
-];
+import { useGetVendorListingsQuery } from "../../../app/api/carListingApi"; // <-- adjust path
 
 function AllListings() {
   const navigate = useNavigate();
+  const { data, isLoading, isError } = useGetVendorListingsQuery();
+
+  if (isLoading) return <p>Loading...</p>;
+  if (isError) return <p>Something went wrong.</p>;
+
+  const listings = data?.listings?.docs || [];
+
   return (
     <div className={styles.wrapper}>
-      <div className={styles.searchBar}>
-        {/* <input type="text" placeholder="Search cars..." /> */}
-        <button
-          className={styles.createBtn}
-          onClick={() => navigate("/create-listing")}
-        >
-          + Create Car
-        </button>
-      </div>
+      
 
       {/* Table */}
       <div className={styles.tableWrapper}>
         <table className={styles.table}>
           <thead>
             <tr>
-              <th>Title</th>
-              <th>Km/Day</th>
-              <th>Km/Day Limit</th>
-              <th>Km/Week</th>
-              <th>Km/Week Limit</th>
-              <th>Km/Month</th>
-              <th>Km/Month Limit</th>
+              <th>Image</th>
+              <th>Brand</th>
+              <th>Model</th>
+              <th>Rent / Day</th>
+              <th>Rent / Week</th>
               <th>Status</th>
               <th>Action</th>
             </tr>
           </thead>
           <tbody>
-            {cars.map((car) => (
-              <tr key={car.id}>
+            {listings.map((listing) => (
+              <tr key={listing._id}>
+                {/* Image */}
                 <td>
-                  <div className={styles.titleCell}>
-                    <img
-                      src={car.image}
-                      alt={car.name}
-                      className={styles.image}
-                    />
-                    <div>
-                      <h4>{car.name}</h4>
-                      <p>{car.category}</p>
-                    </div>
-                  </div>
+                  <img
+                    src={listing?.car?.images?.[0]?.url}
+                    alt={listing?.car?.carBrand?.name}
+                    className={styles.image}
+                  />
                 </td>
-                <td>{car.kmDay}</td>
-                <td>{car.kmDayLimit}</td>
-                <td>{car.kmWeek}</td>
-                <td>{car.kmWeekLimit}</td>
-                <td>{car.kmMonth}</td>
-                <td>{car.kmMonthLimit}</td>
+
+                {/* Brand */}
+                <td>{listing?.car?.carBrand?.name}</td>
+
+                {/* Model */}
+                <td>{listing?.car?.carBrand?.carModel?.name}</td>
+
+                {/* Rent / Day */}
+                <td>{`AED ${listing?.rentPerDay}`}</td>
+
+                {/* Rent / Week */}
+                <td>{`AED ${listing?.rentPerWeek}`}</td>
+
+                {/* Status */}
                 <td>
                   <span
                     className={`${styles.status} ${
-                      car.status === "pending"
-                        ? styles.pending
-                        : car.status === "approved"
+                      listing?.status === 1
                         ? styles.approved
+                        : listing?.status === 0
+                        ? styles.pending
                         : styles.hold
                     }`}
                   >
-                    {car.status}
+                    {listing?.status === 1
+                      ? "Approved"
+                      : listing?.status === 0
+                      ? "Pending"
+                      : "Hold"}
                   </span>
                 </td>
+
+                {/* Action */}
                 <td>
                   <button className={styles.editBtn}>Edit</button>
                 </td>
@@ -123,11 +85,15 @@ function AllListings() {
         {/* Pagination */}
         <div className={styles.pagination}>
           <span>
-            Showing 1–{cars.length} of {cars.length}
+            Showing {listings.length} of {data?.listings?.totalDocs}
           </span>
           <Flex gap="5px">
-            <button className={styles.pageBtn}>Prev</button>
-            <button className={styles.pageBtn}>Next</button>
+            <button className={styles.pageBtn} disabled={!data?.listings?.hasPrevPage}>
+              Prev
+            </button>
+            <button className={styles.pageBtn} disabled={!data?.listings?.hasNextPage}>
+              Next
+            </button>
           </Flex>
         </div>
       </div>

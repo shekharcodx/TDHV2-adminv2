@@ -71,7 +71,12 @@ const carListingApi = baseApi.injectEndpoints({
         body: formData, // send as FormData
       }),
     }),
+     getVendorListings: builder.query({
+      query: () => ({ url: "/vendorListings", method: "GET" }),
+      providesTags: ["VendorListings"],
+    }),
   }),
+
 });
 
 export const {
@@ -90,6 +95,7 @@ export const {
   useGetCarTechFeaturesQuery,
   useGetCarOtherFeaturesQuery,
   useCreateListingMutation,
+  useGetVendorListingsQuery,
 } = carListingApi;
 
 export default carListingApi;
