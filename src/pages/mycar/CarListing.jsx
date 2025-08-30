@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import styles from "./carlist.module.css";
-
+import { toaster } from "@/components/ui/toaster";
 import {
   useGetCarBrandsQuery,
   useLazyGetModelsQuery,
@@ -12,19 +12,20 @@ import {
   useGetCarColorsQuery,
   useGetCarDoorsQuery,
   useGetTransmissionsQuery,
+  useGetBodyTypesQuery,
   useGetFuelTypesQuery,
   useGetCarTechFeaturesQuery,
   useGetCarOtherFeaturesQuery,
+  useCreateListingMutation,
 } from "../../../app/api/carListingApi";
 
 const CarListing = () => {
-  // 🔹 Brand → Model → Trim → Year
+  // 🔹 Queries
   const { data: brands } = useGetCarBrandsQuery();
   const [fetchModels, { data: models }] = useLazyGetModelsQuery();
   const [fetchTrims, { data: trims }] = useLazyGetCarTrimsQuery();
   const [fetchYears, { data: years }] = useLazyGetYearsQuery();
 
-  // 🔹 Static dropdowns
   const { data: regionalSpecs } = useGetCarRegionalSpecsQuery();
   const { data: horsePowers } = useGetCarHorsePowersQuery();
   const { data: seatingCapacities } = useGetCarSeatingCapacitiesQuery();
@@ -32,8 +33,11 @@ const CarListing = () => {
   const { data: doors } = useGetCarDoorsQuery();
   const { data: transmissions } = useGetTransmissionsQuery();
   const { data: fuelTypes } = useGetFuelTypesQuery();
+  const { data: bodyTypes } = useGetBodyTypesQuery();
   const { data: techFeatures } = useGetCarTechFeaturesQuery();
   const { data: otherFeatures } = useGetCarOtherFeaturesQuery();
+
+  const [createListing, { isLoading }] = useCreateListingMutation();
 
   // 🔹 State
   const [selectedBrand, setSelectedBrand] = useState("");
@@ -41,20 +45,34 @@ const CarListing = () => {
   const [selectedTrim, setSelectedTrim] = useState("");
   const [selectedYear, setSelectedYear] = useState("");
 
+  const [selectedRegionalSpecs, setSelectedRegionalSpecs] = useState("");
+  const [selectedHorsePower, setSelectedHorsePower] = useState("");
+  const [selectedSeatingCapacity, setSelectedSeatingCapacity] = useState("");
+  const [selectedDoors, setSelectedDoors] = useState("");
+  const [selectedTransmission, setSelectedTransmission] = useState("");
+  const [selectedFuelType, setSelectedFuelType] = useState("");
+  const [selectedBodyType, setSelectedBodyType] = useState("");
+  const [interiorColor, setInteriorColor] = useState("");
+  const [exteriorColor, setExteriorColor] = useState("");
+
   const [showTechFeatures, setShowTechFeatures] = useState(false);
   const [showOtherFeatures, setShowOtherFeatures] = useState(false);
   const [selectedTechFeatures, setSelectedTechFeatures] = useState([]);
   const [selectedOtherFeatures, setSelectedOtherFeatures] = useState([]);
+
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [rentPerDay, setRentPerDay] = useState("");
+  const [rentPerWeek, setRentPerWeek] = useState("");
   const [rentPerMonth, setRentPerMonth] = useState("");
   const [insurance, setInsurance] = useState("");
   const [warranty, setWarranty] = useState("");
+  const [mileage, setMileage] = useState("");
+  const [location, setLocation] = useState("");
   const [images, setImages] = useState([]);
   const [showImages, setShowImages] = useState(false);
 
-  // Handlers
+  // 🔹 Handlers
   const handleBrandChange = async (e) => {
     const brandId = e.target.value;
     setSelectedBrand(brandId);
@@ -94,227 +112,302 @@ const CarListing = () => {
   const handleImageChange = (e) => {
     const files = Array.from(e.target.files);
     const newImages = files.map((file) => ({
+      file,
       name: file.name,
       url: URL.createObjectURL(file),
     }));
     setImages((prev) => [...prev, ...newImages]);
   };
 
-  console.log("CarListing:", { models, trims, years });
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (!selectedBrand || !selectedModel || !selectedYear) {
+      toaster.error({ title: "Please select brand, model, and year." });
+      return;
+    }
+    if (!location.trim()) {
+      toaster.error({ title: "Location is required." });
+      return;
+    }
+    const mileageValue = Number(mileage);
+    if (isNaN(mileageValue) || mileageValue < 0) {
+      toaster.error({ title: "Mileage must be a non-negative number." });
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("carBrand", selectedBrand);
+    formData.append("carModel", selectedModel);
+    formData.append("carTrim", selectedTrim);
+    formData.append("modelYear", selectedYear); // send ID
+    formData.append("regionalSpecs", selectedRegionalSpecs);
+    formData.append("horsePower", selectedHorsePower);
+    formData.append("seatingCapacity", selectedSeatingCapacity);
+    formData.append("carDoors", selectedDoors);
+    formData.append("transmission", selectedTransmission);
+    formData.append("fuelType", selectedFuelType);
+    formData.append("bodyType", selectedBodyType);
+    formData.append("interiorColor", interiorColor);
+    formData.append("exteriorColor", exteriorColor);
+    formData.append("title", title);
+    formData.append("description", description);
+    formData.append("rentPerDay", rentPerDay);
+    formData.append("rentPerWeek", rentPerWeek);
+    formData.append("rentPerMonth", rentPerMonth);
+    formData.append("carInsurance", insurance);
+    formData.append("warranty", warranty);
+    formData.append("mileage", mileageValue);
+    formData.append("location", location);
+
+    // Append as arrays
+    selectedTechFeatures.forEach((f) => formData.append("techFeatures[]", f));
+    selectedOtherFeatures.forEach((f) => formData.append("otherFeatures[]", f));
+    images.forEach((img) => formData.append("images", img.file));
+
+    toaster.promise(createListing(formData).unwrap(), {
+      loading: { title: "Saving Car...", description: "Please wait..." },
+      success: (res) => ({ title: res?.message || "Car saved successfully!" }),
+      error: (err) => ({ title: err?.data?.message || "Failed to save car." }),
+    });
+  };
 
   return (
     <div className={styles.page}>
       <main className={styles.container}>
         <h2 className={styles.title}>Add Car Details</h2>
-
-        <form className={styles.form}>
+        <form className={styles.form} onSubmit={handleSubmit}>
           {/* Brand → Model → Trim → Year */}
           <div className={styles.grid}>
-            <div className={styles.selectWrapper}>
-              <select
-                value={selectedBrand}
-                onChange={handleBrandChange}
-                className={styles.select}
-              >
-                <option value="">Select Brand</option>
-                {brands?.carBrands?.map((brand) => (
-                  <option key={brand._id} value={brand._id}>
-                    {brand.name}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            <div className={styles.selectWrapper}>
-              <select
-                value={selectedModel}
-                onChange={handleModelChange}
-                className={styles.select}
-                disabled={!selectedBrand}
-              >
-                <option value="">Select Model</option>
-                {models?.carModels?.map((model) => (
-                  <option key={model._id} value={model._id}>
-                    {model.name}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            <div className={styles.selectWrapper}>
-              <select
-                value={selectedTrim}
-                onChange={(e) => setSelectedTrim(e.target.value)}
-                className={styles.select}
-                disabled={!selectedModel}
-              >
-                <option value="">Select Trim</option>
-                {trims?.carTrims?.map((trim) => (
-                  <option key={trim._id} value={trim._id}>
-                    {trim.name}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            <div className={styles.selectWrapper}>
-              <select
-                value={selectedYear}
-                onChange={(e) => setSelectedYear(e.target.value)}
-                className={styles.select}
-                disabled={!selectedModel}
-              >
-                <option value="">Select Year</option>
-                {years?.years?.map((year, idx) => (
-                  <option key={idx} value={year.year}>
-                    {year.year}
-                  </option>
-                ))}
-              </select>
-            </div>
-          </div>
-
-          {/* Specs dropdowns */}
-          <div className={styles.grid}>
-            <div className={styles.selectWrapper}>
-              <select className={styles.select}>
-                <option value="">Select Regional Specs</option>
-                {regionalSpecs?.specs?.map((spec) => (
-                  <option key={spec._id} value={spec._id}>
-                    {spec.name}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            <div className={styles.selectWrapper}>
-              <select className={styles.select}>
-                <option value="">Select Horse Power</option>
-                {horsePowers?.horsePowers?.map((hp) => (
-                  <option key={hp._id} value={hp._id}>
-                    {hp.power}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            <div className={styles.selectWrapper}>
-              <select className={styles.select}>
-                <option value="">Select Seating Capacity</option>
-                {seatingCapacities?.seatingCapacities?.map((sc) => (
-                  <option key={sc._id} value={sc._id}>
-                    {sc.seats}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            <div className={styles.selectWrapper}>
-              <select className={styles.select}>
-                <option value="">Select Color</option>
-                {colors?.colors?.map((c) => (
-                  <option key={c._id} value={c._id}>
-                    {c.name}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            <div className={styles.selectWrapper}>
-              <select className={styles.select}>
-                <option value="">Select Doors</option>
-                {doors?.doors?.map((d) => (
-                  <option key={d._id} value={d._id}>
-                    {d.doors}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            <div className={styles.selectWrapper}>
-              <select className={styles.select}>
-                <option value="">Select Transmission</option>
-                {transmissions?.transmissions?.map((t) => (
-                  <option key={t._id} value={t._id}>
-                    {t.transmission}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            <div className={styles.selectWrapper}>
-              <select className={styles.select}>
-                <option value="">Select Fuel Type</option>
-                {fuelTypes?.fuelTypes?.map((f) => (
-                  <option key={f._id} value={f._id}>
-                    {f.name}
-                  </option>
-                ))}
-              </select>
-            </div>
-          </div>
-
-          {/* Technical Features */}
-          <div className={styles.sectionHeader}>Technical Features</div>
-          <div style={{ marginBottom: "10px" }}>
-            <button
-              type="button"
-              onClick={() => setShowTechFeatures(!showTechFeatures)}
-              className={`${styles.toggleButton} ${styles.button}`}
+            <select
+              value={selectedBrand}
+              onChange={handleBrandChange}
+              className={styles.select}
             >
-              {showTechFeatures ? "Hide Features" : "Add Features"}
-            </button>
+              <option value="">Select Brand</option>
+              {(brands?.carBrands || []).map((brand) => (
+                <option key={brand._id} value={brand._id}>
+                  {brand.name}
+                </option>
+              ))}
+            </select>
+
+            <select
+              value={selectedModel}
+              onChange={handleModelChange}
+              className={styles.select}
+              disabled={!selectedBrand}
+            >
+              <option value="">Select Model</option>
+              {(models?.carModels || []).map((model) => (
+                <option key={model._id} value={model._id}>
+                  {model.name}
+                </option>
+              ))}
+            </select>
+
+            <select
+              value={selectedTrim}
+              onChange={(e) => setSelectedTrim(e.target.value)}
+              className={styles.select}
+              disabled={!selectedModel}
+            >
+              <option value="">Select Trim</option>
+              {(trims?.carTrims || []).map((trim) => (
+                <option key={trim._id} value={trim._id}>
+                  {trim.name}
+                </option>
+              ))}
+            </select>
+
+            <select
+              value={selectedYear}
+              onChange={(e) => setSelectedYear(e.target.value)}
+              className={styles.select}
+              disabled={!selectedModel}
+            >
+              <option value="">Select Year</option>
+              {(years?.years || []).map((year) => (
+                <option key={year._id} value={year._id}>
+                  {year.year}
+                </option>
+              ))}
+            </select>
           </div>
+
+          {/* Specs */}
+          <div className={styles.grid}>
+            <select
+              value={selectedRegionalSpecs}
+              onChange={(e) => setSelectedRegionalSpecs(e.target.value)}
+              className={styles.select}
+            >
+              <option value="">Regional Specs</option>
+              {(regionalSpecs?.specs || []).map((spec) => (
+                <option key={spec._id} value={spec._id}>
+                  {spec.name}
+                </option>
+              ))}
+            </select>
+
+            <select
+              value={selectedHorsePower}
+              onChange={(e) => setSelectedHorsePower(e.target.value)}
+              className={styles.select}
+            >
+              <option value="">Horse Power</option>
+              {(horsePowers?.horsePowers || []).map((hp) => (
+                <option key={hp._id} value={hp._id}>
+                  {hp.power}
+                </option>
+              ))}
+            </select>
+
+            <select
+              value={selectedSeatingCapacity}
+              onChange={(e) => setSelectedSeatingCapacity(e.target.value)}
+              className={styles.select}
+            >
+              <option value="">Seating Capacity</option>
+              {(seatingCapacities?.seatingCapacities || []).map((sc) => (
+                <option key={sc._id} value={sc._id}>
+                  {sc.seats}
+                </option>
+              ))}
+            </select>
+
+            <select
+              value={exteriorColor}
+              onChange={(e) => setExteriorColor(e.target.value)}
+              className={styles.select}
+            >
+              <option value="">Exterior Color</option>
+              {(colors?.colors || []).map((c) => (
+                <option key={c._id} value={c._id}>
+                  {c.name}
+                </option>
+              ))}
+            </select>
+
+            <select
+              value={interiorColor}
+              onChange={(e) => setInteriorColor(e.target.value)}
+              className={styles.select}
+            >
+              <option value="">Interior Color</option>
+              {(colors?.colors || []).map((c) => (
+                <option key={c._id} value={c._id}>
+                  {c.name}
+                </option>
+              ))}
+            </select>
+
+            <select
+              value={selectedDoors}
+              onChange={(e) => setSelectedDoors(e.target.value)}
+              className={styles.select}
+            >
+              <option value="">Doors</option>
+              {(doors?.doors || []).map((d) => (
+                <option key={d._id} value={d._id}>
+                  {d.doors}
+                </option>
+              ))}
+            </select>
+
+            <select
+              value={selectedTransmission}
+              onChange={(e) => setSelectedTransmission(e.target.value)}
+              className={styles.select}
+            >
+              <option value="">Transmission</option>
+              {(transmissions?.transmissions || []).map((t) => (
+                <option key={t._id} value={t._id}>
+                  {t.transmission}
+                </option>
+              ))}
+            </select>
+
+            <select
+              value={selectedFuelType}
+              onChange={(e) => setSelectedFuelType(e.target.value)}
+              className={styles.select}
+            >
+              <option value="">Fuel Type</option>
+              {(fuelTypes?.fuelTypes || []).map((f) => (
+                <option key={f._id} value={f._id}>
+                  {f.name}
+                </option>
+              ))}
+            </select>
+
+            <select
+              value={selectedBodyType}
+              onChange={(e) => setSelectedBodyType(e.target.value)}
+              className={styles.select}
+            >
+              <option value="">Body Type</option>
+              {(bodyTypes?.bodyTypes || []).map((b) => (
+                <option key={b._id} value={b._id}>
+                  {b.name}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          {/* Technical & Other Features */}
+          <div className={styles.sectionHeader}>Technical Features</div>
+          <button
+            type="button"
+            onClick={() => setShowTechFeatures(!showTechFeatures)}
+            className={`${styles.toggleButton} ${styles.button}`}
+          >
+            {showTechFeatures ? "Hide Features" : "Add Features"}
+          </button>
           {showTechFeatures && (
             <div className={styles.featuresGrid}>
-              {techFeatures?.features?.map((f) => (
-                <div key={f._id} className={styles.featureBox}>
-                  <label>
-                    <input
-                      type="checkbox"
-                      checked={selectedTechFeatures.includes(f._id)}
-                      onChange={() => handleTechFeatureChange(f._id)}
-                    />
-                    <span>{f.name}</span>
-                  </label>
-                </div>
+              {(techFeatures?.features || []).map((f) => (
+                <label key={f._id} className={styles.featureBox}>
+                  <input
+                    type="checkbox"
+                    checked={selectedTechFeatures.includes(f._id)}
+                    onChange={() => handleTechFeatureChange(f._id)}
+                  />
+                  <span>{f.name}</span>
+                </label>
               ))}
             </div>
           )}
 
-          {/* Other Features */}
           <div className={styles.sectionHeader}>Other Features</div>
-          <div style={{ marginBottom: "10px" }}>
-            <button
-              type="button"
-              onClick={() => setShowOtherFeatures(!showOtherFeatures)}
-              className={`${styles.toggleButton} ${styles.button}`}
-            >
-              {showOtherFeatures ? "Hide Features" : "Add Features"}
-            </button>
-          </div>
+          <button
+            type="button"
+            onClick={() => setShowOtherFeatures(!showOtherFeatures)}
+            className={`${styles.toggleButton} ${styles.button}`}
+          >
+            {showOtherFeatures ? "Hide Features" : "Add Features"}
+          </button>
           {showOtherFeatures && (
             <div className={styles.featuresGrid}>
-              {otherFeatures?.features?.map((f) => (
-                <div key={f._id} className={styles.featureBox}>
-                  <label>
-                    <input
-                      type="checkbox"
-                      checked={selectedOtherFeatures.includes(f._id)}
-                      onChange={() => handleOtherFeatureChange(f._id)}
-                    />
-                    <span>{f.name}</span>
-                  </label>
-                </div>
+              {(otherFeatures?.features || []).map((f) => (
+                <label key={f._id} className={styles.featureBox}>
+                  <input
+                    type="checkbox"
+                    checked={selectedOtherFeatures.includes(f._id)}
+                    onChange={() => handleOtherFeatureChange(f._id)}
+                  />
+                  <span>{f.name}</span>
+                </label>
               ))}
             </div>
           )}
 
-          {/* Image Upload */}
-          {/* Image Upload */}
+          {/* Images */}
+          {/* Images */}
           <div className={styles.imageUploadSection}>
             <div className={styles.sectionHeader}>Add Images</div>
 
+            {/* Hidden File Input */}
             <input
               id="file-upload"
               type="file"
@@ -324,26 +417,26 @@ const CarListing = () => {
               hidden
             />
 
-            <label
-              htmlFor="file-upload"
-              className={`${styles.uploadLabel} ${styles.button}`}
-            >
+            {/* Gradient Choose File Button */}
+            <label htmlFor="file-upload" className={styles.uploadLabel}>
               Choose Files
             </label>
 
+            {/* Show/Hide Images button placed BELOW choose file */}
             {images.length > 0 && (
-              <div style={{ marginTop: "10px", marginBottom: "10px" }}>
+              <div className={styles.imageToggleWrapper}>
                 <button
                   type="button"
                   onClick={() => setShowImages(!showImages)}
-                  className={`${styles.toggleButton} ${styles.button}`}
+                  className={styles.toggleButton}
                 >
                   {showImages ? "Hide Images" : "Show Images"}
                 </button>
               </div>
             )}
 
-            {showImages && (
+            {/* Image Previews */}
+            {showImages && images.length > 0 && (
               <div className={styles.imagePreviewGrid}>
                 {images.map((img, idx) => (
                   <img
@@ -384,6 +477,12 @@ const CarListing = () => {
             />
             <input
               className={styles.input}
+              placeholder="Rent per Week"
+              value={rentPerWeek}
+              onChange={(e) => setRentPerWeek(e.target.value)}
+            />
+            <input
+              className={styles.input}
               placeholder="Rent per Month"
               value={rentPerMonth}
               onChange={(e) => setRentPerMonth(e.target.value)}
@@ -392,34 +491,51 @@ const CarListing = () => {
 
           {/* Insurance & Warranty */}
           <div className={styles.grid}>
-            <div className={styles.selectWrapper}>
-              <select
-                className={styles.select}
-                value={insurance}
-                onChange={(e) => setInsurance(e.target.value)}
-              >
-                <option value="">Car Insurance</option>
-                <option value="yes">Yes</option>
-                <option value="no">No</option>
-              </select>
-            </div>
-
-            <div className={styles.selectWrapper}>
-              <select
-                className={styles.select}
-                value={warranty}
-                onChange={(e) => setWarranty(e.target.value)}
-              >
-                <option value="">Warranty</option>
-                <option value="yes">Yes</option>
-                <option value="no">No</option>
-              </select>
-            </div>
+            <select
+              className={styles.select}
+              value={insurance}
+              onChange={(e) => setInsurance(e.target.value)}
+            >
+              <option value="">Car Insurance</option>
+              <option value="yes">Yes</option>
+              <option value="no">No</option>
+            </select>
+            <select
+              className={styles.select}
+              value={warranty}
+              onChange={(e) => setWarranty(e.target.value)}
+            >
+              <option value="">Warranty</option>
+              <option value="yes">Yes</option>
+              <option value="no">No</option>
+            </select>
           </div>
 
+          {/* Mileage & Location */}
+          <div className={styles.grid}>
+            <input
+              className={styles.input}
+              placeholder="Mileage"
+              type="number"
+              value={mileage}
+              onChange={(e) => setMileage(e.target.value)}
+            />
+            <input
+              className={styles.input}
+              placeholder="Location"
+              value={location}
+              onChange={(e) => setLocation(e.target.value)}
+            />
+          </div>
+
+          {/* Submit */}
           <div style={{ textAlign: "right", marginTop: "20px" }}>
-            <button className={styles.button} type="submit">
-              Save Car
+            <button
+              className={styles.button}
+              type="submit"
+              disabled={isLoading}
+            >
+              {isLoading ? "Saving..." : "Save Car"}
             </button>
           </div>
         </form>

@@ -12,34 +12,22 @@
   );
 }
 
+/* ---------------- Page ---------------- */
 .page {
   font-family: "Segoe UI", sans-serif;
   margin-left: 220px;
-  box-sizing: border-box;
   width: calc(100% - 220px);
   color: #333;
+  box-sizing: border-box;
 }
-
 @media (max-width: 990px) {
   .page {
-    padding: 0px;
-    margin-left: 0px;
+    margin-left: 0;
     width: 100%;
   }
 }
 
-.container {
-  width: 100%;
-  margin: 0 auto;
-}
-
-.title {
-  font-size: 24px;
-  font-weight: 600;
-  color: var(--charcoal-blue-grey-one-color);
-  margin-bottom: 24px;
-}
-
+/* ---------------- Form ---------------- */
 .form {
   background: #fff;
   border-radius: 14px;
@@ -47,7 +35,6 @@
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
   transition: box-shadow 0.3s ease-in-out;
 }
-
 .form:hover {
   box-shadow: 0 8px 22px rgba(0, 0, 0, 0.18);
 }
@@ -66,13 +53,12 @@
   font-size: 14px;
   border-radius: 8px;
   border: 1px solid var(--light-gray-four-color);
-  transition: all 0.3s ease;
   background-color: #fff;
-  width: 100%;
   box-sizing: border-box;
   box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+  transition: all 0.3s ease;
+  width: 100%;
 }
-
 .input:focus,
 .select:focus,
 .textarea:focus {
@@ -81,146 +67,82 @@
   outline: none;
 }
 
-.textarea {
-  resize: vertical;
-  min-height: 80px;
+/* ---------------- Labels ---------------- */
+.label {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+  transition: all 0.3s ease;
+  cursor: pointer;
 }
 
-.gapTop {
-  margin-top: 20px;
+/* Gradient on hover */
+.label:hover {
+  background: var(--gradient-background);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
-.techFeaturesGrid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-  gap: 12px;
-  padding: 12px;
-  border: 1px solid #ccc;
+/* Gradient when input/select/textarea is focused */
+.input:focus + .label,
+.select:focus + .label,
+.textarea:focus + .label {
+  background: var(--gradient-background);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ---------------- Dropdown Fix ---------------- */
+.selectWrapper {
+  position: relative;
+  width: 100%;
   border-radius: 8px;
-  background-color: #fafafa;
-  margin-bottom: 20px;
-  max-height: 180px;
-  overflow-y: auto;
+  overflow: hidden;
 }
-
-.featureBox {
-  border: 1px solid #ddd;
-  padding: 8px 12px;
+.select {
+  padding: 12px 14px;
+  font-size: 14px;
+  border: 1px solid var(--light-gray-four-color);
   border-radius: 8px;
   background: #fff;
-  display: flex;
-  align-items: center;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.06);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.featureBox:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(0,0,0,0.12);
-}
-
-.checkBox {
-  width: 18px;
-  height: 18px;
-  accent-color: var(--misty-teal-three-color);
+  color: #333;
   cursor: pointer;
-}
-
-.featuresGrid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 12px;
-  margin-bottom: 20px;
-}
-
-.imageUploadSection {
-  margin: 20px 0;
-}
-
-.addImagesLabel {
-  display: inline-block;
-  padding: 10px 16px;
-  background: var(--gradient-background);
-  color: white;
-  border-radius: 8px;
-  font-weight: 600;
-  margin-bottom: 10px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 3px 8px rgba(0,0,0,0.15);
-}
-
-.addImagesLabel:hover {
-  background: var(--slate-gray-secondary-two-color);
-}
-
-.uploadLabel {
-  display: inline-block;
-  padding: 10px 18px;
-  background: #f0f0f0;
-  border-radius: 8px;
-  cursor: pointer;
-  font-weight: 500;
-  border: 1px solid #ccc;
+  width: 100%;
   transition: all 0.3s ease;
 }
-
-.uploadLabel:hover {
-  background: #e0e0e0;
+.select:hover {
   border-color: var(--misty-teal-three-color);
+  box-shadow: 0 0 6px rgba(137, 180, 188, 0.5);
 }
 
-.imagePreviewGrid {
-  display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
-  margin-top: 10px;
-}
-
-.imagePreview {
-  width: 100px;
-  height: 70px;
-  object-fit: cover;
-  border-radius: 6px;
-  border: 1px solid #ccc;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.08);
-}
-
-/* ✅ Unified Action Buttons */
+/* ---------------- Buttons (Unified) ---------------- */
 .button,
 .toggleButton,
 .uploadLabel {
   background: var(--gradient-background);
   color: #fff;
-  padding: 12px 22px;
+  padding: 10px 18px;
   font-size: 14px;
   font-weight: 600;
   border: none;
   border-radius: 8px;
   cursor: pointer;
   transition: all 0.3s ease;
-  min-width: 140px;
   text-align: center;
   display: inline-block;
   box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
 }
-
 .button:hover,
 .toggleButton:hover,
 .uploadLabel:hover {
-  background: var(--slate-gray-secondary-two-color); /* 🔁 updated here */
-  color: #fff;
+  background: var(--slate-gray-secondary-two-color);
   transform: translateY(-2px);
-  box-shadow: 0 5px 14px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 5px 14px rgba(0,0,0,0.25);
 }
-
-.button:active,
-.toggleButton:active,
-.uploadLabel:active {
-  transform: scale(0.97);
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
-}
-
 .button:disabled,
 .toggleButton:disabled,
 .uploadLabel:disabled {
@@ -231,85 +153,67 @@
   transform: none;
 }
 
-/* Responsive */
-@media (max-width: 768px) {
-  .grid {
-    grid-template-columns: 1fr;
-  }
+/* ---------------- Image Upload ---------------- */
+.imageUploadSection {
+  margin: 20px 0;
 }
-
-.formGroup {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.selectWrapper {
-  position: relative;
-  width: 100%;
-  border-radius: 8px;
-  overflow: hidden;
-}
-
-.selectWrapper:hover {
-  background: var(--gradient-background);
-}
-
-.select {
-  padding: 12px 14px;
-  font-size: 14px;
-  border: 1px solid var(--light-gray-four-color);
-  border-radius: 8px;
-  width: 100%;
-  box-sizing: border-box;
-  cursor: pointer;
-  background-color: transparent;
-  color: inherit;
-  appearance: auto;
-}
-
-.toggleButton {
-  padding: 8px 14px;
-  border: none;
-  border-radius: 6px;
-  background-color: var(--gradient-background);
-  color: white;
-  cursor: pointer;
-  font-weight: 500;
-}
-
 .imageUploadInner {
   margin-top: 10px;
   padding: 10px;
   border: 1px solid #ddd;
   border-radius: 8px;
 }
-
-.uploadLabel {
-  display: inline-block;
-  margin-top: 5px;
-  padding: 6px 12px;
-  background-color: #f0f4f5;
-  border-radius: 6px;
-  cursor: pointer;
-  font-weight: 500;
+.fileInput {
+  display: none;
 }
-
 .imagePreviewGrid {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
   margin-top: 10px;
 }
-
 .imagePreview {
-  width: 80px;
-  height: 80px;
+  width: 100px;
+  height: 70px;
   object-fit: cover;
   border-radius: 6px;
   border: 1px solid #ccc;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.08);
 }
 
-.fileInput {
-  display: none;
+/* ---------------- Feature Checkboxes ---------------- */
+.featuresGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.featureBox {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  cursor: pointer;
+  background: #fafafa;
+  transition: background 0.3s ease, border 0.3s ease;
+}
+
+.featureBox:hover {
+  border-color: var(--misty-teal-three-color);
+  background: #fff;
+}
+
+.featureBox input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+  accent-color: var(--misty-teal-three-color); /* themed check */
+}
+
+.featureBox span {
+  font-size: 14px;
+  color: #333;
 }
