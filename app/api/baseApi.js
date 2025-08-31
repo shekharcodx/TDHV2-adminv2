@@ -34,5 +34,6 @@ export const baseApi = createApi({
     "FuelTypes",
     "TechFeatures",
     "OtherFeatures",
+    "profile",
   ],
 });

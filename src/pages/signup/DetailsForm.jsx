@@ -8,7 +8,6 @@ import { resetRegistration } from "../../../app/slices/registrationSlice";
 import { useRegisterMutation } from "../../../app/api/authApi";
 import { toaster } from "@/components/ui/toaster";
 import styles from "./signup.module.css";
-import { de } from "zod/v4/locales";
 
 // ✅ Zod schema for step 2
 const schema = z.object({
@@ -25,8 +24,10 @@ const schema = z.object({
     .any()
     .refine((file) => file?.length > 0, "VAT Certificate is required"),
   noc: z.any().refine((file) => file?.length > 0, "NOC is required"),
-  emiratesId: z.any().optional(),
-  poa: z.any().optional(),
+  emiratesId: z
+    .any()
+    .refine((file) => file?.length > 0, "Emirates ID is required"),
+  poa: z.any().refine((file) => file?.length > 0, "POA is required"),
   termsAccepted: z.literal(true, {
     errorMap: () => ({ message: "You must accept the terms" }),
   }),

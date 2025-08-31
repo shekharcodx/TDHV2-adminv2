@@ -1,31 +1,104 @@
 import React from "react";
 import styles from "./DocumentCard.module.css";
-import { FaFilePdf, FaFileImage, FaFileVideo, FaDownload } from "react-icons/fa";
+import { FaFilePdf, FaFileImage, FaFileVideo } from "react-icons/fa";
+import { Download } from "lucide-react";
+import { useLazyGetDocumentQuery } from "../../../app/api/profile";
+import { toaster } from "@/components/ui/toaster";
+import { Tooltip } from "@/components/ui/tooltip";
+import { Box } from "@chakra-ui/react";
 
 const DocumentCard = ({ doc }) => {
   // choose icon based on file extension
+  const [downloadDoc] = useLazyGetDocumentQuery();
   const getIcon = (filename) => {
     if (!filename) return <FaFilePdf className={styles.icon} />;
     const ext = filename.split(".").pop().toLowerCase();
     if (ext === "pdf") return <FaFilePdf className={styles.icon} />;
-    if (["jpg", "jpeg", "png"].includes(ext)) return <FaFileImage className={styles.icon} />;
-    if (["mp4", "avi", "mov"].includes(ext)) return <FaFileVideo className={styles.icon} />;
+    if (["jpg", "jpeg", "png"].includes(ext))
+      return <FaFileImage className={styles.icon} />;
+    if (["mp4", "avi", "mov"].includes(ext))
+      return <FaFileVideo className={styles.icon} />;
     return <FaFilePdf className={styles.icon} />;
   };
 
+  const handleDocDownloadClick = () => {
+    toaster.promise(downloadDoc(doc.key).unwrap(), {
+      loading: {
+        title: "Preparing to download!",
+        description: "Please wait...",
+      },
+      success: (blob) => {
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = doc.filename; // or dynamic filename
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+        URL.revokeObjectURL(url);
+        return {
+          title: "Downloaded Successfully",
+          description: "Please save the file",
+        };
+      },
+      error: (err) => {
+        return {
+          title: "Error downloading the document",
+          description: "Please try again",
+        };
+      },
+    });
+  };
+
+  const getLabel = (key) => {
+    switch (key) {
+      case "ijariCertificate":
+        return "Ijari Certificate";
+        break;
+      case "tradeLicense":
+        return "Trade License";
+        break;
+      case "vatCertificate":
+        return "VAT Certificate";
+        break;
+      case "noc":
+        return "NOC";
+        break;
+      case "emiratesId":
+        return "Emirates ID";
+        break;
+      case "otherDocument":
+        return "Other Document";
+        break;
+      default:
+        return key;
+    }
+  };
+
   return (
-    <div className={styles.card}>
-      <div className={styles.left}>
-        <div className={styles.iconWrapper}>{getIcon(doc.filename)}</div>
-        <div>
-          <p className={styles.filename}>{doc.filename}</p>
-          <p className={styles.size}>200 KB </p>
+    <Box marginBottom={{ base: "20px" }} className={styles.infoItem}>
+      <strong>{getLabel(doc.key)}</strong>
+      <div className={styles.card}>
+        <div className={styles.left}>
+          <div className={styles.iconWrapper}>
+            {getIcon(doc.value.filename)}
+          </div>
+          <div>
+            <Tooltip content={doc.value.filename} placement="top">
+              <p className={styles.filename}>
+                {doc.value.filename.substring(0, 20)}
+              </p>
+            </Tooltip>
+          </div>
+        </div>
+        <div
+          className={`${styles.downloadBtn} cursor-pointer`}
+          onClick={handleDocDownloadClick}
+        >
+          <Download color="#134f4f" size="20px" />
         </div>
       </div>
-      <a href={doc.key} download className={styles.downloadBtn}>
-        <FaDownload />
-      </a>
-    </div>
+    </Box>
   );
 };
 

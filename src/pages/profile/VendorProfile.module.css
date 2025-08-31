@@ -4,7 +4,7 @@
   box-sizing: border-box;
   display: flex;
   justify-content: center;
-  
+
   font-family: "Poppins", sans-serif;
 }
 
@@ -14,7 +14,7 @@
   padding: 32px;
   border-radius: 16px;
   width: 100%;
-  
+
   transition: all 0.3s ease;
 }
 
@@ -26,7 +26,7 @@
 
 /* Edit Mode Style */
 .editMode {
-  border: 2px solid #89B4BC;
+  border: 2px solid #89b4bc;
   box-shadow: 0 0 15px rgba(137, 180, 188, 0.6);
   background: #f9fdfd;
 }
@@ -44,21 +44,25 @@
   height: 100px;
   border-radius: 50%;
   object-fit: cover;
-  border: 3px solid #89B4BC;
   box-shadow: 0 4px 10px rgba(39, 52, 58, 0.2);
+  border: 3px solid #89b4bc;
+}
+
+.avatarPhoto {
+  object-fit: cover;
 }
 
 .headerText h2 {
   margin: 0;
   font-size: 26px;
-  color: #27343A;
+  color: #27343a;
   font-weight: 600;
 }
 
 .headerText p {
   margin: 4px 0 0;
   font-size: 15px;
-  color: #5B787C;
+  color: #5b787c;
 }
 
 /* Sections */
@@ -68,7 +72,7 @@
 
 .section h3 {
   font-size: 18px;
-  color: #27343A;
+  color: #27343a;
   margin-bottom: 14px;
   border-bottom: 2px solid #efeeea;
   padding-bottom: 6px;
@@ -77,7 +81,7 @@
 
 /* Info Rows */
 .infoRow {
-  display: flex;
+  padding: 10px 30px;
   flex-wrap: wrap;
   gap: 20px;
 }
@@ -85,14 +89,14 @@
 .infoItem {
   flex: 1 1 45%;
   font-size: 14px;
-  color: #5B787C;
+  color: #5b787c;
 }
 
 .infoItem strong {
   display: block;
   font-weight: 600;
   margin-bottom: 4px;
-  color: #27343A;
+  color: #27343a;
 }
 
 /* Input Field */
@@ -109,7 +113,7 @@
 
 /* Input Field in Edit Mode */
 .editMode .inputField {
-  border: 1px solid #89B4BC;
+  border: 1px solid #89b4bc;
   background: #f0fcfd;
   box-shadow: 0 0 6px rgba(137, 180, 188, 0.3);
 }
@@ -127,43 +131,41 @@
   transition: background-color 0.2s ease, transform 0.2s ease;
 }
 .documentsList {
-  display: flex;           /* Enables flex layout */
-  flex-wrap: wrap;         /* Allows items to move to the next line if too long */
-  gap: 20px;               /* Space between DocumentCards */
+  display: flex; /* Enables flex layout */
+  flex-wrap: wrap; /* Allows items to move to the next line if too long */
+  gap: 20px; /* Space between DocumentCards */
   margin-top: 10px;
 }
 
 .documentsList > * {
-  flex: 1 1 200px;         /* Grow/shrink, with minimum width 200px */
-  max-width: 250px;        /* Optional: limit the card width */
+  flex: 1 1 200px; /* Grow/shrink, with minimum width 200px */
+  max-width: 250px; /* Optional: limit the card width */
 }
 
 /* Edit Button (View Mode) */
-            /* neutral */
+/* neutral */
 .editModeBtn {
   background-color: #5cbcbb !important;
-  color: #EFEEEA !important;
+  color: #efeeea !important;
 }
 
-
 .editModeBtn:hover {
-  background-color: #5B787C; /* slate-gray-secondary */
-  color: #EFEEEA;
+  background-color: #5b787c; /* slate-gray-secondary */
+  color: #efeeea;
   transform: scale(1.05);
 }
 
 /* Save Button (Edit Mode) */
 .saveBtn {
-  background-color: #89B4BC; /* misty-teal */
-  color: #27343A;            /* dark text */
+  background-color: #89b4bc; /* misty-teal */
+  color: #fff; /* dark text */
 }
 
 .saveBtn:hover {
-  background-color: #5B787C; /* slate-gray-secondary */
-  color: #EFEEEA;
+  background-color: #5b787c; /* slate-gray-secondary */
+  color: #efeeea;
   transform: scale(1.05);
 }
-
 
 /* Documents Section */
 .docsContainer {
@@ -176,7 +178,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  border: 1px solid #CECCCD;
+  border: 1px solid #cecccd;
   border-radius: 10px;
   padding: 12px 16px;
   background: #fdfdfd;
@@ -192,7 +194,7 @@
 .docIcon {
   font-size: 22px;
   margin-right: 14px;
-  color: #89B4BC;
+  color: #89b4bc;
 }
 
 .docInfo {
@@ -203,27 +205,34 @@
   font-weight: 600;
   margin: 0;
   font-size: 15px;
-  color: #27343A;
+  color: #27343a;
   text-transform: capitalize;
 }
 
 .docMeta {
   font-size: 13px;
-  color: #5B787C;
+  color: #5b787c;
 }
 
 .docDownload {
-  color: #5B787C;
+  color: #5b787c;
   font-size: 14px;
   font-weight: 500;
   text-decoration: none;
-  border: 1px solid #5B787C;
+  border: 1px solid #5b787c;
   border-radius: 6px;
   padding: 6px 10px;
   transition: all 0.2s ease;
 }
 
 .docDownload:hover {
-  background: #5B787C;
+  background: #5b787c;
   color: #fff;
+}
+
+.inputEdit {
+  padding: 3px 8px;
+  width: 100%;
+  border-bottom: 1px solid #9a9a9a;
+  outline: none;
 }
