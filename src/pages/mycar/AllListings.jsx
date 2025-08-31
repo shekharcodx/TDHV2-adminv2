@@ -1,4 +1,4 @@
-import styles from "./DashboardPage.module.css";
+import styles from "./mylist.module.css";
 import { useNavigate } from "react-router-dom";
 import { Flex } from "@chakra-ui/react";
 import { useGetVendorListingsQuery } from "../../../app/api/carListingApi"; // <-- adjust path
