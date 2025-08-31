@@ -76,7 +76,7 @@ const DocumentCard = ({ doc }) => {
   };
 
   return (
-    <Box marginBottom={{ base: "20px" }} className={styles.infoItem}>
+    <Box marginBottom={{ base: "20px", md: 0 }} className={styles.infoItem}>
       <strong>{getLabel(doc.key)}</strong>
       <div className={styles.card}>
         <div className={styles.left}>
