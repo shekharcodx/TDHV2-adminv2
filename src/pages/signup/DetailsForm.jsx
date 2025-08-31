@@ -14,17 +14,17 @@ import { de } from "zod/v4/locales";
 const schema = z.object({
   fleetSize: z
     .string()
-    .refine(val => Number(val) > 0, "Fleet size must be a positive number"),
+    .refine((val) => Number(val) > 0, "Fleet size must be a positive number"),
   ijariCertificate: z
     .any()
-    .refine(file => file?.length > 0, "Ijari Certificate is required"),
+    .refine((file) => file?.length > 0, "Ijari Certificate is required"),
   tradeLicense: z
     .any()
-    .refine(file => file?.length > 0, "Trade License is required"),
+    .refine((file) => file?.length > 0, "Trade License is required"),
   vatCertificate: z
     .any()
-    .refine(file => file?.length > 0, "VAT Certificate is required"),
-  noc: z.any().refine(file => file?.length > 0, "NOC is required"),
+    .refine((file) => file?.length > 0, "VAT Certificate is required"),
+  noc: z.any().refine((file) => file?.length > 0, "NOC is required"),
   emiratesId: z.any().optional(),
   poa: z.any().optional(),
   termsAccepted: z.literal(true, {
@@ -36,10 +36,14 @@ export default function DetailsForm() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const registration = useSelector(state => state.registration);
+  const registration = useSelector((state) => state.registration);
   const [registerVendor, { isLoading }] = useRegisterMutation();
 
-  const { register, handleSubmit, formState: { errors } } = useForm({
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
     resolver: zodResolver(schema),
   });
 
@@ -53,39 +57,45 @@ export default function DetailsForm() {
       formData.append("role", registration.role || "2");
       formData.append("businessName", registration.businessName);
 
-      formData.append("address.city", registration.address.city); // ID
-      formData.append("address.street", registration.address.street);
-      formData.append("address.state", registration.address.state); // ID
-      formData.append("address.country", registration.address.country); // ID
+      formData.append("city", registration.address.city); // ID
+      formData.append("street", registration.address.street);
+      formData.append("state", registration.address.state); // ID
+      formData.append("country", registration.address.country); // ID
       formData.append("mapUrl", registration.address.mapUrl);
 
-      formData.append("contact.mobileNum", registration.contact.mobileNum);
-      formData.append("contact.whatsappNum", registration.contact.whatsappNum);
-      formData.append("contact.landlineNum", registration.contact.landlineNum);
+      formData.append("mobileNum", registration.contact.mobileNum);
+      formData.append("whatsappNum", registration.contact.whatsappNum);
+      formData.append("landlineNum", registration.contact.landlineNum);
 
       // ✅ Step 2 fields
-      formData.append("vendorInformation.fleetSize", data.fleetSize);
+      formData.append("fleetSize", data.fleetSize);
       formData.append("ijariCertificate", data.ijariCertificate[0]);
       formData.append("tradeLicense", data.tradeLicense[0]);
       formData.append("vatCertificate", data.vatCertificate[0]);
       formData.append("noc", data.noc[0]);
 
-      if (data.emiratesId?.[0]) formData.append("emiratesId", data.emiratesId[0]);
+      if (data.emiratesId?.[0])
+        formData.append("emiratesId", data.emiratesId[0]);
       if (data.poa?.[0]) formData.append("poa", data.poa[0]);
 
       // ✅ API call with toaster
-      await toaster.promise(
-        registerVendor(formData).unwrap(),
-        {
-          loading: { title: "Registering...", description: "Please wait" },
-          success: (res) => {
-            dispatch(resetRegistration());
-            navigate("/login");
-            return{ title:res?.message || "Registration successful!", description: " " };
-          },
-          error: (err) => {return {title:err?.data?.message || "Registration failed", description: "Please try again"}}
-        }
-      );
+      await toaster.promise(registerVendor(formData).unwrap(), {
+        loading: { title: "Registering...", description: "Please wait" },
+        success: (res) => {
+          dispatch(resetRegistration());
+          navigate("/login");
+          return {
+            title: res?.message || "Registration successful!",
+            description: " ",
+          };
+        },
+        error: (err) => {
+          return {
+            title: err?.data?.message || "Registration failed",
+            description: "Please try again",
+          };
+        },
+      });
     } catch (err) {
       console.error("Register Error:", err);
     }
@@ -93,101 +103,149 @@ export default function DetailsForm() {
 
   return (
     <div className={styles.pageWrapper}>
-    <div className={styles.container}>
-      <div className={styles.stepsHeader}>
-        <div className={styles.step}>
-          <span>1</span>
-          <p>Basic Info</p>
+      <div className={styles.container}>
+        <div className={styles.stepsHeader}>
+          <div className={styles.step}>
+            <span>1</span>
+            <p>Basic Info</p>
+          </div>
+          <div className={styles.line}></div>
+          <div className={`${styles.step} ${styles.active}`}>
+            <span>2</span>
+            <p>Details</p>
+          </div>
         </div>
-        <div className={styles.line}></div>
-        <div className={`${styles.step} ${styles.active}`}>
-          <span>2</span>
-          <p>Details</p>
-        </div>
+
+        <h2 className={styles.heading}>Details</h2>
+        <p className={styles.signupSubtitle}>
+          Provide your fleet and document details
+        </p>
+
+        <form className={styles.grid} onSubmit={handleSubmit(onSubmit)}>
+          {/* Fleet Size */}
+          <div className={styles.flexRow}>
+            <div className={styles.halfInput}>
+              <label className={styles.label}>Fleet Size *</label>
+              <input
+                type="number"
+                className={styles.input}
+                {...register("fleetSize")}
+                placeholder="e.g. 50"
+              />
+              {errors.fleetSize && (
+                <p className={styles.error}>{errors.fleetSize.message}</p>
+              )}
+            </div>
+          </div>
+
+          {/* File Uploads */}
+          {/* File Uploads in Flex Rows */}
+          <div className={styles.flexRow}>
+            <div className={styles.halfInput}>
+              <label className={styles.label}>Ijari Certificate *</label>
+              <input
+                type="file"
+                className={styles.input}
+                {...register("ijariCertificate")}
+              />
+              {errors.ijariCertificate && (
+                <p className={styles.error}>
+                  {errors.ijariCertificate.message}
+                </p>
+              )}
+            </div>
+
+            <div className={styles.halfInput}>
+              <label className={styles.label}>Trade License *</label>
+              <input
+                type="file"
+                className={styles.input}
+                {...register("tradeLicense")}
+              />
+              {errors.tradeLicense && (
+                <p className={styles.error}>{errors.tradeLicense.message}</p>
+              )}
+            </div>
+          </div>
+
+          <div className={styles.flexRow}>
+            <div className={styles.halfInput}>
+              <label className={styles.label}>VAT Certificate *</label>
+              <input
+                type="file"
+                className={styles.input}
+                {...register("vatCertificate")}
+              />
+              {errors.vatCertificate && (
+                <p className={styles.error}>{errors.vatCertificate.message}</p>
+              )}
+            </div>
+
+            <div className={styles.halfInput}>
+              <label className={styles.label}>NOC *</label>
+              <input
+                type="file"
+                className={styles.input}
+                {...register("noc")}
+              />
+              {errors.noc && (
+                <p className={styles.error}>{errors.noc.message}</p>
+              )}
+            </div>
+          </div>
+
+          <div className={styles.flexRow}>
+            <div className={styles.halfInput}>
+              <label className={styles.label}>Emirates ID</label>
+              <input
+                type="file"
+                className={styles.input}
+                {...register("emiratesId")}
+              />
+              {errors.emiratesId && (
+                <p className={styles.error}>{errors.emiratesId.message}</p>
+              )}
+            </div>
+
+            <div className={styles.halfInput}>
+              <label className={styles.label}>POA</label>
+              <input
+                type="file"
+                className={styles.input}
+                {...register("poa")}
+              />
+              {errors.poa && (
+                <p className={styles.error}>{errors.poa.message}</p>
+              )}
+            </div>
+          </div>
+
+          {/* Terms */}
+          <div className={styles.inputFull}>
+            <label className={styles.label}>
+              <input type="checkbox" {...register("termsAccepted")} /> I agree
+              to the <a href="#">Terms of Service</a>
+            </label>
+            {errors.termsAccepted && (
+              <p className={styles.error}>{errors.termsAccepted.message}</p>
+            )}
+          </div>
+
+          {/* Buttons */}
+          <div
+            className={styles.inputFull}
+            style={{ display: "flex", justifyContent: "space-between" }}
+          >
+            <button
+              type="submit"
+              className={styles.nextButton}
+              disabled={isLoading}
+            >
+              {isLoading ? "Submitting..." : "Sign up as Vendor"}
+            </button>
+          </div>
+        </form>
       </div>
-
-      <h2 className={styles.heading}>Details</h2>
-      <p className={styles.signupSubtitle}>Provide your fleet and document details</p>
-
-      <form className={styles.grid} onSubmit={handleSubmit(onSubmit)}>
-        {/* Fleet Size */}
-      <div className={styles.flexRow}>
-  <div className={styles.halfInput}>
-    <label className={styles.label}>Fleet Size *</label>
-    <input
-      type="number"
-      className={styles.input}
-      {...register("fleetSize")}
-      placeholder="e.g. 50"
-    />
-    {errors.fleetSize && <p className={styles.error}>{errors.fleetSize.message}</p>}
-  </div>
-</div>
-
-
-        {/* File Uploads */}
-       {/* File Uploads in Flex Rows */}
-<div className={styles.flexRow}>
-  <div className={styles.halfInput}>
-    <label className={styles.label}>Ijari Certificate *</label>
-    <input type="file" className={styles.input} {...register("ijariCertificate")} />
-    {errors.ijariCertificate && <p className={styles.error}>{errors.ijariCertificate.message}</p>}
-  </div>
-
-  <div className={styles.halfInput}>
-    <label className={styles.label}>Trade License *</label>
-    <input type="file" className={styles.input} {...register("tradeLicense")} />
-    {errors.tradeLicense && <p className={styles.error}>{errors.tradeLicense.message}</p>}
-  </div>
-</div>
-
-<div className={styles.flexRow}>
-  <div className={styles.halfInput}>
-    <label className={styles.label}>VAT Certificate *</label>
-    <input type="file" className={styles.input} {...register("vatCertificate")} />
-    {errors.vatCertificate && <p className={styles.error}>{errors.vatCertificate.message}</p>}
-  </div>
-
-  <div className={styles.halfInput}>
-    <label className={styles.label}>NOC *</label>
-    <input type="file" className={styles.input} {...register("noc")} />
-    {errors.noc && <p className={styles.error}>{errors.noc.message}</p>}
-  </div>
-</div>
-
-<div className={styles.flexRow}>
-  <div className={styles.halfInput}>
-    <label className={styles.label}>Emirates ID</label>
-    <input type="file" className={styles.input} {...register("emiratesId")} />
-    {errors.emiratesId && <p className={styles.error}>{errors.emiratesId.message}</p>}
-  </div>
-
-  <div className={styles.halfInput}>
-    <label className={styles.label}>POA</label>
-    <input type="file" className={styles.input} {...register("poa")} />
-    {errors.poa && <p className={styles.error}>{errors.poa.message}</p>}
-  </div>
-</div>
-
-
-        {/* Terms */}
-        <div className={styles.inputFull}>
-          <label className={styles.label}>
-            <input type="checkbox" {...register("termsAccepted")} /> I agree to the{" "}
-            <a href="#">Terms of Service</a>
-          </label>
-          {errors.termsAccepted && <p className={styles.error}>{errors.termsAccepted.message}</p>}
-        </div>
-
-        {/* Buttons */}
-        <div className={styles.inputFull} style={{ display: "flex", justifyContent: "space-between" }}>
-         
-          <button type="submit" className={styles.nextButton} disabled={isLoading}>
-            {isLoading ? "Submitting..." : "Sign up as Vendor"}
-          </button>
-        </div>
-      </form>
-    </div>
     </div>
   );
 }
