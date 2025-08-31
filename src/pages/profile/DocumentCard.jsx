@@ -31,7 +31,7 @@ const DocumentCard = ({ doc }) => {
         const url = URL.createObjectURL(blob);
         const link = document.createElement("a");
         link.href = url;
-        link.download = doc.filename; // or dynamic filename
+        link.download = doc?.value?.filename; // or dynamic filename
         document.body.appendChild(link);
         link.click();
         link.remove();
@@ -84,7 +84,7 @@ const DocumentCard = ({ doc }) => {
             {getIcon(doc?.value?.filename)}
           </div>
           <div>
-            <Tooltip content={doc.value.filename} placement="top">
+            <Tooltip content={doc?.value?.filename} placement="top">
               <p className={styles.filename}>
                 {doc?.value?.filename?.substring(0, 20)}
               </p>
