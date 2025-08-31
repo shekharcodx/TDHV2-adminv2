@@ -218,7 +218,7 @@ const VendorProfile = () => {
       error: (err) => {
         return {
           title: err?.data?.message || "Error updating profile",
-          description: "Please try again",
+          description: "",
         };
       },
     });
