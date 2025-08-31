@@ -22,7 +22,7 @@ const DocumentCard = ({ doc }) => {
   };
 
   const handleDocDownloadClick = () => {
-    toaster.promise(downloadDoc(doc.key).unwrap(), {
+    toaster.promise(downloadDoc(doc?.value?.key).unwrap(), {
       loading: {
         title: "Preparing to download!",
         description: "Please wait...",
