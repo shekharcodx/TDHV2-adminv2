@@ -525,7 +525,7 @@ const VendorProfile = () => {
               ) : (
                 <>
                   <div className={styles.infoItem}>
-                    <strong>ijariCertificate</strong>
+                    <strong>Ijari Certificate</strong>
                     <input
                       type="file"
                       {...register("ijariCertificate")}
@@ -534,7 +534,7 @@ const VendorProfile = () => {
                   </div>
 
                   <div className={styles.infoItem}>
-                    <strong>tradeLicense</strong>
+                    <strong>Trade License</strong>
                     <input
                       type="file"
                       {...register("tradeLicense")}
@@ -543,7 +543,7 @@ const VendorProfile = () => {
                   </div>
 
                   <div className={styles.infoItem}>
-                    <strong>vatCertificate</strong>
+                    <strong>Vat Certificate</strong>
                     <input
                       type="file"
                       {...register("vatCertificate")}
@@ -552,7 +552,7 @@ const VendorProfile = () => {
                   </div>
 
                   <div className={styles.infoItem}>
-                    <strong>noc</strong>
+                    <strong>NOC</strong>
                     <input
                       type="file"
                       {...register("noc")}
@@ -561,7 +561,7 @@ const VendorProfile = () => {
                   </div>
 
                   <div className={styles.infoItem}>
-                    <strong>emiratesId</strong>
+                    <strong>Emirates ID</strong>
                     <input
                       type="file"
                       {...register("emiratesId")}
@@ -570,7 +570,7 @@ const VendorProfile = () => {
                   </div>
 
                   <div className={styles.infoItem}>
-                    <strong>poa</strong>
+                    <strong>POA</strong>
                     <input
                       type="file"
                       {...register("poa")}
