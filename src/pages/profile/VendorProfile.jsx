@@ -5,7 +5,7 @@ import { Box, Flex } from "@chakra-ui/react";
 import {
   useGetProfileQuery,
   useUpdateProfileMutation,
-} from "../../../app/api/profile";
+} from "../../../app/api/profileApi";
 import profilePicPlaceholder from "@/assets/images/avatar.svg";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
