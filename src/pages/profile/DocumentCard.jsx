@@ -77,16 +77,16 @@ const DocumentCard = ({ doc }) => {
 
   return (
     <Box marginBottom={{ base: "20px", md: 0 }} className={styles.infoItem}>
-      <strong>{getLabel(doc.key)}</strong>
+      <strong>{getLabel(doc?.key)}</strong>
       <div className={styles.card}>
         <div className={styles.left}>
           <div className={styles.iconWrapper}>
-            {getIcon(doc.value.filename)}
+            {getIcon(doc?.value?.filename)}
           </div>
           <div>
             <Tooltip content={doc.value.filename} placement="top">
               <p className={styles.filename}>
-                {doc.value.filename.substring(0, 20)}
+                {doc?.value?.filename?.substring(0, 20)}
               </p>
             </Tooltip>
           </div>
