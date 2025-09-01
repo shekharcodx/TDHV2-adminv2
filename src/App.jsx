@@ -18,6 +18,7 @@ import Login from "./pages/signup/Login";
 import ForgetPassword from "./pages/signup/Forgetpass";
 import Resetpass from "./pages/signup/Resetpass";
 import ChangePass from "@/pages/signup/ChangePass";
+import EditCar from "./pages/mycar/EditCar";
 // Optional: Keep only if used in future
 
 import Details from "./pages/signup/DetailsForm";
@@ -40,6 +41,7 @@ function App() {
             { path: "user-form", element: <UserForm /> },
             { path: "create-listing", element: <CarListing /> },
             { path: "my-listings", element: <AllListings /> },
+             { path: "/edit", element: <EditCar /> },
             { path: "card", element: <Cards /> },
           ],
         },

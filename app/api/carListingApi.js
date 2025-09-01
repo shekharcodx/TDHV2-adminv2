@@ -1,6 +1,6 @@
 import { baseApi } from "./baseApi";
 
-const carListingApi = baseApi.injectEndpoints({
+const carApi = baseApi.injectEndpoints({
   overrideExisting: true,
   endpoints: (builder) => ({
     // 🔄 Brand → Model → Trim → Year Chain
@@ -63,20 +63,27 @@ const carListingApi = baseApi.injectEndpoints({
       providesTags: ["OtherFeatures"],
     }),
 
-    
-    createListing: builder.mutation({
+    // ✅ Add / Update listing
+    addCarListing: builder.mutation({
       query: (formData) => ({
         url: "/listing",
         method: "POST",
-        body: formData, // send as FormData
+        body: formData,
       }),
     }),
-     getVendorListings: builder.query({
+    updateCarListing: builder.mutation({
+      query: ({ id, body }) => ({
+        url: `/listing/${id}`,
+        method: "PUT",
+        body,
+      }),
+    }),
+
+    getVendorListings: builder.query({
       query: () => ({ url: "/vendorListings", method: "GET" }),
       providesTags: ["VendorListings"],
     }),
   }),
-
 });
 
 export const {
@@ -94,8 +101,9 @@ export const {
   useGetFuelTypesQuery,
   useGetCarTechFeaturesQuery,
   useGetCarOtherFeaturesQuery,
-  useCreateListingMutation,
+  useAddCarListingMutation,
+  useUpdateCarListingMutation,
   useGetVendorListingsQuery,
-} = carListingApi;
+} = carApi;
 
-export default carListingApi;
+export default carApi;

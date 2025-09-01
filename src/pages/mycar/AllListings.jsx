@@ -1,7 +1,8 @@
-import styles from "./mylist.module.css";
+import React from "react";
 import { useNavigate } from "react-router-dom";
 import { Flex } from "@chakra-ui/react";
-import { useGetVendorListingsQuery } from "../../../app/api/carListingApi"; // <-- adjust path
+import { useGetVendorListingsQuery } from "../../../app/api/carListingApi"; // adjust path
+import styles from "./mylist.module.css";
 
 function AllListings() {
   const navigate = useNavigate();
@@ -14,8 +15,6 @@ function AllListings() {
 
   return (
     <div className={styles.wrapper}>
-      
-
       {/* Table */}
       <div className={styles.tableWrapper}>
         <table className={styles.table}>
@@ -46,7 +45,7 @@ function AllListings() {
                 <td>{listing?.car?.carBrand?.name}</td>
 
                 {/* Model */}
-                <td>{listing?.car?.carBrand?.carModel?.name}</td>
+                <td>{listing?.car?.carModel?.name}</td>
 
                 {/* Rent / Day */}
                 <td>{`AED ${listing?.rentPerDay}`}</td>
@@ -75,7 +74,14 @@ function AllListings() {
 
                 {/* Action */}
                 <td>
-                  <button className={styles.editBtn}>Edit</button>
+                  <button
+                    className={styles.editBtn}
+                    onClick={() =>
+                      navigate("/edit", { state: { car: listing } })
+                    }
+                  >
+                    Edit
+                  </button>
                 </td>
               </tr>
             ))}
@@ -88,10 +94,16 @@ function AllListings() {
             Showing {listings.length} of {data?.listings?.totalDocs}
           </span>
           <Flex gap="5px">
-            <button className={styles.pageBtn} disabled={!data?.listings?.hasPrevPage}>
+            <button
+              className={styles.pageBtn}
+              disabled={!data?.listings?.hasPrevPage}
+            >
               Prev
             </button>
-            <button className={styles.pageBtn} disabled={!data?.listings?.hasNextPage}>
+            <button
+              className={styles.pageBtn}
+              disabled={!data?.listings?.hasNextPage}
+            >
               Next
             </button>
           </Flex>
