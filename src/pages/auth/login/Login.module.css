@@ -1,16 +1,4 @@
-:root {
-  --charcoal-blue-grey: #27343a;
-  --slate-gray-secondary: #5b787c;
-  --misty-teal: #89b4bc;
-  --light-gray: #cecccd;
-  --neutral-bg: #efeeea;
 
-  --gradient-background: linear-gradient(
-    90deg,
-    rgba(91, 120, 124, 1) 0%,
-    rgba(137, 180, 188, 1) 35%
-  );
-}
 
 /* Wrapper centers the content */
 .signinWrapper {

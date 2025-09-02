@@ -2,9 +2,9 @@
 
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { useForgetPasswordMutation } from "../../../app/api/authApi";
+import { useForgetPasswordMutation } from "../../../../app/api/authApi";
 import { toaster } from "@/components/ui/toaster";
-import styles from "./forget.module.css";
+import styles from "./Forget.module.css";
 
 const ForgetPassword = () => {
   const [email, setEmail] = useState("");

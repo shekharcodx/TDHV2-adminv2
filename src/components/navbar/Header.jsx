@@ -42,19 +42,18 @@ const Header = ({ isOpen, setIsOpen }) => {
   }, []);
 
   return (
-    <div className={styles.topHeader} style={{ zIndex: 999 }}>
+    <div className={styles.topHeader} style={{ zIndex: 99 }}>
       <div className={styles.leftSection}>
         <img src={logo} alt="logo" className={styles.logo} />
       </div>
 
-      <Button
-        display={{ base: "block", md: "none" }}
-        onClick={() => setIsOpen(!isOpen)}
-      >
-        <FaBars />
-      </Button>
-
       <div className={styles.rightSection} ref={dropdownRef}>
+        <Button
+          display={{ base: "block", md: "none" }}
+          onClick={() => setIsOpen(!isOpen)}
+        >
+          <FaBars />
+        </Button>
         {/* <div className={styles.avatarWrapper} onClick={() => setOpen(!open)}>
           <img
             src="https://cdn-icons-png.flaticon.com/512/219/219986.png"

@@ -1,13 +1,8 @@
 // components/Cards.jsx
 import React from "react";
-import styles from "./card.module.css";
+import styles from "./Card.module.css";
 import Card from "./Card";
-import {
-  FaUserPlus,
-  FaUsers,
-  FaBoxOpen,
-  FaDollarSign,
-} from "react-icons/fa";
+import { FaUserPlus, FaUsers, FaBoxOpen, FaDollarSign } from "react-icons/fa";
 
 const cardData = [
   {

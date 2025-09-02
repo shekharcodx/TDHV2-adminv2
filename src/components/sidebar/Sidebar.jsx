@@ -1,11 +1,15 @@
-import { Box, Button, CloseButton, Drawer, Portal } from "@chakra-ui/react";
+import { Box, Drawer, Portal } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import styles from "./Sidebar.module.css";
 import { FaThLarge, FaUserFriends, FaStar, FaPlusCircle } from "react-icons/fa";
 import { useNavigate, useLocation } from "react-router-dom";
-import logo from "../../assets/logo.png";
+import logo from "@/assets/logo.png";
 import { Flex } from "@chakra-ui/react";
 import { FaChevronDown, FaChevronRight } from "react-icons/fa";
+import { FaShop } from "react-icons/fa6";
+import { FaShopLock } from "react-icons/fa6";
+import { X } from "lucide-react";
+// import logo from "../../assets/logo.png";
 
 const sideBarMenu = [
   {
@@ -15,18 +19,32 @@ const sideBarMenu = [
     subMenu: null,
   },
   {
-    label: "VENDOR PROFILE",
-    route: "/profile",
+    label: "Vendors",
+    route: "",
     icon: <FaUserFriends className={styles.icon} />,
-    subMenu: null,
+    subMenu: [
+      {
+        label: "All Vendors",
+        route: "/all-vendors",
+        icon: <FaShop className={styles.icon} />,
+      },
+    ],
   },
   {
     label: "Listings",
     route: "",
     icon: <FaUserFriends className={styles.icon} />,
     subMenu: [
-      { label: "My Listings", route: "/my-listings" },
-      { label: "Create Listing", route: "/create-listing" },
+      {
+        label: "My Listings",
+        route: "/my-listings",
+        icon: <FaPlusCircle className={styles.icon} />,
+      },
+      {
+        label: "Create Listing",
+        route: "/create-listing",
+        icon: <FaPlusCircle className={styles.icon} />,
+      },
     ],
   },
   {
@@ -73,9 +91,12 @@ const Sidebar = ({ isOpen, onClose }) => {
       <Box
         className={styles.sidebar}
         display={{ base: "none", md: "block" }}
-        pt="80px"
+        pt="8px"
       >
-        <nav className={styles.menu}>
+        <div className={`py-[10px] border-b border-[#e1dfdf]`}>
+          <img src={logo} alt="logo" className={styles.logo} />
+        </div>
+        <nav className={`${styles.menu} mt-[10px]`}>
           <ul>
             {sideBarMenu.map((item) => {
               const isActive =
@@ -122,7 +143,7 @@ const Sidebar = ({ isOpen, onClose }) => {
                           }`}
                         >
                           <Flex alignItems="center" gap="5px" p="6px 25px">
-                            <FaPlusCircle />
+                            {sub.icon}
                             {sub.label}
                           </Flex>
                         </li>
@@ -136,19 +157,27 @@ const Sidebar = ({ isOpen, onClose }) => {
         </nav>
       </Box>
       <Drawer.Root
-        mt="64px"
         placement="start"
         open={isOpen}
         onOpenChange={(e) => onClose(e.open)}
         closeOnInteractOutside={false}
-        zIndex={1}
+        zIndex={999}
       >
-        <Portal mt="64px" pt="30px" zIndex={1}>
-          <Drawer.Backdrop mt="64px" zIndex={1} />
-          <Drawer.Positioner mt="64px" zIndex={1}>
-            <Drawer.Content w="220px" zIndex={1}>
-              <Drawer.Body zIndex={1}>
+        <Portal pt="30px" zIndex={999}>
+          <Drawer.Backdrop zIndex={999} />
+          <Drawer.Positioner zIndex={999}>
+            <Drawer.Content w="220px" zIndex={999}>
+              <Drawer.Body p="0px" zIndex={999}>
                 <aside className={styles.sidebar}>
+                  <button
+                    className="absolute right-[0px] bg-[linear-gradient(90deg,rgba(91,120,124,1)0%,rgba(137,180,188,1)35%)] rounded-full mr-[5px] mt-[5px]"
+                    onClick={() => onClose(false)}
+                  >
+                    <X size="20px" color="#fff" />
+                  </button>
+                  <div className="py-[14px]">
+                    <img src={logo} alt="logo" className={styles.logo} />
+                  </div>
                   <nav className={styles.menu}>
                     <ul>
                       {sideBarMenu.map((item) => {

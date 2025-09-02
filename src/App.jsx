@@ -1,27 +1,27 @@
 import React from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
-import Layout from "@/pages/layout/Layout";
+import Layout from "@/components/layout/Layout";
 import Profile from "@/pages/profile/Profile";
 import CarListing from "@/pages/mycar/CarListing";
-import DashboardPage from "@/pages/mycar/DashboardPage";
+import DashboardPage from "@/pages/dash/DashboardPage";
 import Cards from "@/pages/dash/Cards";
 import { useRoutes } from "react-router-dom";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import UserForm from "@/pages/spam/UserForm";
-import Unauthorized from "@/components/unauthorised";
-import ErrorPage from "@/components/ErrorPage";
-import DetailsForm from "./pages/signup/DetailsForm";
-import SignupForm from "./pages/signup/SignupForm";
+import DetailsForm from "./pages/auth/signup/DetailsForm";
+import SignupForm from "./pages/auth/signup/SignupForm";
 import AllListings from "./pages/mycar/AllListings";
-import Login from "./pages/signup/Login";
-import ForgetPassword from "./pages/signup/Forgetpass";
-import Resetpass from "./pages/signup/Resetpass";
-import ChangePass from "@/pages/signup/ChangePass";
+import Login from "./pages/auth/login/Login";
+import ForgetPassword from "./pages/auth/forgetPassword/Forgetpass";
+import Resetpass from "./pages/auth/resetPassword/Resetpass";
+import ChangePass from "@/pages/auth/changePassword/ChangePass";
 import EditCar from "./pages/mycar/EditCar";
 // Optional: Keep only if used in future
 
-import Details from "./pages/signup/DetailsForm";
+import Details from "./pages/auth/signup/DetailsForm";
+import UnauthorizedPage from "@/components/unauthorised";
+import NotFoundPage from "@/components/ErrorPage";
+import AllVendors from "./pages/AllVendors";
 
 // 🔧 FIX: Import missing UserForm if it's created
 // import UserForm from "./pages/spam/UserForm"; // ← Only if this file exists
@@ -36,24 +36,25 @@ function App() {
           path: "/",
           element: <Layout />,
           children: [
-            { index:true, element: <DashboardPage /> },
+            { index: true, element: <DashboardPage /> },
+            { path: "/all-vendors", element: <AllVendors /> },
             { path: "profile", element: <Profile /> },
             { path: "user-form", element: <UserForm /> },
             { path: "create-listing", element: <CarListing /> },
             { path: "my-listings", element: <AllListings /> },
-             { path: "/edit", element: <EditCar /> },
+            { path: "/edit", element: <EditCar /> },
             { path: "card", element: <Cards /> },
           ],
         },
       ],
     },
 
-    { path: "/unauthorized", element: <Unauthorized /> },
+    { path: "/unauthorized", element: <UnauthorizedPage /> },
     { path: "/login", element: <Login /> },
     { path: "/Forget-pass", element: <ForgetPassword /> },
-     { path:"/register", element: <SignupForm /> },
-     { path: "/details", element: <DetailsForm /> },
-    { path: "*", element: <ErrorPage /> },
+    { path: "/register", element: <SignupForm /> },
+    { path: "/details", element: <DetailsForm /> },
+    { path: "*", element: <NotFoundPage /> },
     { path: "/reset-pass", element: <Resetpass /> },
     { path: "/change-password", element: <ChangePass /> },
   ];

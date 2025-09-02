@@ -16,7 +16,7 @@ function ProtectedRoute({ redirect }) {
   const userRole = getUserRole();
 
   // Role check logic
-  const hasRequiredRole = userRole == 2;
+  const hasRequiredRole = userRole == 1;
 
   useEffect(() => {
     if (!isAuthenticated && !devBypas) {
