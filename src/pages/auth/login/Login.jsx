@@ -45,7 +45,7 @@ const Login = () => {
           setUser(res.data);
           navigate("/");
         }
-        if (result?.data?.role !== 1) {
+        if (res?.data?.role !== 1) {
           throw new Error("You are not authorized to access this panel");
         }
         return {
