@@ -45,13 +45,25 @@ const Login = () => {
           setUser(res.data);
           navigate("/");
         }
-        return { title: res.message || "Successfully logged in!" };
+        if (res?.data?.role !== 1) {
+          throw new Error({
+            data: "Unauthorized access. Only admins can log in.",
+            description: "Please use an admin account to log in.",
+          });
+        }
+        return {
+          title: res.message || "Successfully logged in!",
+          description: "",
+        };
       },
       error: (err) => {
         if (err?.data?.code === 9010) {
           navigate("/change-password");
         }
-        return { title: err?.data?.message || "Failed to login." };
+        return {
+          title: err?.data?.message || "Failed to login.",
+          description: "Please try again.",
+        };
       },
       loading: { title: "Logging in", description: "Please wait" },
     });
