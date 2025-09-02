@@ -45,11 +45,8 @@ const Login = () => {
           setUser(res.data);
           navigate("/");
         }
-        if (res?.data?.role !== 1) {
-          throw new Error({
-            data: "Unauthorized access. Only admins can log in.",
-            description: "Please use an admin account to log in.",
-          });
+        if (result?.data?.role !== 1) {
+          throw new Error("You are not authorized to access this panel");
         }
         return {
           title: res.message || "Successfully logged in!",
@@ -61,7 +58,7 @@ const Login = () => {
           navigate("/change-password");
         }
         return {
-          title: err?.data?.message || "Failed to login.",
+          title: err?.message || err?.data?.message || "Failed to login.",
           description: "Please try again.",
         };
       },
