@@ -1,12 +1,10 @@
-import { useEffect, useState } from "react";
-import { useGetAllVendorsQuery } from "../../../app/api/vendorApi";
-import styles from "./VendorTable.module.css";
-import { ACCOUNT_STATUS, ACCOUNT_STATUS_NUM } from "@/utils/constants";
 import {
   Box,
   Button,
   ButtonGroup,
+  Field,
   IconButton,
+  Input,
   Menu,
   Pagination,
   Portal,
@@ -15,25 +13,31 @@ import {
   Stack,
   createListCollection,
 } from "@chakra-ui/react";
+import { useEffect, useState } from "react";
+import {
+  useGetAllVendorsQuery,
+  useUpdateActiveStatusMutation,
+  useUpdateVendorAccountStatusMutation,
+} from "../../../app/api/vendorApi";
+import styles from "./VendorTable.module.css";
+import { ACCOUNT_STATUS, ACCOUNT_STATUS_NUM } from "@/utils/constants";
 import { LuChevronRight, LuChevronLeft } from "react-icons/lu";
 import { MenuIcon } from "lucide-react";
 import avatar from "@/assets/images/avatar.svg";
 import { Skeleton, SkeletonCircle } from "@chakra-ui/react";
+import { useNavigate } from "react-router-dom";
+import { toaster } from "@/components/ui/toaster";
 
 const getKeyNames = (key) => {
   switch (key) {
     case "PENDING":
       return "Pending";
-      break;
     case "APPROVED":
       return "Approved";
-      break;
     case "ON_HOLD":
       return "On Hold";
-      break;
     case "BLOCKED":
       return "Blocked";
-      break;
   }
 };
 
@@ -54,9 +58,11 @@ const isActiveStatus = createListCollection({
 });
 
 const AllVendors = () => {
+  const navigate = useNavigate();
   const [page, setPage] = useState(1);
   const [selectedStatus, setSelectedStatus] = useState([]);
   const [selectedActiveStatus, setSelectedActiveStatus] = useState([]);
+  const [searchString, setSearchString] = useState("");
   const {
     data: vendors,
     isFetching,
@@ -65,11 +71,83 @@ const AllVendors = () => {
     page,
     status: selectedStatus?.[0],
     isActive: selectedActiveStatus?.[0],
+    search: searchString,
   });
+  const [updateActiveStatus] = useUpdateActiveStatusMutation();
+  const [updateVendorAccountStatus] = useUpdateVendorAccountStatusMutation();
 
   useEffect(() => {
     refetch();
   }, [page, selectedStatus, selectedActiveStatus]);
+
+  const handleSearchInput = (string) => {
+    setSelectedStatus([]);
+    setSelectedActiveStatus([]);
+    setSearchString(string);
+    refetch();
+  };
+
+  const handleActiveStatusChange = (vendorId, isActive) => {
+    if (
+      !confirm(
+        isActive
+          ? "Do you want to activate the vendor?"
+          : "Do you want to deactivate the vendor?"
+      )
+    ) {
+      return;
+    }
+    toaster.promise(
+      updateActiveStatus({ userId: vendorId, isActive }).unwrap(),
+      {
+        loading: { title: "Updating", description: "Please wait..." },
+        success: (res) => {
+          return {
+            title: res?.message || "IsActive status updated successfully",
+            description: "",
+          };
+        },
+        error: (err) => {
+          return {
+            title: err?.data?.message || "Error updating isActive status",
+            description: "Please try again",
+          };
+        },
+      }
+    );
+  };
+
+  const handleAccountStatusChange = (id, status) => {
+    if (!confirm(getConfirmMsg(status))) {
+      return;
+    }
+    toaster.promise(updateVendorAccountStatus({ id, status }).unwrap(), {
+      loading: { title: "Updating", description: "Please wait..." },
+      success: (res) => {
+        return {
+          title: res?.message || "Account status updated successfully",
+          description: "",
+        };
+      },
+      error: (err) => {
+        return {
+          title: err?.data?.message || "Error updating account status",
+          description: "Please try again",
+        };
+      },
+    });
+  };
+
+  const getConfirmMsg = (status) => {
+    switch (status) {
+      case 2:
+        return "Do you want to approve the vendor?";
+      case 3:
+        return "Do you want the vendor to be on hold?";
+      case 4:
+        return "Do you want to block the vendor?";
+    }
+  };
 
   return (
     <div className={styles.wrapper}>
@@ -77,14 +155,14 @@ const AllVendors = () => {
         <p>Filters:</p>
         <Box
           display={{ base: "block", md: "flex" }}
-          justifyContent={{ md: "start" }}
+          justifyContent={{ base: "center", md: "start" }}
           alignItems="end"
           gap={{ md: "20px" }}
           my="20px"
         >
-          <Stack gap="5" width="220px">
+          <Stack gap="5" minW="220px" mt={{ base: "20px", md: "0px" }}>
             <Select.Root
-              variant="subtle"
+              variant="outline"
               size="xs"
               collection={statuses}
               value={selectedStatus}
@@ -115,9 +193,9 @@ const AllVendors = () => {
             </Select.Root>
           </Stack>
 
-          <Stack gap="5" width="220px">
+          <Stack gap="5" minW="220px" mt={{ base: "20px", md: "0px" }}>
             <Select.Root
-              variant="subtle"
+              variant="outline"
               size="xs"
               collection={isActiveStatus}
               value={selectedActiveStatus}
@@ -148,8 +226,23 @@ const AllVendors = () => {
             </Select.Root>
           </Stack>
 
+          <Field.Root mt={{ base: "20px", md: "0px" }}>
+            <Field.Label>Search Vendor</Field.Label>
+            <Input
+              size="xs"
+              outline="none"
+              width="220px"
+              placeholder="Search vendor"
+              variant="outline"
+              value={searchString}
+              onInput={(e) => handleSearchInput(e.currentTarget.value)}
+            />
+          </Field.Root>
+
           <Button
             size="xs"
+            display="block"
+            mt={{ base: "20px", md: "0px" }}
             bgGradient="linear-gradient(
               90deg,
               rgba(91, 120, 124, 1) 0%,
@@ -158,6 +251,7 @@ const AllVendors = () => {
             onClick={() => {
               setSelectedStatus([]);
               setSelectedActiveStatus([]);
+              setSearchString("");
             }}
           >
             Reset Filters
@@ -217,7 +311,7 @@ const AllVendors = () => {
                     {vendor.isActive ? (
                       <span className={styles.activeBadge}>Active</span>
                     ) : (
-                      <span className={styles.inactiveBadge}>Inactive</span>
+                      <span className={styles.inactiveBadge}>Deactivated</span>
                     )}
                   </td>
                   <td className={styles.actions}>
@@ -241,14 +335,31 @@ const AllVendors = () => {
                       <Portal>
                         <Menu.Positioner>
                           <Menu.Content>
-                            <Menu.Item cursor="pointer" value="view">
+                            <Menu.Item
+                              cursor="pointer"
+                              value="view"
+                              onClick={() =>
+                                navigate(`/vendor-profile/${vendor._id}`)
+                              }
+                            >
                               View
                             </Menu.Item>
-                            <Menu.Item cursor="pointer" value="edit">
+                            <Menu.Item
+                              cursor="pointer"
+                              value="edit"
+                              onClick={() =>
+                                navigate(`/edit-vendor-profile/${vendor._id}`)
+                              }
+                            >
                               Edit
                             </Menu.Item>
                             {!vendor.isActive && (
-                              <Menu.Item value="activate">
+                              <Menu.Item
+                                value="activate"
+                                onClick={() =>
+                                  handleActiveStatusChange(vendor._id, true)
+                                }
+                              >
                                 <Span
                                   bg="green"
                                   p="2px 8px"
@@ -262,7 +373,12 @@ const AllVendors = () => {
                               </Menu.Item>
                             )}
                             {vendor.isActive && (
-                              <Menu.Item value="deactivate">
+                              <Menu.Item
+                                value="deactivate"
+                                onClick={() =>
+                                  handleActiveStatusChange(vendor._id, false)
+                                }
+                              >
                                 <Span
                                   bg="red"
                                   p="2px 8px"
@@ -287,24 +403,51 @@ const AllVendors = () => {
                               <Portal>
                                 <Menu.Positioner>
                                   <Menu.Content>
-                                    <Menu.Item
-                                      cursor="pointer"
-                                      value={ACCOUNT_STATUS.APPROVED}
-                                    >
-                                      Approved
-                                    </Menu.Item>
-                                    <Menu.Item
-                                      cursor="pointer"
-                                      value={ACCOUNT_STATUS.ON_HOLD}
-                                    >
-                                      On Hold
-                                    </Menu.Item>
-                                    <Menu.Item
-                                      cursor="pointer"
-                                      value={ACCOUNT_STATUS.BLOCKED}
-                                    >
-                                      Blocked
-                                    </Menu.Item>
+                                    {vendor.status !==
+                                      ACCOUNT_STATUS.APPROVED && (
+                                      <Menu.Item
+                                        cursor="pointer"
+                                        value={ACCOUNT_STATUS.APPROVED}
+                                        onClick={(e) =>
+                                          handleAccountStatusChange(
+                                            vendor._id,
+                                            ACCOUNT_STATUS.APPROVED
+                                          )
+                                        }
+                                      >
+                                        Approved
+                                      </Menu.Item>
+                                    )}
+                                    {vendor.status !==
+                                      ACCOUNT_STATUS.ON_HOLD && (
+                                      <Menu.Item
+                                        cursor="pointer"
+                                        value={ACCOUNT_STATUS.ON_HOLD}
+                                        onClick={(e) =>
+                                          handleAccountStatusChange(
+                                            vendor._id,
+                                            ACCOUNT_STATUS.ON_HOLD
+                                          )
+                                        }
+                                      >
+                                        On Hold
+                                      </Menu.Item>
+                                    )}
+                                    {vendor.status !==
+                                      ACCOUNT_STATUS.BLOCKED && (
+                                      <Menu.Item
+                                        cursor="pointer"
+                                        value={ACCOUNT_STATUS.BLOCKED}
+                                        onClick={(e) =>
+                                          handleAccountStatusChange(
+                                            vendor._id,
+                                            ACCOUNT_STATUS.BLOCKED
+                                          )
+                                        }
+                                      >
+                                        Blocked
+                                      </Menu.Item>
+                                    )}
                                   </Menu.Content>
                                 </Menu.Positioner>
                               </Portal>

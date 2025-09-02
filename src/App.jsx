@@ -21,7 +21,9 @@ import EditCar from "./pages/mycar/EditCar";
 import Details from "./pages/auth/signup/DetailsForm";
 import UnauthorizedPage from "@/components/unauthorised";
 import NotFoundPage from "@/components/ErrorPage";
-import AllVendors from "./pages/AllVendors";
+import AllVendors from "./pages/Vendors";
+import VendorProfile from "./pages/Vendors/VendorProfile";
+import EditVendorProfile from "./pages/Vendors/EditVendorProfile";
 
 // 🔧 FIX: Import missing UserForm if it's created
 // import UserForm from "./pages/spam/UserForm"; // ← Only if this file exists
@@ -38,6 +40,11 @@ function App() {
           children: [
             { index: true, element: <DashboardPage /> },
             { path: "/all-vendors", element: <AllVendors /> },
+            { path: "/vendor-profile/:id", element: <VendorProfile /> },
+            {
+              path: "/edit-vendor-profile/:id",
+              element: <EditVendorProfile />,
+            },
             { path: "profile", element: <Profile /> },
             { path: "user-form", element: <UserForm /> },
             { path: "create-listing", element: <CarListing /> },

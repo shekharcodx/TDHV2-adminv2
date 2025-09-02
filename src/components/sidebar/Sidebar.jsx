@@ -93,7 +93,7 @@ const Sidebar = ({ isOpen, onClose }) => {
         display={{ base: "none", md: "block" }}
         pt="8px"
       >
-        <div className={`py-[10px] border-b border-[#e1dfdf]`}>
+        <div className={`py-[12px] border-b border-[#eeeaea]`}>
           <img src={logo} alt="logo" className={styles.logo} />
         </div>
         <nav className={`${styles.menu} mt-[10px]`}>

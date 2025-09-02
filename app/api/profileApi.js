@@ -10,14 +10,6 @@ const profileApi = baseApi.injectEndpoints({
       }),
       providesTags: ["profile"],
     }),
-    updateProfile: builder.mutation({
-      query: (data) => ({
-        url: "/vendorProfile",
-        method: "PUT",
-        body: data,
-      }),
-      invalidatesTags: ["profile"],
-    }),
     getDocument: builder.query({
       query: (query) => ({
         url: `/document?documentKey=${query}`,
@@ -32,8 +24,4 @@ const profileApi = baseApi.injectEndpoints({
   }),
 });
 
-export const {
-  useGetProfileQuery,
-  useUpdateProfileMutation,
-  useLazyGetDocumentQuery,
-} = profileApi;
+export const { useGetProfileQuery, useLazyGetDocumentQuery } = profileApi;

@@ -35,5 +35,7 @@ export const baseApi = createApi({
     "TechFeatures",
     "OtherFeatures",
     "profile",
+    "vendors",
+    "vendor",
   ],
 });
