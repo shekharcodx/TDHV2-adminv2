@@ -30,29 +30,29 @@ const sideBarMenu = [
       },
     ],
   },
-  {
-    label: "Listings",
-    route: "",
-    icon: <FaUserFriends className={styles.icon} />,
-    subMenu: [
-      {
-        label: "My Listings",
-        route: "/my-listings",
-        icon: <FaPlusCircle className={styles.icon} />,
-      },
-      {
-        label: "Create Listing",
-        route: "/create-listing",
-        icon: <FaPlusCircle className={styles.icon} />,
-      },
-    ],
-  },
-  {
-    label: "REVIEWS",
-    route: "/reviews",
-    icon: <FaStar className={styles.icon} />,
-    subMenu: null,
-  },
+  // {
+  //   label: "Listings",
+  //   route: "",
+  //   icon: <FaUserFriends className={styles.icon} />,
+  //   subMenu: [
+  //     {
+  //       label: "My Listings",
+  //       route: "/my-listings",
+  //       icon: <FaPlusCircle className={styles.icon} />,
+  //     },
+  //     {
+  //       label: "Create Listing",
+  //       route: "/create-listing",
+  //       icon: <FaPlusCircle className={styles.icon} />,
+  //     },
+  //   ],
+  // },
+  // {
+  //   label: "REVIEWS",
+  //   route: "/reviews",
+  //   icon: <FaStar className={styles.icon} />,
+  //   subMenu: null,
+  // },
 ];
 
 const Sidebar = ({ isOpen, onClose }) => {
