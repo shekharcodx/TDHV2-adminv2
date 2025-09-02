@@ -37,7 +37,7 @@ const DocumentCard = ({ doc }) => {
         link.remove();
         URL.revokeObjectURL(url);
         return {
-          title: "Downloaded Successfully",
+          title: "Download link generated Successfully",
           description: "Please save the file",
         };
       },
