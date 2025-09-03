@@ -14,7 +14,7 @@ import UpdatePassword from "@/pages/profile/UpdatePassword";
 
 const Header = ({ isOpen, setIsOpen }) => {
   const [open, setOpen] = useState(false);
-  const [isDialogOpen, setIsDialogOpen] = useState(true);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
   const navigate = useNavigate();
   const dropdownRef = useRef(null);
 
