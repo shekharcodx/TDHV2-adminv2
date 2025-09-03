@@ -45,44 +45,20 @@ function App() {
               path: "/edit-vendor-profile/:id",
               element: <EditVendorProfile />,
             },
-            { path: "profile", element: <Profile /> },
-            { path: "user-form", element: <UserForm /> },
-            { path: "create-listing", element: <CarListing /> },
-            { path: "my-listings", element: <AllListings /> },
-            { path: "/edit", element: <EditCar /> },
-            { path: "card", element: <Cards /> },
+            { path: "/profile", element: <Profile /> },
           ],
         },
       ],
     },
 
-    { path: "/unauthorized", element: <UnauthorizedPage /> },
     { path: "/login", element: <Login /> },
     { path: "/Forget-pass", element: <ForgetPassword /> },
-    { path: "/register", element: <SignupForm /> },
-    { path: "/details", element: <DetailsForm /> },
-    { path: "*", element: <NotFoundPage /> },
     { path: "/reset-pass", element: <Resetpass /> },
-    { path: "/change-password", element: <ChangePass /> },
+    { path: "/unauthorized", element: <UnauthorizedPage /> },
+    { path: "*", element: <NotFoundPage /> },
   ];
 
   return useRoutes(routes);
-
-  // <Router>
-  //   <Routes>
-  //     <Route path="/" element={<Layout />}>
-  //        <Route index element={<DashboardPage/>} />
-  //       <Route path="/profile" element={<Profile />} />
-  //       {/* Uncomment the next line if UserForm is implemented and imported */}
-  //       {/* <Route path="user-form" element={<UserForm />} /> */}
-  //       <Route path="car-listing" element={<CarListing />} />
-  //       <Route path="admin-car" element={<CarListing />} />
-  //       <Route path="/car-listing" element={<CarListing />} />
-  //       <Route path="/card" element={<Cards />} />
-  //       <Route path="/DashboardPage" element={<DashboardPage />} />
-  //     </Route>
-  //   </Routes>
-  // </Router>
 }
 
 export default App;

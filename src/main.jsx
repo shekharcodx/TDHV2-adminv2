@@ -7,7 +7,7 @@ import createCache from "@emotion/cache";
 import { BrowserRouter } from "react-router-dom";
 import { Toaster } from "@/components/ui/toaster";
 import { Provider } from "react-redux";
-import { store } from "../app/store";
+import { store } from "@/app/store";
 import "./index.css";
 
 const chakraCache = createCache({

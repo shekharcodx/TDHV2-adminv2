@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
-import { useResetPasswordMutation } from "../../../../app/api/authApi";
+import { useResetPasswordMutation } from "@/app/api/authApi";
 import { toaster } from "@/components/ui/toaster";
 import styles from "./Reset.module.css";
 

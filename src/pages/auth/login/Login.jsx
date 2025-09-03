@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import styles from "./Login.module.css";
 import { Link, useNavigate } from "react-router-dom";
-import { useLoginMutation } from "../../../../app/api/authApi";
+import { useLoginMutation } from "@/app/api/authApi";
 import { toaster } from "@/components/ui/toaster";
 import { setToken, setUserRole, setUser } from "@/utils/localStorageMethods";
 import { Eye, EyeOff } from "lucide-react";

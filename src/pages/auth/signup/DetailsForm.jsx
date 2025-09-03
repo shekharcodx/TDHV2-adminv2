@@ -4,8 +4,8 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { resetRegistration } from "../../../../app/slices/registrationSlice";
-import { useRegisterMutation } from "../../../../app/api/authApi";
+import { resetRegistration } from "@/app/slices/registrationSlice";
+import { useRegisterMutation } from "@/app/api/authApi";
 import { toaster } from "@/components/ui/toaster";
 import styles from "./Signup.module.css";
 

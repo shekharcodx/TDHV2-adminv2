@@ -7,7 +7,7 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Eye, EyeOff } from "lucide-react";
 import styles from "./Changepass.module.css";
-import { useChangePasswordMutation } from "../../../../app/api/authApi";
+import { useChangePasswordMutation } from "@/app/api/authApi";
 import { toaster } from "@/components/ui/toaster";
 
 // ✅ Zod schema

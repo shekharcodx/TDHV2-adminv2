@@ -5,13 +5,13 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { updateRegistrationField } from "../../../../app/slices/registrationSlice";
+import { updateRegistrationField } from "@/app/slices/registrationSlice";
 
 import {
   useGetCountriesQuery,
   useLazyGetStatesQuery,
   useLazyGetCitiesQuery,
-} from "../../../../app/api/locationApi";
+} from "@/app/api/locationApi";
 
 // ✅ Zod schema
 const schema = z.object({

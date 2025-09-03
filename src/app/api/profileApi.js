@@ -10,6 +10,21 @@ const profileApi = baseApi.injectEndpoints({
       }),
       providesTags: ["profile"],
     }),
+    updateCurrentProfile: builder.mutation({
+      query: (data) => ({
+        url: "/adminProfile",
+        method: "PUT",
+        body: data,
+      }),
+      invalidatesTags: ["profile"],
+    }),
+    updatePassword: builder.mutation({
+      query: (data) => ({
+        url: "/updatePassword",
+        method: "PATCH",
+        body: data,
+      }),
+    }),
     getDocument: builder.query({
       query: (query) => ({
         url: `/document?documentKey=${query}`,
@@ -24,4 +39,9 @@ const profileApi = baseApi.injectEndpoints({
   }),
 });
 
-export const { useGetProfileQuery, useLazyGetDocumentQuery } = profileApi;
+export const {
+  useGetProfileQuery,
+  useUpdateCurrentProfileMutation,
+  useUpdatePasswordMutation,
+  useLazyGetDocumentQuery,
+} = profileApi;

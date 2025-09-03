@@ -10,9 +10,11 @@ import {
   removeUserRole,
   removeUser,
 } from "@/utils/localStorageMethods";
+import UpdatePassword from "@/pages/profile/UpdatePassword";
 
 const Header = ({ isOpen, setIsOpen }) => {
   const [open, setOpen] = useState(false);
+  const [isDialogOpen, setIsDialogOpen] = useState(true);
   const navigate = useNavigate();
   const dropdownRef = useRef(null);
 
@@ -42,19 +44,20 @@ const Header = ({ isOpen, setIsOpen }) => {
   }, []);
 
   return (
-    <div className={styles.topHeader} style={{ zIndex: 99 }}>
-      <div className={styles.leftSection}>
-        <img src={logo} alt="logo" className={styles.logo} />
-      </div>
+    <>
+      <div className={styles.topHeader} style={{ zIndex: 99 }}>
+        <div className={styles.leftSection}>
+          <img src={logo} alt="logo" className={styles.logo} />
+        </div>
 
-      <div className={styles.rightSection} ref={dropdownRef}>
-        <Button
-          display={{ base: "block", md: "none" }}
-          onClick={() => setIsOpen(!isOpen)}
-        >
-          <FaBars />
-        </Button>
-        {/* <div className={styles.avatarWrapper} onClick={() => setOpen(!open)}>
+        <div className={styles.rightSection} ref={dropdownRef}>
+          <Button
+            display={{ base: "block", md: "none" }}
+            onClick={() => setIsOpen(!isOpen)}
+          >
+            <FaBars />
+          </Button>
+          {/* <div className={styles.avatarWrapper} onClick={() => setOpen(!open)}>
           <img
             src="https://cdn-icons-png.flaticon.com/512/219/219986.png"
             alt="User Avatar"
@@ -70,29 +73,48 @@ const Header = ({ isOpen, setIsOpen }) => {
             </ul>
           </div>
         )} */}
-        <Menu.Root positioning={{ placement: "bottom" }}>
-          <Menu.Trigger rounded="full">
-            <Avatar.Root size="sm">
-              <img
-                src="https://cdn-icons-png.flaticon.com/512/219/219986.png"
-                alt="User Avatar"
-                className={styles.avatar}
-              />
-            </Avatar.Root>
-          </Menu.Trigger>
-          <Portal>
-            <Menu.Positioner>
-              <Menu.Content>
-                <Menu.Item onClick={() => navigate("/profile")}>
-                  👤 Profile
-                </Menu.Item>
-                <Menu.Item onClick={handleSignOut}>🚪 Sign Out</Menu.Item>
-              </Menu.Content>
-            </Menu.Positioner>
-          </Portal>
-        </Menu.Root>
+          <Menu.Root positioning={{ placement: "bottom" }}>
+            <Menu.Trigger rounded="full" cursor="pointer">
+              <Avatar.Root size="sm">
+                <img
+                  src="https://cdn-icons-png.flaticon.com/512/219/219986.png"
+                  alt="User Avatar"
+                  className={styles.avatar}
+                />
+              </Avatar.Root>
+            </Menu.Trigger>
+            <Portal>
+              <Menu.Positioner>
+                <Menu.Content>
+                  <Menu.Item
+                    value="profile"
+                    cursor="pointer"
+                    onClick={() => navigate("/profile")}
+                  >
+                    👤 Profile
+                  </Menu.Item>
+                  <Menu.Item
+                    value="change-password"
+                    cursor="pointer"
+                    onClick={() => setIsDialogOpen(true)}
+                  >
+                    🔒 Change Password
+                  </Menu.Item>
+                  <Menu.Item
+                    value="sign-out"
+                    cursor="pointer"
+                    onClick={handleSignOut}
+                  >
+                    🚪 Sign Out
+                  </Menu.Item>
+                </Menu.Content>
+              </Menu.Positioner>
+            </Portal>
+          </Menu.Root>
+        </div>
       </div>
-    </div>
+      <UpdatePassword isOpen={isDialogOpen} setIsOpen={setIsDialogOpen} />
+    </>
   );
 };
 

@@ -1,7 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { Flex } from "@chakra-ui/react";
-import { useGetVendorListingsQuery } from "../../../app/api/carListingApi"; // adjust path
+import { useGetVendorListingsQuery } from "@/app/api/carListingApi"; // adjust path
 import styles from "./mylist.module.css";
 
 function AllListings() {

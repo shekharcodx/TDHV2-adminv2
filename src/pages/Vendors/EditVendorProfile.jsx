@@ -9,8 +9,8 @@ import { toaster } from "@/components/ui/toaster";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SkeletonCircle } from "@chakra-ui/react";
 import { useParams, useNavigate } from "react-router-dom";
-import { useLazyGetVendorQuery } from "../../../app/api/vendorApi";
-import { useEditVendorProfileMutation } from "../../../app/api/vendorApi";
+import { useLazyGetVendorQuery } from "@/app/api/vendorApi";
+import { useEditVendorProfileMutation } from "@/app/api/vendorApi";
 
 const schema = z.object({
   name: z.string().min(1, "Name is required"),
@@ -371,6 +371,7 @@ const EditVendorProfile = () => {
               <Flex
                 className={`${styles.infoRow}`}
                 justify={{ base: "center", md: "space-between" }}
+                flexDirection={{ base: "column", md: "row" }}
                 flexWrap="wrap"
                 gap="20px"
                 mt="30px"

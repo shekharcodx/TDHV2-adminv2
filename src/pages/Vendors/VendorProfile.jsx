@@ -6,7 +6,7 @@ import profilePicPlaceholder from "@/assets/images/avatar.svg";
 import { Skeleton, SkeletonCircle } from "@chakra-ui/react";
 import DocumentCardSkeleton from "./DocumentCardSkeleton ";
 import { useParams, useNavigate } from "react-router-dom";
-import { useLazyGetVendorQuery } from "../../../app/api/vendorApi";
+import { useLazyGetVendorQuery } from "@/app/api/vendorApi";
 
 const VendorProfile = () => {
   const navigate = useNavigate();
