@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import { useGetAllAdminsQuery } from "@/app/api/adminApi";
 import { useUpdateActiveStatusMutation } from "@/app/api/userApi";
 import styles from "./Admins.module.css";
-import { ACCOUNT_STATUS, ACCOUNT_STATUS_NUM } from "@/utils/constants";
 import { MenuIcon } from "lucide-react";
 import avatar from "@/assets/images/avatar.svg";
 import { Skeleton, SkeletonCircle } from "@chakra-ui/react";
@@ -177,8 +176,8 @@ const Admins = () => {
           />
 
           <FilterInput
-            label="Search Vendor"
-            placeholder="Search vendor"
+            label="Search Admin"
+            placeholder="Search admin"
             value={searchString}
             setValue={handleSearchInput}
           />
