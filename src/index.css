@@ -1,8 +1,21 @@
-/* @import "tailwindcss"; */
-@layer theme, base, components, utilities;
+@import "tailwindcss";
+@config "../tailwind.config.js";
 
-/* @import "tailwindcss/preflight"; */
-@tailwind utilities;
+@layer base {
+  h1 {
+    font-size: var(--text-2xl);
+  }
+  h2 {
+    font-size: var(--text-xl);
+  }
+  h3 {
+    font-size: var(--text-lg);
+  }
+  a {
+    color: var(--color-blue-600);
+    text-decoration-line: underline;
+  }
+}
 
 :root {
   --charcoal-blue-grey-one-color: #27343a;

@@ -1,6 +1,6 @@
 /* components/Sidebar.module.css */
 .sidebar {
-  width: 220px;
+  width: 260px;
   background-color: #ffffff;
   border-right: 1px solid #eee;
   height: 100vh;
@@ -110,6 +110,49 @@
 
 .subMenuItem:hover svg,
 .subMenuItem.active svg {
+  color: rgba(91, 120, 124, 1);
+  font-weight: 500;
+}
+
+.subSubMenu {
+  list-style: none;
+  padding-left: 40px;
+  margin: auto !important;
+  background-color: #f5f2f2;
+  width: 95%;
+  border-bottom-right-radius: 8px;
+  border-bottom-left-radius: 8px;
+
+  /* Animation setup */
+  max-height: 0;
+  overflow: hidden;
+  padding-top: 0;
+  padding-bottom: 0;
+  transition: max-height 0.35s ease, padding 0.25s ease;
+}
+
+.subSubMenu.open {
+  max-height: 400px; /* adjust based on expected submenu size */
+  padding-top: 6px;
+  padding-bottom: 6px;
+}
+
+.subSubMenuItem {
+  padding: 8px 0;
+  color: #7e7e7e;
+  font-size: 13px;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+.subSubMenuItem:hover,
+.subSubMenuItem.active {
+  color: rgba(91, 120, 124, 1);
+  font-weight: 500;
+}
+
+.subSubMenuItem:hover svg,
+.subSubMenuItem.active svg {
   color: rgba(91, 120, 124, 1);
   font-weight: 500;
 }

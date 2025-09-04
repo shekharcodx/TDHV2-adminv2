@@ -1,5 +1,5 @@
 import { createListCollection } from "@chakra-ui/react";
-import { ACCOUNT_STATUS } from "./constants";
+import { ACCOUNT_STATUS, LISTING_STATUS } from "./constants";
 
 export const getKeyNames = (key) => {
   switch (key) {
@@ -38,5 +38,14 @@ export const isActiveStatus = createListCollection({
   items: [
     { label: "Active", value: "true" },
     { label: "Inactive", value: "false" },
+  ],
+});
+
+export const listingStatuses = createListCollection({
+  items: [
+    ...Object.entries(LISTING_STATUS).map(([label, value]) => ({
+      label,
+      value: String(value),
+    })),
   ],
 });

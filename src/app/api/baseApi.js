@@ -39,5 +39,6 @@ export const baseApi = createApi({
     "vendor",
     "admins",
     "user",
+    "listings",
   ],
 });

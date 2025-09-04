@@ -1,4 +1,4 @@
-import { Box, Button, Menu, Portal, Span } from "@chakra-ui/react";
+import { Box, Button, Heading, Menu, Portal, Span } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { useGetAllAdminsQuery } from "@/app/api/adminApi";
 import { useUpdateActiveStatusMutation } from "@/app/api/userApi";
@@ -115,11 +115,15 @@ const Admins = () => {
             <Menu.Positioner>
               <Menu.Content>
                 <Menu.Item
+                  value="view"
+                  cursor="pointer"
                   onClick={() => navigate(`/admin-profile/${admin._id}`)}
                 >
                   View
                 </Menu.Item>
                 <Menu.Item
+                  value="edit"
+                  cursor="pointer"
                   onClick={() => navigate(`/edit-admin-profile/${admin._id}`)}
                 >
                   Edit
@@ -127,6 +131,8 @@ const Admins = () => {
 
                 {!admin.isActive && (
                   <Menu.Item
+                    value="activate"
+                    cursor="pointer"
                     onClick={() => handleActiveStatusChange(admin._id, true)}
                   >
                     <Span
@@ -141,6 +147,8 @@ const Admins = () => {
                 )}
                 {admin.isActive && (
                   <Menu.Item
+                    value="deactivate"
+                    cursor="pointer"
                     onClick={() => handleActiveStatusChange(admin._id, false)}
                   >
                     <Span bg="red" p="2px 8px" borderRadius="12px" color="#fff">
@@ -158,8 +166,10 @@ const Admins = () => {
 
   return (
     <div className={styles.wrapper}>
-      <Box mb="30px" borderBottom="1px solid #fff5">
-        <p>Filters:</p>
+      <Box mb="10px" borderBottom="1px solid #fff5">
+        <Heading fontSize="24px" fontWeight="600" mb="30px">
+          ADMINS
+        </Heading>
         <Box
           display={{ base: "block", md: "flex" }}
           justifyContent={{ base: "center", md: "start" }}

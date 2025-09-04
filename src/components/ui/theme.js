@@ -1,7 +1,8 @@
-// theme.ts
 import { createSystem, defaultConfig } from "@chakra-ui/react";
 
 const chakraTheme = createSystem(defaultConfig, {
+  // disableLayers: true,
+  preflight: false,
   theme: {
     tokens: {
       colors: {

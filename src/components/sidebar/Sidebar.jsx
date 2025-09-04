@@ -6,7 +6,15 @@ import { useNavigate, useLocation } from "react-router-dom";
 import logo from "@/assets/logo.png";
 import { Flex } from "@chakra-ui/react";
 import { FaChevronDown, FaChevronRight } from "react-icons/fa";
-import { FaShop, FaUserPlus, FaUserShield } from "react-icons/fa6";
+import {
+  FaCar,
+  FaDatabase,
+  FaEnvelope,
+  FaGears,
+  FaShop,
+  FaUserPlus,
+  FaUserShield,
+} from "react-icons/fa6";
 import { FaShopLock } from "react-icons/fa6";
 import { User, X } from "lucide-react";
 // import logo from "../../assets/logo.png";
@@ -38,6 +46,29 @@ const sideBarMenu = [
         label: "Create Admin",
         route: "/create-admin",
         icon: <FaUserPlus className={styles.icon} />,
+      },
+    ],
+  },
+  {
+    label: "Car Listings",
+    route: "/car-listings",
+    icon: <FaCar className={styles.icon} />,
+    subMenu: null,
+  },
+  {
+    label: "Settings",
+    route: "",
+    icon: <FaGears className={styles.icon} />,
+    subMenu: [
+      {
+        label: "Master Data",
+        route: "/master-data",
+        icon: <FaDatabase className={styles.icon} />,
+      },
+      {
+        label: "Email Templates",
+        route: "/email-templates",
+        icon: <FaEnvelope className={styles.icon} />,
       },
     ],
   },

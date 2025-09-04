@@ -1,4 +1,4 @@
-import { Box, Button, Menu, Portal, Span } from "@chakra-ui/react";
+import { Box, Button, Heading, Menu, Portal, Span } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { useGetAllVendorsQuery } from "@/app/api/vendorApi";
 import {
@@ -167,11 +167,15 @@ const AllVendors = () => {
             <Menu.Positioner>
               <Menu.Content>
                 <Menu.Item
+                  value="view"
+                  cursor="pointer"
                   onClick={() => navigate(`/vendor-profile/${vendor._id}`)}
                 >
                   View
                 </Menu.Item>
                 <Menu.Item
+                  value="edit"
+                  cursor="pointer"
                   onClick={() => navigate(`/edit-vendor-profile/${vendor._id}`)}
                 >
                   Edit
@@ -179,6 +183,8 @@ const AllVendors = () => {
 
                 {!vendor.isActive && (
                   <Menu.Item
+                    value="activate"
+                    cursor="pointer"
                     onClick={() => handleActiveStatusChange(vendor._id, true)}
                   >
                     <Span
@@ -193,6 +199,8 @@ const AllVendors = () => {
                 )}
                 {vendor.isActive && (
                   <Menu.Item
+                    value="deactivate"
+                    cursor="pointer"
                     onClick={() => handleActiveStatusChange(vendor._id, false)}
                   >
                     <Span bg="red" p="2px 8px" borderRadius="12px" color="#fff">
@@ -204,7 +212,7 @@ const AllVendors = () => {
                 <Menu.Root
                   positioning={{ placement: "right-start", gutter: 2 }}
                 >
-                  <Menu.TriggerItem>
+                  <Menu.TriggerItem cursor="pointer">
                     Change Status <LuChevronRight />
                   </Menu.TriggerItem>
                   <Portal>
@@ -212,6 +220,8 @@ const AllVendors = () => {
                       <Menu.Content>
                         {vendor.status !== ACCOUNT_STATUS.APPROVED && (
                           <Menu.Item
+                            value="approved"
+                            cursor="pointer"
                             onClick={() =>
                               handleAccountStatusChange(
                                 vendor._id,
@@ -224,6 +234,8 @@ const AllVendors = () => {
                         )}
                         {vendor.status !== ACCOUNT_STATUS.ON_HOLD && (
                           <Menu.Item
+                            value="onHold"
+                            cursor="pointer"
                             onClick={() =>
                               handleAccountStatusChange(
                                 vendor._id,
@@ -236,6 +248,8 @@ const AllVendors = () => {
                         )}
                         {vendor.status !== ACCOUNT_STATUS.BLOCKED && (
                           <Menu.Item
+                            value="blocked"
+                            cursor="pointer"
                             onClick={() =>
                               handleAccountStatusChange(
                                 vendor._id,
@@ -260,8 +274,10 @@ const AllVendors = () => {
 
   return (
     <div className={styles.wrapper}>
-      <Box mb="30px" borderBottom="1px solid #fff5">
-        <p>Filters:</p>
+      <Box mb="10px" borderBottom="1px solid #fff5">
+        <Heading fontSize="24px" fontWeight="600" mb="30px">
+          VENDORS
+        </Heading>
         <Box
           display={{ base: "block", md: "flex" }}
           justifyContent={{ base: "center", md: "start" }}
