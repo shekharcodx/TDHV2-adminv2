@@ -68,52 +68,52 @@ const sideBarMenu = [
     subMenu: [
       {
         label: "Car",
-        route: "",
+        route: "/car-data",
         icon: <FaCarAlt className={styles.icon} />,
       },
       {
         label: "Body Types",
-        route: "",
+        route: "/body-types",
         icon: <FaCarAlt className={styles.icon} />,
       },
       {
         label: "Regional Specs",
-        route: "",
+        route: "/regional-specs",
         icon: <FaCarAlt className={styles.icon} />,
       },
       {
         label: "Transmissions",
-        route: "",
+        route: "/transmissions",
         icon: <FaCarAlt className={styles.icon} />,
       },
       {
         label: "Fuel Types",
-        route: "",
+        route: "/fuel-types",
         icon: <FaCarAlt className={styles.icon} />,
       },
       {
         label: "Seating Capacities",
-        route: "",
+        route: "/seating-capacities",
         icon: <FaCarAlt className={styles.icon} />,
       },
       {
         label: "Doors",
-        route: "",
+        route: "/doors",
         icon: <FaCarAlt className={styles.icon} />,
       },
       {
         label: "Horse Powers",
-        route: "",
+        route: "/horse-powers",
         icon: <FaCarAlt className={styles.icon} />,
       },
       {
         label: "Tech Features",
-        route: "",
+        route: "/tech-features",
         icon: <FaCarAlt className={styles.icon} />,
       },
       {
         label: "Other Features",
-        route: "",
+        route: "/other-features",
         icon: <FaCarAlt className={styles.icon} />,
       },
     ],
