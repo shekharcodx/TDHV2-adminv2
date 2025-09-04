@@ -1,7 +1,13 @@
 import { Box, Drawer, Portal } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import styles from "./Sidebar.module.css";
-import { FaThLarge, FaUserFriends, FaStar, FaPlusCircle } from "react-icons/fa";
+import {
+  FaThLarge,
+  FaUserFriends,
+  FaStar,
+  FaPlusCircle,
+  FaCarAlt,
+} from "react-icons/fa";
 import { useNavigate, useLocation } from "react-router-dom";
 import logo from "@/assets/logo.png";
 import { Flex } from "@chakra-ui/react";
@@ -56,15 +62,67 @@ const sideBarMenu = [
     subMenu: null,
   },
   {
+    label: "Master Data",
+    route: "/master-data",
+    icon: <FaDatabase className={styles.icon} />,
+    subMenu: [
+      {
+        label: "Car",
+        route: "",
+        icon: <FaCarAlt className={styles.icon} />,
+      },
+      {
+        label: "Body Types",
+        route: "",
+        icon: <FaCarAlt className={styles.icon} />,
+      },
+      {
+        label: "Regional Specs",
+        route: "",
+        icon: <FaCarAlt className={styles.icon} />,
+      },
+      {
+        label: "Transmissions",
+        route: "",
+        icon: <FaCarAlt className={styles.icon} />,
+      },
+      {
+        label: "Fuel Types",
+        route: "",
+        icon: <FaCarAlt className={styles.icon} />,
+      },
+      {
+        label: "Seating Capacities",
+        route: "",
+        icon: <FaCarAlt className={styles.icon} />,
+      },
+      {
+        label: "Doors",
+        route: "",
+        icon: <FaCarAlt className={styles.icon} />,
+      },
+      {
+        label: "Horse Powers",
+        route: "",
+        icon: <FaCarAlt className={styles.icon} />,
+      },
+      {
+        label: "Tech Features",
+        route: "",
+        icon: <FaCarAlt className={styles.icon} />,
+      },
+      {
+        label: "Other Features",
+        route: "",
+        icon: <FaCarAlt className={styles.icon} />,
+      },
+    ],
+  },
+  {
     label: "Settings",
     route: "",
     icon: <FaGears className={styles.icon} />,
     subMenu: [
-      {
-        label: "Master Data",
-        route: "/master-data",
-        icon: <FaDatabase className={styles.icon} />,
-      },
       {
         label: "Email Templates",
         route: "/email-templates",
@@ -138,7 +196,16 @@ const Sidebar = ({ isOpen, onClose }) => {
         <div className={`py-[12px] border-b border-[#eeeaea]`}>
           <img src={logo} alt="logo" className={styles.logo} />
         </div>
-        <nav className={`${styles.menu} mt-[10px]`}>
+        <nav
+          className={`${styles.menu} 
+          mt-[10px] max-h-[83vh] 
+          overflow-y-auto 
+          scrollbar
+          scrollbar-thin 
+          scrollbar-thumb-custom-light
+          scrollbar-hover:scrollbar-thumb-custom
+          scrollbar-track-gray-100`}
+        >
           <ul>
             {sideBarMenu.map((item) => {
               const isActive =
