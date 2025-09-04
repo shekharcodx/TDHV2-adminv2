@@ -1,8 +1,9 @@
 import { baseApi } from "./baseApi";
 
-const vendorApi = baseApi.injectEndpoints({
+const adminApi = baseApi.injectEndpoints({
+  overrideExisting: true,
   endpoints: (builder) => ({
-    getAllVendors: builder.query({
+    getAllAdmins: builder.query({
       query: (params) => {
         const searchParams = new URLSearchParams();
 
@@ -13,25 +14,21 @@ const vendorApi = baseApi.injectEndpoints({
         });
 
         return {
-          url: `/vendors?${searchParams.toString()}`,
+          url: `/admins?${searchParams}`,
           method: "GET",
         };
       },
-      providesTags: ["vendors"],
+      providesTags: ["admins"],
     }),
-    editVendorProfile: builder.mutation({
+    editAdminProfile: builder.mutation({
       query: (data) => ({
-        url: "editVendorProfile",
+        url: "adminProfile",
         method: "PUT",
         body: data,
       }),
-      invalidatesTags: ["vendor", "user"],
+      invalidatesTags: ["admins"],
     }),
   }),
 });
 
-export const {
-  useGetAllVendorsQuery,
-  useEditVendorProfileMutation,
-  useUpdateVendorAccountStatusMutation,
-} = vendorApi;
+export const { useGetAllAdminsQuery, useEditAdminProfileMutation } = adminApi;

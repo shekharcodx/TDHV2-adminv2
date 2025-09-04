@@ -37,5 +37,7 @@ export const baseApi = createApi({
     "profile",
     "vendors",
     "vendor",
+    "admins",
+    "user",
   ],
 });

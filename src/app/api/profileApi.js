@@ -12,7 +12,7 @@ const profileApi = baseApi.injectEndpoints({
     }),
     updateCurrentProfile: builder.mutation({
       query: (data) => ({
-        url: "/adminProfile",
+        url: "/currentAdminProfile",
         method: "PUT",
         body: data,
       }),

@@ -24,6 +24,9 @@ import NotFoundPage from "@/components/ErrorPage";
 import AllVendors from "./pages/Vendors";
 import VendorProfile from "./pages/Vendors/VendorProfile";
 import EditVendorProfile from "./pages/Vendors/EditVendorProfile";
+import Admins from "./pages/admins";
+import AdminProfile from "./pages/admins/AdminProfile";
+import EditAdminProfile from "./pages/admins/EditAdminProfile";
 
 // 🔧 FIX: Import missing UserForm if it's created
 // import UserForm from "./pages/spam/UserForm"; // ← Only if this file exists
@@ -39,13 +42,19 @@ function App() {
           element: <Layout />,
           children: [
             { index: true, element: <DashboardPage /> },
-            { path: "/all-vendors", element: <AllVendors /> },
+            { path: "/vendors", element: <AllVendors /> },
             { path: "/vendor-profile/:id", element: <VendorProfile /> },
             {
               path: "/edit-vendor-profile/:id",
               element: <EditVendorProfile />,
             },
             { path: "/profile", element: <Profile /> },
+            { path: "/admins", element: <Admins /> },
+            { path: "/admin-profile/:id", element: <AdminProfile /> },
+            {
+              path: "/edit-admin-profile/:id",
+              element: <EditAdminProfile />,
+            },
           ],
         },
       ],

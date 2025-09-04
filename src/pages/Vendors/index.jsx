@@ -1,61 +1,28 @@
-import {
-  Box,
-  Button,
-  ButtonGroup,
-  Field,
-  IconButton,
-  Input,
-  Menu,
-  Pagination,
-  Portal,
-  Select,
-  Span,
-  Stack,
-  createListCollection,
-} from "@chakra-ui/react";
+import { Box, Button, Menu, Portal, Span } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
+import { useGetAllVendorsQuery } from "@/app/api/vendorApi";
 import {
-  useGetAllVendorsQuery,
   useUpdateActiveStatusMutation,
-  useUpdateVendorAccountStatusMutation,
-} from "@/app/api/vendorApi";
+  useUpdateAccountStatusMutation,
+} from "@/app/api/userApi";
 import styles from "./VendorTable.module.css";
 import { ACCOUNT_STATUS, ACCOUNT_STATUS_NUM } from "@/utils/constants";
-import { LuChevronRight, LuChevronLeft } from "react-icons/lu";
+import { LuChevronRight } from "react-icons/lu";
 import { MenuIcon } from "lucide-react";
 import avatar from "@/assets/images/avatar.svg";
 import { Skeleton, SkeletonCircle } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import { toaster } from "@/components/ui/toaster";
-
-const getKeyNames = (key) => {
-  switch (key) {
-    case "PENDING":
-      return "Pending";
-    case "APPROVED":
-      return "Approved";
-    case "ON_HOLD":
-      return "On Hold";
-    case "BLOCKED":
-      return "Blocked";
-  }
-};
-
-const statuses = createListCollection({
-  items: [
-    ...Object.entries(ACCOUNT_STATUS).map(([label, value]) => ({
-      label,
-      value: String(value),
-    })),
-  ],
-});
-
-const isActiveStatus = createListCollection({
-  items: [
-    { label: "Active", value: "true" },
-    { label: "Inactive", value: "false" },
-  ],
-});
+import FilterSelect from "@/components/FilterSelect";
+import FilterInput from "@/components/FilterInput/input";
+import FilterResetBtn from "@/components/FilterResetBtn";
+import DataTable from "@/components/DataTable";
+import {
+  getKeyNames,
+  getConfirmMsg,
+  statuses,
+  isActiveStatus,
+} from "@/utils/helper";
 
 const AllVendors = () => {
   const navigate = useNavigate();
@@ -74,7 +41,7 @@ const AllVendors = () => {
     search: searchString,
   });
   const [updateActiveStatus] = useUpdateActiveStatusMutation();
-  const [updateVendorAccountStatus] = useUpdateVendorAccountStatusMutation();
+  const [updateVendorAccountStatus] = useUpdateAccountStatusMutation();
 
   useEffect(() => {
     refetch();
@@ -138,16 +105,158 @@ const AllVendors = () => {
     });
   };
 
-  const getConfirmMsg = (status) => {
-    switch (status) {
-      case 2:
-        return "Do you want to approve the vendor?";
-      case 3:
-        return "Do you want the vendor to be on hold?";
-      case 4:
-        return "Do you want to block the vendor?";
-    }
-  };
+  const columns = [
+    {
+      key: "profile",
+      label: "Profile",
+      render: (vendor) => (
+        <img
+          src={vendor?.profilePicture?.url || avatar}
+          alt={vendor.name}
+          className={`${styles.avatar} mx-auto`}
+        />
+      ),
+    },
+    { key: "businessName", label: "Business Name" },
+    { key: "email", label: "Email" },
+    {
+      key: "status",
+      label: "Status",
+      render: (vendor) => (
+        <span
+          className={`${styles.status} ${
+            vendor.status === 2
+              ? styles.statusGreen
+              : vendor.status === 1
+              ? styles.statusYellow
+              : styles.statusOrange
+          }`}
+        >
+          {ACCOUNT_STATUS_NUM[vendor.status]}
+        </span>
+      ),
+    },
+    {
+      key: "isActive",
+      label: "Active",
+      render: (vendor) =>
+        vendor.isActive ? (
+          <span className={styles.activeBadge}>Active</span>
+        ) : (
+          <span className={styles.inactiveBadge}>Deactivated</span>
+        ),
+    },
+    {
+      key: "actions",
+      label: "Actions",
+      render: (vendor) => (
+        <Menu.Root>
+          <Menu.Trigger asChild>
+            <Button
+              mx="auto"
+              display="block"
+              variant="outline"
+              color="#000"
+              bgGradient="linear-gradient( 90deg, rgba(91, 120, 124, 1) 0%, rgba(137, 180, 188, 1) 35% );"
+              size="sm"
+            >
+              <MenuIcon color="#fff" />
+            </Button>
+          </Menu.Trigger>
+          <Portal>
+            <Menu.Positioner>
+              <Menu.Content>
+                <Menu.Item
+                  onClick={() => navigate(`/vendor-profile/${vendor._id}`)}
+                >
+                  View
+                </Menu.Item>
+                <Menu.Item
+                  onClick={() => navigate(`/edit-vendor-profile/${vendor._id}`)}
+                >
+                  Edit
+                </Menu.Item>
+
+                {!vendor.isActive && (
+                  <Menu.Item
+                    onClick={() => handleActiveStatusChange(vendor._id, true)}
+                  >
+                    <Span
+                      bg="green"
+                      p="2px 8px"
+                      borderRadius="12px"
+                      color="#fff"
+                    >
+                      Activate
+                    </Span>
+                  </Menu.Item>
+                )}
+                {vendor.isActive && (
+                  <Menu.Item
+                    onClick={() => handleActiveStatusChange(vendor._id, false)}
+                  >
+                    <Span bg="red" p="2px 8px" borderRadius="12px" color="#fff">
+                      Deactivate
+                    </Span>
+                  </Menu.Item>
+                )}
+
+                <Menu.Root
+                  positioning={{ placement: "right-start", gutter: 2 }}
+                >
+                  <Menu.TriggerItem>
+                    Change Status <LuChevronRight />
+                  </Menu.TriggerItem>
+                  <Portal>
+                    <Menu.Positioner>
+                      <Menu.Content>
+                        {vendor.status !== ACCOUNT_STATUS.APPROVED && (
+                          <Menu.Item
+                            onClick={() =>
+                              handleAccountStatusChange(
+                                vendor._id,
+                                ACCOUNT_STATUS.APPROVED
+                              )
+                            }
+                          >
+                            Approved
+                          </Menu.Item>
+                        )}
+                        {vendor.status !== ACCOUNT_STATUS.ON_HOLD && (
+                          <Menu.Item
+                            onClick={() =>
+                              handleAccountStatusChange(
+                                vendor._id,
+                                ACCOUNT_STATUS.ON_HOLD
+                              )
+                            }
+                          >
+                            On Hold
+                          </Menu.Item>
+                        )}
+                        {vendor.status !== ACCOUNT_STATUS.BLOCKED && (
+                          <Menu.Item
+                            onClick={() =>
+                              handleAccountStatusChange(
+                                vendor._id,
+                                ACCOUNT_STATUS.BLOCKED
+                              )
+                            }
+                          >
+                            Blocked
+                          </Menu.Item>
+                        )}
+                      </Menu.Content>
+                    </Menu.Positioner>
+                  </Portal>
+                </Menu.Root>
+              </Menu.Content>
+            </Menu.Positioner>
+          </Portal>
+        </Menu.Root>
+      ),
+    },
+  ];
 
   return (
     <div className={styles.wrapper}>
@@ -160,346 +269,51 @@ const AllVendors = () => {
           gap={{ md: "20px" }}
           my="20px"
         >
-          <Stack gap="5" minW="220px" mt={{ base: "20px", md: "0px" }}>
-            <Select.Root
-              variant="outline"
-              size="xs"
-              collection={statuses}
-              value={selectedStatus}
-              onValueChange={(e) => setSelectedStatus(e.value)}
-            >
-              <Select.HiddenSelect />
-              <Select.Label>Account Status</Select.Label>
-              <Select.Control>
-                <Select.Trigger>
-                  <Select.ValueText placeholder="Select account status" />
-                </Select.Trigger>
-                <Select.IndicatorGroup>
-                  <Select.Indicator />
-                </Select.IndicatorGroup>
-              </Select.Control>
-              <Portal>
-                <Select.Positioner>
-                  <Select.Content>
-                    {statuses.items.map((item) => (
-                      <Select.Item key={item.value} item={item}>
-                        {getKeyNames(item.label)}
-                        <Select.ItemIndicator />
-                      </Select.Item>
-                    ))}
-                  </Select.Content>
-                </Select.Positioner>
-              </Portal>
-            </Select.Root>
-          </Stack>
+          <FilterSelect
+            title="Account Status"
+            placeholder="Select account status"
+            collection={statuses}
+            value={selectedStatus}
+            setValue={setSelectedStatus}
+            helper={getKeyNames}
+          />
 
-          <Stack gap="5" minW="220px" mt={{ base: "20px", md: "0px" }}>
-            <Select.Root
-              variant="outline"
-              size="xs"
-              collection={isActiveStatus}
-              value={selectedActiveStatus}
-              onValueChange={(e) => setSelectedActiveStatus(e.value)}
-            >
-              <Select.HiddenSelect />
-              <Select.Label>Account Active Status</Select.Label>
-              <Select.Control>
-                <Select.Trigger>
-                  <Select.ValueText placeholder="Select account status" />
-                </Select.Trigger>
-                <Select.IndicatorGroup>
-                  <Select.Indicator />
-                </Select.IndicatorGroup>
-              </Select.Control>
-              <Portal>
-                <Select.Positioner>
-                  <Select.Content>
-                    {isActiveStatus.items.map((item) => (
-                      <Select.Item key={item.value} item={item}>
-                        {item.label}
-                        <Select.ItemIndicator />
-                      </Select.Item>
-                    ))}
-                  </Select.Content>
-                </Select.Positioner>
-              </Portal>
-            </Select.Root>
-          </Stack>
+          <FilterSelect
+            title="Account Active Status"
+            placeholder="Select account status"
+            collection={isActiveStatus}
+            value={selectedActiveStatus}
+            setValue={setSelectedActiveStatus}
+          />
 
-          <Field.Root mt={{ base: "20px", md: "0px" }}>
-            <Field.Label>Search Vendor</Field.Label>
-            <Input
-              size="xs"
-              outline="none"
-              width="220px"
-              placeholder="Search vendor"
-              variant="outline"
-              value={searchString}
-              onInput={(e) => handleSearchInput(e.currentTarget.value)}
-            />
-          </Field.Root>
+          <FilterInput
+            label="Search Vendor"
+            placeholder="Search vendor"
+            value={searchString}
+            setValue={handleSearchInput}
+          />
 
-          <Button
-            size="xs"
-            display="block"
-            mt={{ base: "20px", md: "0px" }}
-            bgGradient="linear-gradient(
-              90deg,
-              rgba(91, 120, 124, 1) 0%,
-              rgba(137, 180, 188, 1) 35%
-            );"
-            onClick={() => {
-              setSelectedStatus([]);
-              setSelectedActiveStatus([]);
-              setSearchString("");
-            }}
-          >
-            Reset Filters
-          </Button>
+          <FilterResetBtn
+            setSelectOne={setSelectedStatus}
+            setSelectTwo={setSelectedActiveStatus}
+            setSearch={setSearchString}
+          />
         </Box>
       </Box>
-      <div className={styles.tableContainer}>
-        <table className={styles.table}>
-          <thead>
-            <tr className={styles.tableHead}>
-              <th>Profile</th>
-              <th>Name</th>
-              <th>Email</th>
-              <th>Status</th>
-              <th>Active</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {isFetching ? (
-              <SkeletonRow />
-            ) : vendors?.vendors?.docs?.length > 0 ? (
-              vendors?.vendors?.docs?.map((vendor, index) => (
-                <tr
-                  key={vendor._id}
-                  className={
-                    index % 2 === 0 ? styles.tableRowEven : styles.tableRowOdd
-                  }
-                >
-                  <td className={`${styles.tableCell} flex justify-center`}>
-                    <img
-                      src={vendor?.profilePicture?.url || avatar}
-                      alt={vendor.name}
-                      className={styles.avatar}
-                    />
-                  </td>
-                  <td className={`${styles.tableCell} ${styles.cellName}`}>
-                    {vendor.name}
-                  </td>
-                  <td className={`${styles.tableCell} ${styles.cellEmail}`}>
-                    {vendor.email}
-                  </td>
-                  <td className={styles.tableCell}>
-                    <span
-                      className={`${styles.status} ${
-                        vendor.status === 2
-                          ? styles.statusGreen
-                          : vendor.status === 1
-                          ? styles.statusYellow
-                          : styles.statusOrange
-                      }`}
-                    >
-                      {ACCOUNT_STATUS_NUM[vendor.status]}
-                    </span>
-                  </td>
-                  <td className={styles.tableCell}>
-                    {vendor.isActive ? (
-                      <span className={styles.activeBadge}>Active</span>
-                    ) : (
-                      <span className={styles.inactiveBadge}>Deactivated</span>
-                    )}
-                  </td>
-                  <td className={styles.actions}>
-                    <Menu.Root>
-                      <Menu.Trigger asChild>
-                        <Button
-                          mx="auto"
-                          display="block"
-                          variant="outline"
-                          color="#000"
-                          bgGradient="linear-gradient(
-                          90deg,
-                          rgba(91, 120, 124, 1) 0%,
-                          rgba(137, 180, 188, 1) 35%
-                        );"
-                          size="sm"
-                        >
-                          <MenuIcon />
-                        </Button>
-                      </Menu.Trigger>
-                      <Portal>
-                        <Menu.Positioner>
-                          <Menu.Content>
-                            <Menu.Item
-                              cursor="pointer"
-                              value="view"
-                              onClick={() =>
-                                navigate(`/vendor-profile/${vendor._id}`)
-                              }
-                            >
-                              View
-                            </Menu.Item>
-                            <Menu.Item
-                              cursor="pointer"
-                              value="edit"
-                              onClick={() =>
-                                navigate(`/edit-vendor-profile/${vendor._id}`)
-                              }
-                            >
-                              Edit
-                            </Menu.Item>
-                            {!vendor.isActive && (
-                              <Menu.Item
-                                value="activate"
-                                onClick={() =>
-                                  handleActiveStatusChange(vendor._id, true)
-                                }
-                              >
-                                <Span
-                                  bg="green"
-                                  p="2px 8px"
-                                  borderRadius="12px"
-                                  className="bg-red"
-                                  color="#fff"
-                                  cursor="pointer"
-                                >
-                                  Activate
-                                </Span>
-                              </Menu.Item>
-                            )}
-                            {vendor.isActive && (
-                              <Menu.Item
-                                value="deactivate"
-                                onClick={() =>
-                                  handleActiveStatusChange(vendor._id, false)
-                                }
-                              >
-                                <Span
-                                  bg="red"
-                                  p="2px 8px"
-                                  borderRadius="12px"
-                                  className="bg-red"
-                                  color="#fff"
-                                  cursor="pointer"
-                                >
-                                  Deactivate
-                                </Span>
-                              </Menu.Item>
-                            )}
-                            <Menu.Root
-                              positioning={{
-                                placement: "right-start",
-                                gutter: 2,
-                              }}
-                            >
-                              <Menu.TriggerItem>
-                                Change Status <LuChevronRight />
-                              </Menu.TriggerItem>
-                              <Portal>
-                                <Menu.Positioner>
-                                  <Menu.Content>
-                                    {vendor.status !==
-                                      ACCOUNT_STATUS.APPROVED && (
-                                      <Menu.Item
-                                        cursor="pointer"
-                                        value={ACCOUNT_STATUS.APPROVED}
-                                        onClick={(e) =>
-                                          handleAccountStatusChange(
-                                            vendor._id,
-                                            ACCOUNT_STATUS.APPROVED
-                                          )
-                                        }
-                                      >
-                                        Approved
-                                      </Menu.Item>
-                                    )}
-                                    {vendor.status !==
-                                      ACCOUNT_STATUS.ON_HOLD && (
-                                      <Menu.Item
-                                        cursor="pointer"
-                                        value={ACCOUNT_STATUS.ON_HOLD}
-                                        onClick={(e) =>
-                                          handleAccountStatusChange(
-                                            vendor._id,
-                                            ACCOUNT_STATUS.ON_HOLD
-                                          )
-                                        }
-                                      >
-                                        On Hold
-                                      </Menu.Item>
-                                    )}
-                                    {vendor.status !==
-                                      ACCOUNT_STATUS.BLOCKED && (
-                                      <Menu.Item
-                                        cursor="pointer"
-                                        value={ACCOUNT_STATUS.BLOCKED}
-                                        onClick={(e) =>
-                                          handleAccountStatusChange(
-                                            vendor._id,
-                                            ACCOUNT_STATUS.BLOCKED
-                                          )
-                                        }
-                                      >
-                                        Blocked
-                                      </Menu.Item>
-                                    )}
-                                  </Menu.Content>
-                                </Menu.Positioner>
-                              </Portal>
-                            </Menu.Root>
-                          </Menu.Content>
-                        </Menu.Positioner>
-                      </Portal>
-                    </Menu.Root>
-                  </td>
-                </tr>
-              ))
-            ) : (
-              <tr>
-                <td className="text-center py-[10px]" colSpan={6}>
-                  No vendor found
-                </td>
-              </tr>
-            )}
-          </tbody>
-        </table>
-      </div>
 
-      {/* Pagination */}
-      <Pagination.Root
-        count={vendors?.vendors?.totalPages}
-        pageSize={2}
-        defaultPage={1}
+      <DataTable
+        columns={columns}
+        data={vendors?.vendors?.docs || []}
+        pagination={true}
+        paginationData={vendors?.vendors}
         page={page}
-        onPageChange={(e) => setPage(e.page)}
-      >
-        <ButtonGroup
-          gap="4"
-          size="sm"
-          variant="ghost"
-          display="flex"
-          justifyContent="end"
-          my="20px"
-        >
-          {/* <p>{vendors?.vendors?.totalDocs} Results Total</p> */}
-          <Pagination.PrevTrigger asChild>
-            <IconButton>
-              <LuChevronLeft />
-            </IconButton>
-          </Pagination.PrevTrigger>
-          <Pagination.PageText />
-          <Pagination.NextTrigger asChild>
-            <IconButton>
-              <LuChevronRight />
-            </IconButton>
-          </Pagination.NextTrigger>
-        </ButtonGroup>
-      </Pagination.Root>
+        setPage={setPage}
+        isFetching={isFetching}
+        skeleton={<SkeletonRow />}
+        getRowClass={(_, i) =>
+          i % 2 === 0 ? styles.tableRowEven : styles.tableRowOdd
+        }
+      />
     </div>
   );
 };

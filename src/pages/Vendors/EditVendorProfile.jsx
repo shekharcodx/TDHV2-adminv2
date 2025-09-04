@@ -9,7 +9,7 @@ import { toaster } from "@/components/ui/toaster";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SkeletonCircle } from "@chakra-ui/react";
 import { useParams, useNavigate } from "react-router-dom";
-import { useLazyGetVendorQuery } from "@/app/api/vendorApi";
+import { useLazyGetUserQuery } from "@/app/api/userApi";
 import { useEditVendorProfileMutation } from "@/app/api/vendorApi";
 
 const schema = z.object({
@@ -40,7 +40,7 @@ const EditVendorProfile = () => {
   const [
     fetchVendorProfile,
     { data: vendorProfile, isFetching: vendorFetching },
-  ] = useLazyGetVendorQuery();
+  ] = useLazyGetUserQuery();
 
   const [updateProfile, { isFetching: profileEditing }] =
     useEditVendorProfileMutation();
@@ -172,9 +172,9 @@ const EditVendorProfile = () => {
           <Breadcrumb.Item>
             <Breadcrumb.Link
               cursor="pointer"
-              onClick={() => navigate("/all-vendors")}
+              onClick={() => navigate("/vendors")}
             >
-              All Vendors
+              Vendors
             </Breadcrumb.Link>
           </Breadcrumb.Item>
           <Breadcrumb.Separator />
@@ -438,7 +438,7 @@ const EditVendorProfile = () => {
               mt="20px"
             >
               <div
-                className={`${styles.editBtn} ${styles.editModeBtn} cursor-pointer text-center sm:!w-full md:!w-auto`}
+                className={`${styles.backBtn} cursor-pointer text-center sm:!w-full md:!w-auto`}
                 onClick={() => navigate(-1)}
               >
                 Back

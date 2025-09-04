@@ -6,9 +6,9 @@ import { useNavigate, useLocation } from "react-router-dom";
 import logo from "@/assets/logo.png";
 import { Flex } from "@chakra-ui/react";
 import { FaChevronDown, FaChevronRight } from "react-icons/fa";
-import { FaShop } from "react-icons/fa6";
+import { FaShop, FaUserPlus, FaUserShield } from "react-icons/fa6";
 import { FaShopLock } from "react-icons/fa6";
-import { X } from "lucide-react";
+import { User, X } from "lucide-react";
 // import logo from "../../assets/logo.png";
 
 const sideBarMenu = [
@@ -20,13 +20,24 @@ const sideBarMenu = [
   },
   {
     label: "Vendors",
+    route: "/vendors",
+    icon: <FaShop className={styles.icon} />,
+    subMenu: null,
+  },
+  {
+    label: "Admins",
     route: "",
-    icon: <FaUserFriends className={styles.icon} />,
+    icon: <FaUserShield className={styles.icon} />,
     subMenu: [
       {
-        label: "All Vendors",
-        route: "/all-vendors",
-        icon: <FaShop className={styles.icon} />,
+        label: "Admins List",
+        route: "/admins",
+        icon: <FaUserShield className={styles.icon} />,
+      },
+      {
+        label: "Create Admin",
+        route: "/create-admin",
+        icon: <FaUserPlus className={styles.icon} />,
       },
     ],
   },
