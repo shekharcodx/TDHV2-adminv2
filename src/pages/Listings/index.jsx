@@ -8,7 +8,11 @@ import {
   Skeleton,
   Span,
 } from "@chakra-ui/react";
-import { useGetListingsQuery } from "@/app/api/carListingApi";
+import {
+  useGetListingsQuery,
+  useUpdateStatusMutation,
+  useUpdateIsActiveMutation,
+} from "@/app/api/carListingApi";
 import { listingStatuses, isActiveStatus, getKeyNames } from "@/utils/helper";
 import FilterSelect from "@/components/FilterSelect";
 import FilterResetBtn from "@/components/FilterResetBtn";
@@ -20,6 +24,7 @@ import placeholderImg from "@/assets/images/placeholder_image.jpg";
 import { MenuIcon } from "lucide-react";
 import { LuChevronRight } from "react-icons/lu";
 import { useNavigate } from "react-router-dom";
+import { toaster } from "@/components/ui/toaster";
 
 const Listings = () => {
   const [page, setPage] = useState(1);
@@ -39,6 +44,9 @@ const Listings = () => {
     search: searchString,
   });
 
+  const [updateStatus] = useUpdateStatusMutation();
+  const [updateIsActive] = useUpdateIsActiveMutation();
+
   const handleSearchInput = (string) => {
     setSelectedActiveStatus([]);
     setSelectedStatus([]);
@@ -49,6 +57,57 @@ const Listings = () => {
   useEffect(() => {
     refetch();
   }, [page, selectedActiveStatus, selectedStatus]);
+
+  const handleStatusUpdate = (listingId, status) => {
+    if (!confirm("Do you want to update this")) {
+      return;
+    }
+    toaster.promise(updateStatus({ listingId, status }).unwrap(), {
+      loading: { title: "Updating Status", description: "Please wait..." },
+      success: (res) => {
+        if (res?.code === 1722) {
+          navigate("/car-listings");
+        }
+        return {
+          title: res?.message || "Status updated successfully",
+          description: "",
+        };
+      },
+      error: (err) => {
+        return {
+          title: err?.data?.message || "Error updating status",
+          description: "Please try again",
+        };
+      },
+    });
+  };
+
+  const handleIsActiveUpdate = (listingId, active) => {
+    if (!confirm("Do you want to update this")) {
+      return;
+    }
+    toaster.promise(updateIsActive({ listingId, active }).unwrap(), {
+      loading: {
+        title: "Updating active Status",
+        description: "Please wait...",
+      },
+      success: (res) => {
+        if (res?.code === 1722) {
+          navigate("/car-listings");
+        }
+        return {
+          title: res?.message || "Cars active updated successfully",
+          description: "",
+        };
+      },
+      error: (err) => {
+        return {
+          title: err?.data?.message || "Error updating active status",
+          description: "Please try again",
+        };
+      },
+    });
+  };
 
   const columns = [
     {
@@ -140,7 +199,7 @@ const Listings = () => {
                   <Menu.Item
                     value="activate"
                     cursor="pointer"
-                    onClick={() => console.log("index:Active")}
+                    onClick={() => handleIsActiveUpdate(listing._id, "true")}
                   >
                     <Span
                       bg="green"
@@ -156,7 +215,7 @@ const Listings = () => {
                   <Menu.Item
                     value="deactivate"
                     cursor="pointer"
-                    onClick={() => console.log("index:Deactive")}
+                    onClick={() => handleIsActiveUpdate(listing._id, "false")}
                   >
                     <Span bg="red" p="2px 8px" borderRadius="12px" color="#fff">
                       Deactivate
@@ -177,7 +236,12 @@ const Listings = () => {
                           <Menu.Item
                             value="approved"
                             cursor="pointer"
-                            onClick={() => console.log("index:Approved")}
+                            onClick={() =>
+                              handleStatusUpdate(
+                                listing._id,
+                                LISTING_STATUS.APPROVED
+                              )
+                            }
                           >
                             Approved
                           </Menu.Item>
@@ -186,7 +250,12 @@ const Listings = () => {
                           <Menu.Item
                             value="onHold"
                             cursor="pointer"
-                            onClick={() => console.log("index:OnHold")}
+                            onClick={() =>
+                              handleStatusUpdate(
+                                listing._id,
+                                LISTING_STATUS.ON_HOLD
+                              )
+                            }
                           >
                             On Hold
                           </Menu.Item>

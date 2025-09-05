@@ -35,6 +35,22 @@ const carApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ["listings", "listing"],
     }),
+    updateStatus: builder.mutation({
+      query: ({ listingId, status }) => ({
+        url: `/listingStatus/${listingId}`,
+        method: "PUT",
+        body: { status },
+      }),
+      invalidatesTags: ["listings"],
+    }),
+    updateIsActive: builder.mutation({
+      query: ({ listingId, active }) => ({
+        url: `/listing/${listingId}`,
+        method: "PATCH",
+        body: { isActive: active },
+      }),
+      invalidatesTags: ["listings"],
+    }),
   }),
 });
 
@@ -42,4 +58,6 @@ export const {
   useGetListingsQuery,
   useLazyGetListingQuery,
   useUpdateListingMutation,
+  useUpdateStatusMutation,
+  useUpdateIsActiveMutation,
 } = carApi;
