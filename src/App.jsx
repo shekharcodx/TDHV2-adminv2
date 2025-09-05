@@ -5,7 +5,7 @@ import Layout from "@/components/layout/Layout";
 import Profile from "@/pages/Profile/Profile";
 import DashboardPage from "@/pages/Dash/DashboardPage";
 import ProtectedRoute from "@/components/ProtectedRoute";
-import Login from "./pages/Auth/login/Login";
+import Login from "./pages/auth/login/Login";
 import ForgetPassword from "./pages/Auth/forgetPassword/Forgetpass";
 import Resetpass from "./pages/Auth/resetPassword/Resetpass";
 import UnauthorizedPage from "@/components/unauthorised";
