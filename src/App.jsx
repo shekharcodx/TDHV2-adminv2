@@ -70,8 +70,8 @@ function App() {
     },
 
     { path: "/login", element: <Login /> },
-    { path: "/Forget-pass", element: <ForgetPassword /> },
-    { path: "/reset-pass", element: <Resetpass /> },
+    { path: "/Forget-password", element: <ForgetPassword /> },
+    { path: "/reset-password", element: <Resetpass /> },
     { path: "/unauthorized", element: <UnauthorizedPage /> },
     { path: "*", element: <NotFoundPage /> },
   ];

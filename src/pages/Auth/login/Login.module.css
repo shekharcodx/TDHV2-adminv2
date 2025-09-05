@@ -19,7 +19,7 @@
   border-radius: 12px;
   background: var(--neutral-bg);
   padding: 36px 32px; /* More balanced padding top-bottom and left-right */
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 6px 24px rgba(39, 52, 58, 0.15);
   border: 1px solid #ddd; /* ✅ Added border */
 }
 

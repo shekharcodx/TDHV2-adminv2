@@ -70,7 +70,7 @@ const Login = () => {
     <div className={styles.signinWrapper}>
       <div className={styles.cardWrapper}>
         <div className={styles.signinCard}>
-          <h3 className={styles.title}>Login</h3>
+          <h3 className={styles.title}>LOGIN</h3>
           <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
             {/* Email */}
             <div className={styles.formGroup}>
@@ -129,7 +129,7 @@ const Login = () => {
             </button>
 
             {/* Only Forget Password link */}
-            <Link to="/forget-passgit" className={styles.forgetLink}>
+            <Link to="/forget-password" className={styles.forgetLink}>
               Forgot Password?
             </Link>
           </form>

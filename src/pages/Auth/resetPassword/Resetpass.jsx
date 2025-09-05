@@ -143,8 +143,8 @@ const Resetpass = () => {
           </button>
 
           <h6 className={styles.orText}>OR</h6>
-          <Link to="/sign-in" className={styles.forgetLink}>
-            Sign In
+          <Link to="/login" className={styles.forgetLink}>
+            Login
           </Link>
         </form>
       </div>

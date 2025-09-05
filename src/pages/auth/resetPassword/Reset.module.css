@@ -30,7 +30,7 @@
 /* Card */
 .resetCard {
   border-radius: 12px;
-  background: var(--neutral);
+  background: var(--neutral-bg);
   padding: 2.5rem 2.25rem; /* slightly more padding */
   width: 100%;
   max-width: 400px;
