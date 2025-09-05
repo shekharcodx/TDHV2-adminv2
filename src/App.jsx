@@ -12,7 +12,7 @@ import UnauthorizedPage from "@/components/unauthorised";
 import NotFoundPage from "@/components/ErrorPage";
 import AllVendors from "./pages/Vendors";
 import VendorProfile from "./pages/Vendors/VendorProfile";
-import EditVendorProfile from "./pages/Vendors/DocumentCard";
+import EditVendorProfile from "./pages/Vendors/EditVendorProfile";
 import Admins from "./pages/Admins";
 import AdminProfile from "./pages/Admins/AdminProfileView";
 import EditAdminProfile from "./pages/Admins/AdminProfileEdit";
