@@ -171,10 +171,12 @@ const Listings = () => {
               display="block"
               variant="outline"
               color="#000"
-              bgGradient="linear-gradient( 90deg, rgba(91, 120, 124, 1) 0%, rgba(137, 180, 188, 1) 35% );"
+              outline="none"
+              border="none"
+              // bgGradient="linear-gradient( 90deg, rgba(91, 120, 124, 1) 0%, rgba(137, 180, 188, 1) 35% );"
               size="sm"
             >
-              <MenuIcon color="#fff" />
+              <MenuIcon color="rgba(91, 120, 124, 1)" />
             </Button>
           </Menu.Trigger>
           <Portal>
@@ -274,45 +276,47 @@ const Listings = () => {
 
   return (
     <>
-      <Heading fontSize="24px" fontWeight="600" mb="30px">
-        Car Listings
-      </Heading>
-      <Box
-        display={{ base: "block", md: "flex" }}
-        justifyContent={{ base: "center", md: "start" }}
-        alignItems="end"
-        gap={{ md: "20px" }}
-        my="20px"
-      >
-        <FilterSelect
-          title="Listing Status"
-          placeholder="Select listing status"
-          collection={listingStatuses}
-          value={selectedStatus}
-          setValue={setSelectedStatus}
-          helper={getKeyNames}
-        />
+      <Box mb="10px" borderBottom="1px solid #fff5">
+        <Heading fontSize="24px" fontWeight="600" mb="30px">
+          Car Listings
+        </Heading>
+        <Box
+          display={{ base: "block", md: "flex" }}
+          justifyContent={{ base: "center", md: "start" }}
+          alignItems="end"
+          gap={{ md: "20px" }}
+          my="20px"
+        >
+          <FilterSelect
+            title="Listing Status"
+            placeholder="Select listing status"
+            collection={listingStatuses}
+            value={selectedStatus}
+            setValue={setSelectedStatus}
+            helper={getKeyNames}
+          />
 
-        <FilterSelect
-          title="Listing Active Status"
-          placeholder="Select listing active status"
-          collection={isActiveStatus}
-          value={selectedActiveStatus}
-          setValue={setSelectedActiveStatus}
-        />
+          <FilterSelect
+            title="Listing Active Status"
+            placeholder="Select listing active status"
+            collection={isActiveStatus}
+            value={selectedActiveStatus}
+            setValue={setSelectedActiveStatus}
+          />
 
-        <FilterInput
-          label="Search Listing"
-          placeholder="Search listing"
-          value={searchString}
-          setValue={handleSearchInput}
-        />
+          <FilterInput
+            label="Search Listing"
+            placeholder="Search listing"
+            value={searchString}
+            setValue={handleSearchInput}
+          />
 
-        <FilterResetBtn
-          setSelectOne={setSelectedStatus}
-          setSelectTwo={setSelectedActiveStatus}
-          setSearch={setSearchString}
-        />
+          <FilterResetBtn
+            setSelectOne={setSelectedStatus}
+            setSelectTwo={setSelectedActiveStatus}
+            setSearch={setSearchString}
+          />
+        </Box>
       </Box>
 
       <DataTable

@@ -105,10 +105,12 @@ const Admins = () => {
               display="block"
               variant="outline"
               color="#000"
-              bgGradient="linear-gradient( 90deg, rgba(91, 120, 124, 1) 0%, rgba(137, 180, 188, 1) 35% );"
+              outline="none"
+              border="none"
+              // bgGradient="linear-gradient( 90deg, rgba(91, 120, 124, 1) 0%, rgba(137, 180, 188, 1) 35% );"
               size="sm"
             >
-              <MenuIcon color="#fff" />
+              <MenuIcon color="rgba(91, 120, 124, 1)" />
             </Button>
           </Menu.Trigger>
           <Portal>
@@ -165,7 +167,7 @@ const Admins = () => {
   ];
 
   return (
-    <div className={styles.wrapper}>
+    <>
       <Box mb="10px" borderBottom="1px solid #fff5">
         <Heading fontSize="24px" fontWeight="600" mb="30px">
           ADMINS
@@ -212,7 +214,7 @@ const Admins = () => {
           i % 2 === 0 ? styles.tableRowEven : styles.tableRowOdd
         }
       />
-    </div>
+    </>
   );
 };
 

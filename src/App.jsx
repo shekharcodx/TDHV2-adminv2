@@ -76,8 +76,6 @@ function App() {
     { path: "*", element: <NotFoundPage /> },
   ];
 
-  console.log("ListingView import:", ListingView);
-
   return useRoutes(routes);
 }
 

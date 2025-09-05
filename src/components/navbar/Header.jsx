@@ -9,11 +9,13 @@ import {
   removeToken,
   removeUserRole,
   removeUser,
+  getUser,
 } from "@/utils/localStorageMethods";
 import UpdatePassword from "@/pages/Profile/UpdatePassword";
+import placeholderImage from "@/assets/images/avatar.svg";
 
 const Header = ({ isOpen, setIsOpen }) => {
-  const [open, setOpen] = useState(false);
+  const [user, setUser] = useState(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const navigate = useNavigate();
   const dropdownRef = useRef(null);
@@ -32,15 +34,9 @@ const Header = ({ isOpen, setIsOpen }) => {
     navigate("/login");
   };
 
-  // Close when clicking outside
   useEffect(() => {
-    const handleClick = (e) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
-        setOpen(false);
-      }
-    };
-    document.addEventListener("mousedown", handleClick);
-    return () => document.removeEventListener("mousedown", handleClick);
+    const currentUser = getUser();
+    setUser(currentUser);
   }, []);
 
   return (
@@ -52,32 +48,17 @@ const Header = ({ isOpen, setIsOpen }) => {
 
         <div className={styles.rightSection} ref={dropdownRef}>
           <Button
+            variant="ghost"
             display={{ base: "block", md: "none" }}
             onClick={() => setIsOpen(!isOpen)}
           >
-            <FaBars />
+            <FaBars color="rgba(91, 120, 124, 1)" />
           </Button>
-          {/* <div className={styles.avatarWrapper} onClick={() => setOpen(!open)}>
-          <img
-            src="https://cdn-icons-png.flaticon.com/512/219/219986.png"
-            alt="User Avatar"
-            className={styles.avatar}
-          />
-        </div>
-
-        {open && (
-          <div className={styles.dropdown}>
-            <ul>
-              <li onClick={() => navigate("/profile")}>👤 Profile</li>
-              <li onClick={handleSignOut}>🚪 Sign Out</li>
-            </ul>
-          </div>
-        )} */}
           <Menu.Root positioning={{ placement: "bottom" }}>
             <Menu.Trigger rounded="full" cursor="pointer">
               <Avatar.Root size="sm">
                 <img
-                  src="https://cdn-icons-png.flaticon.com/512/219/219986.png"
+                  src={user?.profilePicture || placeholderImage}
                   alt="User Avatar"
                   className={styles.avatar}
                 />

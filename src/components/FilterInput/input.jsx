@@ -6,6 +6,8 @@ const FilterInput = ({ label, placeholder, value, setValue }) => {
       <Field.Label>{label}</Field.Label>
       <Input
         size="md"
+        border="1px solid rgba(91, 120, 124, 1)"
+        borderRadius="8px"
         outline="none"
         minW="220px"
         placeholder={placeholder}

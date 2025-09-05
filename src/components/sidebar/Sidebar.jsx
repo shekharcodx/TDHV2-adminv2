@@ -162,7 +162,13 @@ const Sidebar = ({ isOpen, onClose }) => {
   };
 
   const renderMenu = (isMobile = false) => (
-    <nav className={styles.menu}>
+    <nav
+      className={`${styles.menu} max-h-[80vh] overflow-auto scrollbar-thin
+         scrollbar-thumb-gray-400
+         scrollbar-thumb-rounded-full
+         hover:scrollbar-thumb-gray-500
+         scrollbar-track-gray-100`}
+    >
       <ul>
         {sideBarMenu.map((item) => {
           const isActive =
@@ -240,7 +246,7 @@ const Sidebar = ({ isOpen, onClose }) => {
         display={{ base: "none", md: "block" }}
         pt="8px"
       >
-        <div className="py-[12px] border-b border-[#eeeaea]">
+        <div className="py-[8px] border-b border-[#eeeaea]">
           <img src={logo} alt="logo" className={styles.logo} />
         </div>
         {renderMenu(false)}
@@ -257,11 +263,11 @@ const Sidebar = ({ isOpen, onClose }) => {
         <Portal>
           <Drawer.Backdrop />
           <Drawer.Positioner>
-            <Drawer.Content w="220px">
-              <Drawer.Body p="0px">
-                <aside className={styles.sidebar}>
+            <Drawer.Content w="259px">
+              <Drawer.Body p="0px" overflowX="hidden">
+                <aside className={`${styles.sidebar} overflow-x-hidden`}>
                   <button
-                    className="absolute right-[0px] bg-[linear-gradient(90deg,rgba(91,120,124,1)0%,rgba(137,180,188,1)35%)] rounded-full mr-[5px] mt-[5px]"
+                    className="absolute left-full top-[9px] bg-[linear-gradient(90deg,rgba(91,120,124,1)0%,rgba(137,180,188,1)35%)] rounded-r-full p-[12px] mr-[5px] mt-[5px]"
                     onClick={() => onClose(false)}
                   >
                     <X size="20px" color="#fff" />
@@ -269,7 +275,9 @@ const Sidebar = ({ isOpen, onClose }) => {
                   <div className="py-[14px]">
                     <img src={logo} alt="logo" className={styles.logo} />
                   </div>
-                  {renderMenu(true)}
+                  <div className="max-h-[80vh] overflow-auto">
+                    {renderMenu(true)}
+                  </div>
                 </aside>
               </Drawer.Body>
             </Drawer.Content>
