@@ -16,7 +16,7 @@ import EditVendorProfile from "./pages/Vendors/DocumentCard";
 import Admins from "./pages/Admins";
 import AdminProfile from "./pages/Admins/AdminProfileView";
 import EditAdminProfile from "./pages/Admins/AdminProfileEdit";
-import CreateAdmin from "./pages/Admins/CreateAdmin";
+import CreateAdmin from "./pages/Admins/AdminCreate";
 import { Box } from "@chakra-ui/react";
 import Listings from "@/pages/Listings";
 import ListingView from "@/pages/Listings/ListingView";
