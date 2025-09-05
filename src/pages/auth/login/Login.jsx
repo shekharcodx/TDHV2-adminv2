@@ -125,7 +125,7 @@ const Login = () => {
                   : {}
               }
             >
-              Sign In
+              Login
             </button>
 
             {/* Only Forget Password link */}
