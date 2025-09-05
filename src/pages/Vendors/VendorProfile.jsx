@@ -249,7 +249,7 @@ const VendorProfile = () => {
             </div>
             <div
               className={`${styles.editBtn} ${styles.editModeBtn} cursor-pointer text-center sm:!w-full md:!w-auto`}
-              onClick={() => navigate(`/edit-vendor-profile/${vendorId}`)}
+              onClick={() => navigate(`/vendors/edit/${vendorId}`)}
             >
               Edit Profile
             </div>

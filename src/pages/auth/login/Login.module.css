@@ -1,5 +1,3 @@
-
-
 /* Wrapper centers the content */
 .signinWrapper {
   display: flex;
@@ -126,3 +124,7 @@
   color: #fff;
 }
 
+.errorMsg {
+  margin-top: 5px;
+  color: red;
+}

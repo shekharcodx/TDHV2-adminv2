@@ -124,3 +124,8 @@
   background: var(--slate-gray-secondary);
   color: #fff;
 }
+
+.errorMsg {
+  margin-top: 5px;
+  color: red;
+}

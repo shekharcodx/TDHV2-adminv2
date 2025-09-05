@@ -111,3 +111,8 @@
   margin-top: 6px; /* slightly increased for clarity */
   margin-bottom: -10px; /* pull error closer to input */
 }
+
+.errorMsg {
+  margin-top: 5px;
+  color: red;
+}

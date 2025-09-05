@@ -28,7 +28,7 @@ function DataTable({
           </thead>
           <tbody>
             {isFetching ? (
-              skeleton || (
+              Array.from({ length: 3 }).map(() => skeleton) || (
                 <tr>
                   <td colSpan={columns.length}>Loading...</td>
                 </tr>

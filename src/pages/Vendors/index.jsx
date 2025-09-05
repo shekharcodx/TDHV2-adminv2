@@ -169,14 +169,14 @@ const AllVendors = () => {
                 <Menu.Item
                   value="view"
                   cursor="pointer"
-                  onClick={() => navigate(`/vendor-profile/${vendor._id}`)}
+                  onClick={() => navigate(`/vendors/view/${vendor._id}`)}
                 >
                   View
                 </Menu.Item>
                 <Menu.Item
                   value="edit"
                   cursor="pointer"
-                  onClick={() => navigate(`/edit-vendor-profile/${vendor._id}`)}
+                  onClick={() => navigate(`/vendors/edit/${vendor._id}`)}
                 >
                   Edit
                 </Menu.Item>

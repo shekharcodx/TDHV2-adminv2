@@ -40,5 +40,6 @@ export const baseApi = createApi({
     "admins",
     "user",
     "listings",
+    "listing",
   ],
 });

@@ -117,14 +117,14 @@ const Admins = () => {
                 <Menu.Item
                   value="view"
                   cursor="pointer"
-                  onClick={() => navigate(`/admin-profile/${admin._id}`)}
+                  onClick={() => navigate(`/admins/view/${admin._id}`)}
                 >
                   View
                 </Menu.Item>
                 <Menu.Item
                   value="edit"
                   cursor="pointer"
-                  onClick={() => navigate(`/edit-admin-profile/${admin._id}`)}
+                  onClick={() => navigate(`/admins/edit/${admin._id}`)}
                 >
                   Edit
                 </Menu.Item>

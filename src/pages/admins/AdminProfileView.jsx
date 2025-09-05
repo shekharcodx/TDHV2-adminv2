@@ -147,7 +147,7 @@ const AdminProfile = () => {
             </div>
             <div
               className={`${styles.editBtn} ${styles.editModeBtn} cursor-pointer text-center sm:!w-full md:!w-auto`}
-              onClick={() => navigate(`/edit-admin-profile/${adminId}`)}
+              onClick={() => navigate(`/admins/edit/${adminId}`)}
             >
               Edit Profile
             </div>

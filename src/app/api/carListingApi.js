@@ -20,7 +20,26 @@ const carApi = baseApi.injectEndpoints({
       },
       providesTags: ["listings"],
     }),
+    getListing: builder.query({
+      query: (listingId) => ({
+        url: `/listing/${listingId}`,
+        method: "GET",
+      }),
+      providesTags: ["listing"],
+    }),
+    updateListing: builder.mutation({
+      query: ({ listingId, data }) => ({
+        url: `/vendorListing/${listingId}`,
+        method: "PUT",
+        body: data,
+      }),
+      invalidatesTags: ["listings", "listing"],
+    }),
   }),
 });
 
-export const { useGetListingsQuery } = carApi;
+export const {
+  useGetListingsQuery,
+  useLazyGetListingQuery,
+  useUpdateListingMutation,
+} = carApi;

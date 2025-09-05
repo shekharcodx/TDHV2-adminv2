@@ -20,9 +20,6 @@
 @theme {
   --color-custom: rgba(91, 120, 124, 1);
   --color-custom-light: rgba(137, 180, 188, 1);
-}
-
-:root {
   --charcoal-blue-grey-one-color: #27343a;
   --slate-gray-secondary-two-color: #5b787c;
   --misty-teal-three-color: #89b4bc;

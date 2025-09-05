@@ -1,10 +1,10 @@
 /* Variables */
 :root {
-  --charcoal-blue-grey: #27343A;
-  --slate-gray-secondary: #5B787C;
-  --misty-teal: #89B4BC;
-  --light-gray: #CECCCD;
-  --neutral: #EFEEEA;
+  --charcoal-blue-grey: #27343a;
+  --slate-gray-secondary: #5b787c;
+  --misty-teal: #89b4bc;
+  --light-gray: #cecccd;
+  --neutral: #efeeea;
 
   --gradient-background: linear-gradient(
     90deg,
@@ -180,6 +180,10 @@
   min-width: unset; /* remove forced 250px */
 }
 
+.errorMsg {
+  margin-top: 5px;
+  color: red;
+}
 
 /* Responsive */
 @media (max-width: 768px) {

@@ -1,9 +1,9 @@
 :root {
-  --charcoal-blue-grey-one-color: #27343A;
-  --slate-gray-secondary-two-color: #5B787C;
-  --misty-teal-three-color: #89B4BC;
-  --light-gray-four-color: #CECCCD;
-  --neutral-five-color: #EFEEEA;
+  --charcoal-blue-grey-one-color: #27343a;
+  --slate-gray-secondary-two-color: #5b787c;
+  --misty-teal-three-color: #89b4bc;
+  --light-gray-four-color: #cecccd;
+  --neutral-five-color: #efeeea;
 
   --gradient-background: linear-gradient(
     90deg,
@@ -25,12 +25,11 @@
   padding: 30px 25px;
   border-radius: 12px;
   background: var(--neutral-five-color);
-  box-shadow: 0 8px 24px rgba(0,0,0,0.2); /* stronger shadow */
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2); /* stronger shadow */
   display: flex;
   flex-direction: column;
   align-items: center;
   border: 1px solid #ddd;
-
 }
 
 .title {
@@ -54,7 +53,6 @@
   color: var(--charcoal-blue-grey-one-color);
 }
 
-
 .inputField:focus {
   border-color: var(--misty-teal-three-color);
   box-shadow: 0 0 6px rgba(137, 180, 188, 0.5);
@@ -64,8 +62,8 @@
 .passwordWrapper {
   position: relative;
   display: flex;
-  align-items: center; 
-    margin-bottom: 15px;/* vertically center input contents */
+  align-items: center;
+  margin-bottom: 15px; /* vertically center input contents */
 }
 
 .inputField {
@@ -87,10 +85,9 @@
   top: 50%;
   transform: translateY(-50%);
   cursor: pointer;
-  
+
   color: var(--slate-gray-secondary-two-color);
 }
-
 
 .submitBtn {
   border-radius: 8px;
@@ -112,4 +109,9 @@
   color: red;
   font-size: 0.85rem;
   margin-top: 4px;
+}
+
+.errorMsg {
+  margin-top: 5px;
+  color: red;
 }

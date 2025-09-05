@@ -6,7 +6,6 @@ import {
   Menu,
   Portal,
   Skeleton,
-  SkeletonCircle,
   Span,
 } from "@chakra-ui/react";
 import { useGetListingsQuery } from "@/app/api/carListingApi";
@@ -20,12 +19,14 @@ import { LISTING_STATUS, LISTING_STATUS_NUM } from "@/utils/constants";
 import placeholderImg from "@/assets/images/placeholder_image.jpg";
 import { MenuIcon } from "lucide-react";
 import { LuChevronRight } from "react-icons/lu";
+import { useNavigate } from "react-router-dom";
 
 const Listings = () => {
   const [page, setPage] = useState(1);
   const [selectedStatus, setSelectedStatus] = useState([]);
   const [selectedActiveStatus, setSelectedActiveStatus] = useState([]);
   const [searchString, setSearchString] = useState("");
+  const navigate = useNavigate();
 
   const {
     data: listings,
@@ -123,7 +124,7 @@ const Listings = () => {
                 <Menu.Item
                   value="view"
                   cursor="pointer"
-                  onClick={() => navigate(`#`)}
+                  onClick={() => navigate(`/car-listings/view/${listing._id}`)}
                 >
                   View
                 </Menu.Item>
@@ -203,7 +204,7 @@ const Listings = () => {
   ];
 
   return (
-    <Box p="1rem">
+    <>
       <Heading fontSize="24px" fontWeight="600" mb="30px">
         Car Listings
       </Heading>
@@ -258,7 +259,7 @@ const Listings = () => {
           i % 2 === 0 ? styles.tableRowEven : styles.tableRowOdd
         }
       />
-    </Box>
+    </>
   );
 };
 
@@ -266,7 +267,7 @@ const SkeletonRow = () => {
   return (
     <tr className={`${styles.tableRowEven} py-[10px]`}>
       <td className={`${styles.tableCell}`} colSpan={8}>
-        <Skeleton height="25px" width="100%" variant="shine" />
+        <Skeleton height="18px" width="100%" variant="shine" />
       </td>
     </tr>
   );

@@ -10,7 +10,7 @@ import {
   removeUserRole,
   removeUser,
 } from "@/utils/localStorageMethods";
-import UpdatePassword from "@/pages/profile/UpdatePassword";
+import UpdatePassword from "@/pages/Profile/UpdatePassword";
 
 const Header = ({ isOpen, setIsOpen }) => {
   const [open, setOpen] = useState(false);
