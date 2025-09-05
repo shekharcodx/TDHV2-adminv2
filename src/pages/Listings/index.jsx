@@ -192,7 +192,7 @@ const Listings = () => {
                 <Menu.Item
                   value="edit"
                   cursor="pointer"
-                  onClick={() => navigate(`#`)}
+                  onClick={() => navigate(`/car-listings/edit/${listing._id}`)}
                 >
                   Edit
                 </Menu.Item>

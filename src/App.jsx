@@ -21,6 +21,7 @@ import { Box } from "@chakra-ui/react";
 import Listings from "@/pages/Listings";
 import ListingView from "@/pages/Listings/ListingView";
 import PagesLayout from "@/components/layout/PagesLayout";
+import ListingEdit from "./pages/Listings/ListingEdit";
 
 function App() {
   const routes = [
@@ -59,6 +60,7 @@ function App() {
               children: [
                 { index: true, element: <Listings /> },
                 { path: "view/:id", element: <ListingView /> },
+                { path: "edit/:id", element: <ListingEdit /> },
               ],
             },
 
