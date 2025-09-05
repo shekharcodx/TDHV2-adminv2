@@ -97,7 +97,7 @@ const EditAdminProfile = () => {
       loading: { title: "Submitting", description: "Please wait..." },
       success: (res) => {
         setTimeout(() => {
-          navigate(`/admin-profile/${adminId}`);
+          navigate(`/admins/view/${adminId}`);
         }, 1000);
 
         return {

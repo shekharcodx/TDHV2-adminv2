@@ -148,7 +148,7 @@ const EditVendorProfile = () => {
       loading: { title: "Submitting", description: "Please wait..." },
       success: (res) => {
         setTimeout(() => {
-          navigate(`/vendor-profile/${vendorId}`);
+          navigate(`/vendors/view/${vendorId}`);
         }, 1000);
 
         return {
