@@ -222,7 +222,7 @@ const ListingEdit = () => {
     console.log("ListingEdit:techFeatureIds", techFeatureIds);
 
     reset({ ...getValues, techFeatures: techFeatureIds });
-  }, [techFeatures, reset, getValues]);
+  }, [techFeatures]);
 
   const carBrand = watch("carBrand");
 
