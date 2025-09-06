@@ -154,10 +154,10 @@ const ListingEdit = () => {
           f.name === listing?.listing?.car.carBrand?.carModel?.details?.fuelType
       )?._id;
 
-      // const techFeatureIds =
-      //   listing?.listing?.car?.carBrand?.carModel?.details?.techFeatures?.map(
-      //     (tf) => techFeatures?.features?.find((f) => f.name === tf.name)?._id
-      //   ) || [];
+      const techFeatureIds =
+        listing?.listing?.car?.carBrand?.carModel?.details?.techFeatures?.map(
+          (tf) => techFeatures?.features?.find((f) => f.name === tf.name)?._id
+        ) || [];
 
       const otherFeatureIds =
         listing?.listing?.car?.carBrand?.carModel?.details?.otherFeatures?.map(
@@ -165,6 +165,7 @@ const ListingEdit = () => {
         ) || [];
 
       console.log("ListingEdit:techFeatureIds", {
+        techFeatureIds,
         otherFeatureIds,
       });
 
@@ -189,7 +190,7 @@ const ListingEdit = () => {
         transmission: transmissionId || "",
         interiorColor: interiorColorId || "",
         exteriorColor: exteriorColorId || "",
-        // techFeatures: techFeatureIds,
+        techFeatures: techFeatureIds,
         otherFeatures: otherFeatureIds,
         regionalSpecs: regionalSpecId,
         carInsurance: listing?.listing?.car?.carInsurance,
@@ -212,21 +213,6 @@ const ListingEdit = () => {
     techFeatures,
     otherFeatures,
   ]);
-
-  useEffect(() => {
-    const techFeatureIds =
-      listing?.listing?.car?.carBrand?.carModel?.details?.techFeatures?.map(
-        (tf) => techFeatures?.features?.find((f) => f.name === tf.name)?._id
-      ) || [];
-
-    console.log("ListingEdit:techFeatureIds", {
-      techFeatureIds,
-      listing,
-      techFeatures,
-    });
-
-    reset({ ...getValues, techFeatures: techFeatureIds });
-  }, [techFeatures, listing]);
 
   const carBrand = watch("carBrand");
 
