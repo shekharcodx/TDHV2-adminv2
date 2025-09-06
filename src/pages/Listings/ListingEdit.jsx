@@ -101,6 +101,61 @@ const ListingEdit = () => {
       const brandId = carBrands?.carBrands?.find(
         (b) => b.name === listing?.listing?.car?.carBrand?.name
       )?._id;
+      const modelYearId = years?.years?.find(
+        (y) =>
+          y.year ===
+          listing?.listing?.car?.carBrand?.carModel?.details?.modelYear
+      )?._id;
+      const regionalSpecId = regionalSpecs?.specs?.find(
+        (s) => s.name === listing?.listing?.car.regionalSpecs
+      )?._id;
+      const horsePowerId = powers?.horsePowers?.find(
+        (hp) =>
+          hp.power ===
+          listing?.listing?.car.carBrand?.carModel?.details?.horsePower
+      )?._id;
+
+      const seatingId = seatings?.seatingCapacities?.find(
+        (s) =>
+          s.seats ===
+          listing?.listing?.car.carBrand?.carModel?.details?.seatingCapacity
+      )?._id;
+
+      const interiorColorId = colors?.colors?.find(
+        (c) =>
+          c.name ===
+          listing?.listing?.car.carBrand?.carModel?.details?.interiorColor
+      )?._id;
+
+      const exteriorColorId = colors?.colors?.find(
+        (c) =>
+          c.name ===
+          listing?.listing?.car.carBrand?.carModel?.details?.exteriorColor
+      )?._id;
+
+      const doorsId = doors?.doors?.find(
+        (d) =>
+          d.doors === listing?.listing?.car.carBrand?.carModel?.details?.doors
+      )?._id;
+
+      const transmissionId = transmissions?.transmissions?.find(
+        (t) =>
+          t.transmission ===
+          listing?.listing?.car.carBrand?.carModel?.details?.transmission
+      )?._id;
+
+      const bodyTypeId = bodyTypes?.bodyTypes?.find(
+        (b) =>
+          b.name === listing?.listing?.car.carBrand?.carModel?.details?.bodyType
+      )?._id;
+
+      const fuelTypeId = fuelTypes?.fuelTypes?.find(
+        (f) =>
+          f.name === listing?.listing?.car.carBrand?.carModel?.details?.fuelType
+      )?._id;
+
+      console.log("ListingEdit:fuelTypeId", fuelTypeId);
+
       reset({
         title: listing?.listing?.title,
         description: listing?.listing?.description,
@@ -113,22 +168,15 @@ const ListingEdit = () => {
         carBrand: brandId || "",
         // carModel: listing?.listing?.car?.carBrand?.carModel?._id,
         // carTrim: listing?.listing?.car?.carBrand?.carModel?.details?.trimId,
-        modelYear: listing?.listing?.car?.carBrand?.carModel?.details?.yearId,
-        doors: listing?.listing?.car?.carBrand?.carModel?.details?.doorsId,
-        seatingCapacity:
-          listing?.listing?.car?.carBrand?.carModel?.details?.seatingCapacityId,
-        horsePower:
-          listing?.listing?.car?.carBrand?.carModel?.details?.horsePowerId,
-        bodyType:
-          listing?.listing?.car?.carBrand?.carModel?.details?.bodyTypeId,
-        fuelType:
-          listing?.listing?.car?.carBrand?.carModel?.details?.fuelTypeId,
-        transmission:
-          listing?.listing?.car?.carBrand?.carModel?.details?.transmissionId,
-        interiorColor:
-          listing?.listing?.car?.carBrand?.carModel?.details?.interiorColorId,
-        exteriorColor:
-          listing?.listing?.car?.carBrand?.carModel?.details?.exteriorColorId,
+        modelYear: modelYearId || "",
+        doors: doorsId || "",
+        seatingCapacity: seatingId || "",
+        horsePower: horsePowerId || "",
+        bodyType: bodyTypeId || "",
+        fuelType: fuelTypeId || "",
+        transmission: transmissionId || "",
+        interiorColor: interiorColorId || "",
+        exteriorColor: exteriorColorId || "",
         techFeatures:
           listing?.listing?.car?.carBrand?.carModel?.details?.techFeatures.map(
             (tf) => tf._id
@@ -137,7 +185,7 @@ const ListingEdit = () => {
           listing?.listing?.car?.carBrand?.carModel?.details?.otherFeatures.map(
             (tf) => tf._id
           ) || [],
-        regionalSpecs: listing?.listing?.car?.regionalSpecsId,
+        regionalSpecs: regionalSpecId,
         carInsurance: listing?.listing?.car?.carInsurance,
         warranty: listing?.listing?.car?.warranty,
         mileage: listing?.listing?.car?.mileage,
@@ -531,7 +579,7 @@ const ListingEdit = () => {
             )}
           </div>
           <div>
-            <label className="block font-medium">Fuel Type</label>
+            <label className="block font-medium">Transmission</label>
             {isFetching ? (
               <Skeleton height="40px" borderRadius="md" mt={2} />
             ) : (
