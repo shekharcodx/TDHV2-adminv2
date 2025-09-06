@@ -210,9 +210,9 @@ const ListingEdit = () => {
   useEffect(() => {
     if (!carBrand) return;
 
-    fetchModels(carBrand).then(() => {
-      const carModalId = carModels?.carModels?.find(
-        (m) => m.name === listing.listing.car?.carBrand?.carModel?.name
+    fetchModels(carBrand).then((res) => {
+      const carModalId = res?.data?.carModels?.find(
+        (m) => m.name == listing.listing.car?.carBrand?.carModel?.name
       )?._id;
       reset({
         ...getValues(),
