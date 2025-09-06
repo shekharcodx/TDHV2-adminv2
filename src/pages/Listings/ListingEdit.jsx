@@ -154,7 +154,12 @@ const ListingEdit = () => {
           f.name === listing?.listing?.car.carBrand?.carModel?.details?.fuelType
       )?._id;
 
-      console.log("ListingEdit:modelYearId", modelYearId);
+      const techFeatureIds =
+        listing?.listing?.car?.carBrand?.carModel?.details?.techFeatures?.map(
+          (tf) => techFeatures?.features?.find((f) => f.name === tf.name)?._id
+        ) || [];
+
+      console.log("ListingEdit:techFeatureIds", techFeatureIds);
 
       reset({
         title: listing?.listing?.title,
@@ -177,10 +182,7 @@ const ListingEdit = () => {
         transmission: transmissionId || "",
         interiorColor: interiorColorId || "",
         exteriorColor: exteriorColorId || "",
-        techFeatures:
-          listing?.listing?.car?.carBrand?.carModel?.details?.techFeatures.map(
-            (tf) => tf._id
-          ) || [],
+        techFeatures: techFeatureIds,
         otherFeatures:
           listing?.listing?.car?.carBrand?.carModel?.details?.otherFeatures.map(
             (tf) => tf._id
