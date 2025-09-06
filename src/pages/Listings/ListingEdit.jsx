@@ -191,10 +191,7 @@ const ListingEdit = () => {
         interiorColor: interiorColorId || "",
         exteriorColor: exteriorColorId || "",
         techFeatures: techFeatureIds,
-        otherFeatures:
-          listing?.listing?.car?.carBrand?.carModel?.details?.otherFeatures.map(
-            (tf) => tf._id
-          ) || [],
+        otherFeatures: otherFeatureIds,
         regionalSpecs: regionalSpecId,
         carInsurance: listing?.listing?.car?.carInsurance,
         warranty: listing?.listing?.car?.warranty,
