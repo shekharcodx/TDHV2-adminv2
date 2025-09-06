@@ -28,10 +28,10 @@ const carApi = baseApi.injectEndpoints({
       providesTags: ["listing"],
     }),
     updateListing: builder.mutation({
-      query: ({ listingId, data }) => ({
+      query: ({ listingId, values }) => ({
         url: `/vendorListing/${listingId}`,
         method: "PUT",
-        body: data,
+        body: values,
       }),
       invalidatesTags: ["listings", "listing"],
     }),
@@ -51,6 +51,14 @@ const carApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ["listings"],
     }),
+    updateCategory: builder.mutation({
+      query: ({ listingId, data }) => ({
+        url: `/listing/category/${listingId}`,
+        method: "PATCH",
+        body: data,
+      }),
+      invalidatesTags: ["listings"],
+    }),
   }),
 });
 
@@ -60,4 +68,5 @@ export const {
   useUpdateListingMutation,
   useUpdateStatusMutation,
   useUpdateIsActiveMutation,
+  useUpdateCategoryMutation,
 } = carApi;

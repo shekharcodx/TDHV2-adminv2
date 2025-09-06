@@ -7,11 +7,13 @@ import {
   Portal,
   Skeleton,
   Span,
+  Switch,
 } from "@chakra-ui/react";
 import {
   useGetListingsQuery,
   useUpdateStatusMutation,
   useUpdateIsActiveMutation,
+  useUpdateCategoryMutation,
 } from "@/app/api/carListingApi";
 import { listingStatuses, isActiveStatus, getKeyNames } from "@/utils/helper";
 import FilterSelect from "@/components/FilterSelect";
@@ -25,6 +27,7 @@ import { MenuIcon } from "lucide-react";
 import { LuChevronRight } from "react-icons/lu";
 import { useNavigate } from "react-router-dom";
 import { toaster } from "@/components/ui/toaster";
+import { HiCheck, HiX } from "react-icons/hi";
 
 const Listings = () => {
   const [page, setPage] = useState(1);
@@ -46,6 +49,7 @@ const Listings = () => {
 
   const [updateStatus] = useUpdateStatusMutation();
   const [updateIsActive] = useUpdateIsActiveMutation();
+  const [updateCategory] = useUpdateCategoryMutation();
 
   const handleSearchInput = (string) => {
     setSelectedActiveStatus([]);
@@ -109,6 +113,24 @@ const Listings = () => {
     });
   };
 
+  const handleUpdateCategory = (listingId, data) => {
+    toaster.promise(updateCategory({ listingId, data }).unwrap(), {
+      loading: { title: "Updating", description: "Please wait..." },
+      success: (res) => {
+        return {
+          title: res?.message || "Updated successfully",
+          description: "",
+        };
+      },
+      error: (err) => {
+        return {
+          title: err?.data?.message || "Error updating category",
+          description: "Please try again",
+        };
+      },
+    });
+  };
+
   const columns = [
     {
       key: "image",
@@ -133,6 +155,56 @@ const Listings = () => {
     },
     { key: "rentPerWeek", label: "Rent/Week" },
     { key: "rentPerMonth", label: "Rent/Month" },
+    {
+      key: "isFeatured",
+      label: "Featured",
+      render: (listing) => (
+        <Switch.Root
+          checked={listing?.isFeatured}
+          onCheckedChange={(val) =>
+            handleUpdateCategory(listing._id, {
+              isFeatured: val.checked ?? val,
+            })
+          }
+          colorPalette="teal"
+          size="md"
+        >
+          <Switch.HiddenInput />
+          <Switch.Control>
+            <Switch.Thumb>
+              <Switch.ThumbIndicator fallback={<HiX color="black" />}>
+                <HiCheck />
+              </Switch.ThumbIndicator>
+            </Switch.Thumb>
+          </Switch.Control>
+        </Switch.Root>
+      ),
+    },
+    {
+      key: "isPremium",
+      label: "Premium",
+      render: (listing) => (
+        <Switch.Root
+          checked={listing?.isPremium}
+          onCheckedChange={(val) =>
+            handleUpdateCategory(listing._id, {
+              isPremium: val.checked ?? val,
+            })
+          }
+          colorPalette="teal"
+          size="md"
+        >
+          <Switch.HiddenInput />
+          <Switch.Control>
+            <Switch.Thumb>
+              <Switch.ThumbIndicator fallback={<HiX color="black" />}>
+                <HiCheck />
+              </Switch.ThumbIndicator>
+            </Switch.Thumb>
+          </Switch.Control>
+        </Switch.Root>
+      ),
+    },
     {
       key: "status",
       label: "Status",
@@ -339,7 +411,7 @@ const Listings = () => {
 const SkeletonRow = () => {
   return (
     <tr className={`${styles.tableRowEven} py-[10px]`}>
-      <td className={`${styles.tableCell}`} colSpan={8}>
+      <td className={`${styles.tableCell}`} colSpan={10}>
         <Skeleton height="18px" width="100%" variant="shine" />
       </td>
     </tr>

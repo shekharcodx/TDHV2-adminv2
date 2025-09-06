@@ -25,9 +25,9 @@ const ListingView = () => {
 
   return (
     <>
-      <Heading fontSize="24px" fontWeight="600" mb="30px">
+      {/* <Heading fontSize="24px" fontWeight="700" mb="30px">
         Car Listing
-      </Heading>
+      </Heading> */}
       <div className="space-y-6">
         {/* Header */}
         <div className="flex items-center justify-between">
@@ -50,7 +50,12 @@ const ListingView = () => {
                 >
                   Back
                 </button>
-                <button className="px-4 py-2 bg-[image:var(--gradient-background)] rounded-lg text-white cursor-pointer">
+                <button
+                  className="px-4 py-2 bg-[image:var(--gradient-background)] rounded-lg text-white cursor-pointer"
+                  onClick={() =>
+                    navigate(`/car-listings/edit/${listing?.listing?._id}`)
+                  }
+                >
                   Edit
                 </button>
               </>
@@ -275,7 +280,7 @@ const ListingView = () => {
                   <ul className="list-disc list-inside text-gray-700">
                     {listing?.listing?.car?.carBrand?.carModel?.details?.techFeatures.map(
                       (f, i) => (
-                        <li key={i}>{f}</li>
+                        <li key={i}>{f.name}</li>
                       )
                     )}
                   </ul>
@@ -285,7 +290,7 @@ const ListingView = () => {
                   <ul className="list-disc list-inside text-gray-700">
                     {listing?.listing?.car?.carBrand?.carModel?.details?.otherFeatures.map(
                       (f, i) => (
-                        <li key={i}>{f}</li>
+                        <li key={i}>{f.name}</li>
                       )
                     )}
                   </ul>
