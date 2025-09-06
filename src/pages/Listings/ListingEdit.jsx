@@ -88,31 +88,7 @@ const ListingEdit = () => {
     getValues,
   } = useForm({
     resolver: zodResolver(listingSchema),
-  });
-
-  useEffect(() => {
-    if (listingId) {
-      fetchListing(listingId);
-    }
-  }, [listingId]);
-
-  // useEffect(() => {
-  //   if (!carBrand) return;
-  //   if (carBrand) {
-  //     fetchModels(carBrand);
-  //   }
-  // }, [carBrand]);
-
-  // useEffect(() => {
-  //   if (carModel) {
-  //     fetchTrims(carModel);
-  //   }
-  // }, [carModel, fetchTrims]);
-
-  useEffect(() => {
-    if (!listing) return;
-
-    reset({
+    values: {
       title: listing?.listing?.title,
       description: listing?.listing?.description,
       location: listing?.listing?.location,
@@ -150,36 +126,99 @@ const ListingEdit = () => {
       carInsurance: listing?.listing?.car?.carInsurance,
       warranty: listing?.listing?.car?.warranty,
       mileage: listing?.listing?.car?.mileage,
-    });
-  }, [listing]);
-
-  const carBrand = watch("carBrand");
+    },
+  });
 
   useEffect(() => {
-    if (!carBrand) return;
+    if (listingId) {
+      fetchListing(listingId);
+    }
+  }, [listingId]);
 
-    fetchModels(carBrand).then(() => {
-      // Only set default carModel after options are loaded
-      reset({
-        ...getValues(),
-        carModel: listing.listing.car?.carBrand?.carModel?._id,
-      });
-    });
-  }, [carBrand, fetchModels, reset, getValues, listing]);
+  // useEffect(() => {
+  //   if (!carBrand) return;
+  //   if (carBrand) {
+  //     fetchModels(carBrand);
+  //   }
+  // }, [carBrand]);
 
-  const carModel = watch("carModel");
+  // useEffect(() => {
+  //   if (carModel) {
+  //     fetchTrims(carModel);
+  //   }
+  // }, [carModel, fetchTrims]);
 
-  useEffect(() => {
-    if (!carModel) return;
+  // useEffect(() => {
+  //   if (!listing) return;
 
-    fetchTrims(carModel).then(() => {
-      // Only set default carTrim after options are loaded
-      reset({
-        ...getValues(),
-        carTrim: listing.listing.car?.carBrand?.carModel?.details?.trimId,
-      });
-    });
-  }, [carModel, fetchTrims, reset, getValues, listing]);
+  //   reset({
+  //     title: listing?.listing?.title,
+  //     description: listing?.listing?.description,
+  //     location: listing?.listing?.location,
+  //     isFeatured: listing?.listing?.isFeatured,
+  //     isPremium: listing?.listing?.isPremium,
+  //     rentPerDay: listing?.listing?.rentPerDay,
+  //     rentPerWeek: listing?.listing?.rentPerWeek,
+  //     rentPerMonth: listing?.listing?.rentPerMonth,
+  //     carBrand: listing?.listing?.car?.carBrand?._id,
+  //     // carModel: listing?.listing?.car?.carBrand?.carModel?._id,
+  //     // carTrim: listing?.listing?.car?.carBrand?.carModel?.details?.trimId,
+  //     modelYear: listing?.listing?.car?.carBrand?.carModel?.details?.yearId,
+  //     doors: listing?.listing?.car?.carBrand?.carModel?.details?.doorsId,
+  //     seatingCapacity:
+  //       listing?.listing?.car?.carBrand?.carModel?.details?.seatingCapacityId,
+  //     horsePower:
+  //       listing?.listing?.car?.carBrand?.carModel?.details?.horsePowerId,
+  //     bodyType: listing?.listing?.car?.carBrand?.carModel?.details?.bodyTypeId,
+  //     fuelType: listing?.listing?.car?.carBrand?.carModel?.details?.fuelTypeId,
+  //     transmission:
+  //       listing?.listing?.car?.carBrand?.carModel?.details?.transmissionId,
+  //     interiorColor:
+  //       listing?.listing?.car?.carBrand?.carModel?.details?.interiorColorId,
+  //     exteriorColor:
+  //       listing?.listing?.car?.carBrand?.carModel?.details?.exteriorColorId,
+  //     techFeatures:
+  //       listing?.listing?.car?.carBrand?.carModel?.details?.techFeatures.map(
+  //         (tf) => tf._id
+  //       ) || [],
+  //     otherFeatures:
+  //       listing?.listing?.car?.carBrand?.carModel?.details?.otherFeatures.map(
+  //         (tf) => tf._id
+  //       ) || [],
+  //     regionalSpecs: listing?.listing?.car?.regionalSpecsId,
+  //     carInsurance: listing?.listing?.car?.carInsurance,
+  //     warranty: listing?.listing?.car?.warranty,
+  //     mileage: listing?.listing?.car?.mileage,
+  //   });
+  // }, [listing]);
+
+  // const carBrand = watch("carBrand");
+
+  // useEffect(() => {
+  //   if (!carBrand) return;
+
+  //   fetchModels(carBrand).then(() => {
+  //     // Only set default carModel after options are loaded
+  //     reset({
+  //       ...getValues(),
+  //       carModel: listing.listing.car?.carBrand?.carModel?._id,
+  //     });
+  //   });
+  // }, [carBrand, fetchModels, reset, getValues, listing]);
+
+  // const carModel = watch("carModel");
+
+  // useEffect(() => {
+  //   if (!carModel) return;
+
+  //   fetchTrims(carModel).then(() => {
+  //     // Only set default carTrim after options are loaded
+  //     reset({
+  //       ...getValues(),
+  //       carTrim: listing.listing.car?.carBrand?.carModel?.details?.trimId,
+  //     });
+  //   });
+  // }, [carModel, fetchTrims, reset, getValues, listing]);
 
   const onSubmit = (values) => {
     console.log({ values });
@@ -249,7 +288,7 @@ const ListingEdit = () => {
               <input
                 type="text"
                 {...register("title")}
-                className="w-full border rounded-lg px-3 py-2  mt-2"
+                className="w-full border rounded-lg px-3 py-2 mt-2 outline-none border-[rgba(91, 120, 124, 1)]"
               />
             )}
             {errors.title && (
@@ -264,7 +303,7 @@ const ListingEdit = () => {
             ) : (
               <textarea
                 {...register("description")}
-                className="w-full border rounded-lg px-3 py-2 mt-2"
+                className="w-full border rounded-lg px-3 py-2 mt-2 outline-none border-[rgba(91, 120, 124, 1)]"
               />
             )}
             {errors.description && (
@@ -282,7 +321,7 @@ const ListingEdit = () => {
               <input
                 type="text"
                 {...register("location")}
-                className="w-full border rounded-lg px-3 py-2 mt-2"
+                className="w-full border rounded-lg px-3 py-2 mt-2 outline-none border-[rgba(91, 120, 124, 1)]"
               />
             )}
             {errors.location && (
@@ -299,11 +338,19 @@ const ListingEdit = () => {
             ) : (
               <>
                 <label className="flex items-center gap-2">
-                  <input type="checkbox" {...register("isFeatured")} />
+                  <input
+                    type="checkbox"
+                    {...register("isFeatured")}
+                    className="outline-none border-[rgba(91, 120, 124, 1)]"
+                  />
                   Featured
                 </label>
                 <label className="flex items-center gap-2">
-                  <input type="checkbox" {...register("isPremium")} />
+                  <input
+                    type="checkbox"
+                    {...register("isPremium")}
+                    className="outline-none border-[rgba(91, 120, 124, 1)]"
+                  />
                   Premium
                 </label>
               </>
@@ -321,7 +368,7 @@ const ListingEdit = () => {
               <input
                 type="number"
                 {...register("rentPerDay")}
-                className="w-full border rounded-lg px-3 py-2 mt-2"
+                className="w-full border rounded-lg px-3 py-2 mt-2 outline-none border-[rgba(91, 120, 124, 1)]"
               />
             )}
             {errors.rentPerDay && (
@@ -338,7 +385,7 @@ const ListingEdit = () => {
               <input
                 type="number"
                 {...register("rentPerWeek")}
-                className="w-full border rounded-lg px-3 py-2 mt-2"
+                className="w-full border rounded-lg px-3 py-2 mt-2 outline-none border-[rgba(91, 120, 124, 1)]"
               />
             )}
           </div>
@@ -350,7 +397,7 @@ const ListingEdit = () => {
               <input
                 type="number"
                 {...register("rentPerMonth")}
-                className="w-full border rounded-lg px-3 py-2 mt-2"
+                className="w-full border rounded-lg px-3 py-2 mt-2 outline-none border-[rgba(91, 120, 124, 1)]"
               />
             )}
           </div>
@@ -365,7 +412,7 @@ const ListingEdit = () => {
             ) : (
               <select
                 {...register("carBrand")}
-                className="w-full border rounded-lg px-3 py-2 mt-2"
+                className="w-full border rounded-lg px-3 py-2 mt-2 outline-none border-[rgba(91, 120, 124, 1)]"
               >
                 <option value="">Select a brand</option>
                 {carBrands?.carBrands?.map((brand) => (
@@ -386,7 +433,7 @@ const ListingEdit = () => {
             ) : (
               <select
                 {...register("carModel")}
-                className="w-full border rounded-lg px-3 py-2 mt-2"
+                className="w-full border rounded-lg px-3 py-2 mt-2 outline-none border-[rgba(91, 120, 124, 1)]"
               >
                 <option value="">Select a model</option>
                 {carModels?.carModels?.map((model, i) => (
@@ -408,7 +455,7 @@ const ListingEdit = () => {
               <select
                 type="text"
                 {...register("carTrim")}
-                className="w-full border rounded-lg px-3 py-2 mt-2"
+                className="w-full border rounded-lg px-3 py-2 mt-2 outline-none border-[rgba(91, 120, 124, 1)]"
               >
                 <option value="">Select a trim</option>
                 {carTrims?.carTrims?.map((trim, i) => (
@@ -426,7 +473,7 @@ const ListingEdit = () => {
             ) : (
               <select
                 {...register("modelYear")}
-                className="w-full border rounded-lg px-3 py-2 mt-2"
+                className="w-full border rounded-lg px-3 py-2 mt-2 outline-none border-[rgba(91, 120, 124, 1)]"
               >
                 <option value="">Select a year</option>
                 {years?.years?.map((year, i) => (
@@ -447,7 +494,7 @@ const ListingEdit = () => {
             ) : (
               <select
                 {...register("doors")}
-                className="w-full border rounded-lg px-3 py-2 mt-2"
+                className="w-full border rounded-lg px-3 py-2 mt-2 outline-none border-[rgba(91, 120, 124, 1)]"
               >
                 <option value="">Select doors</option>
                 {doors?.doors?.map((door, i) => (
@@ -465,7 +512,7 @@ const ListingEdit = () => {
             ) : (
               <select
                 {...register("seatingCapacity")}
-                className="w-full border rounded-lg px-3 py-2 mt-2"
+                className="w-full border rounded-lg px-3 py-2 mt-2 outline-none border-[rgba(91, 120, 124, 1)]"
               >
                 <option value="">Select Capacity</option>
                 {seatings?.seatingCapacities?.map((cap, i) => (
@@ -483,7 +530,7 @@ const ListingEdit = () => {
             ) : (
               <select
                 {...register("horsePower")}
-                className="w-full border rounded-lg px-3 py-2 mt-2"
+                className="w-full border rounded-lg px-3 py-2 mt-2 outline-none border-[rgba(91, 120, 124, 1)]"
               >
                 <option value="">Select Horse Power</option>
                 {powers?.horsePowers?.map((power, i) => (
@@ -501,7 +548,7 @@ const ListingEdit = () => {
             ) : (
               <select
                 {...register("bodyType")}
-                className="w-full border rounded-lg px-3 py-2 mt-2"
+                className="w-full border rounded-lg px-3 py-2 mt-2 outline-none border-[rgba(91, 120, 124, 1)]"
               >
                 <option value="">Select Body Type</option>
                 {bodyTypes?.bodyTypes?.map((type, i) => (
@@ -519,7 +566,7 @@ const ListingEdit = () => {
             ) : (
               <select
                 {...register("fuelType")}
-                className="w-full border rounded-lg px-3 py-2 mt-2"
+                className="w-full border rounded-lg px-3 py-2 mt-2 outline-none border-[rgba(91, 120, 124, 1)]"
               >
                 <option value="">Select Fuel Type</option>
                 {fuelTypes?.fuelTypes?.map((type, i) => (
@@ -537,7 +584,7 @@ const ListingEdit = () => {
             ) : (
               <select
                 {...register("transmission")}
-                className="w-full border rounded-lg px-3 py-2 mt-2"
+                className="w-full border rounded-lg px-3 py-2 mt-2 outline-none border-[rgba(91, 120, 124, 1)]"
               >
                 <option value="">Select Transmission</option>
                 {transmissions?.transmissions?.map((type, i) => (
@@ -555,7 +602,7 @@ const ListingEdit = () => {
             ) : (
               <select
                 {...register("interiorColor")}
-                className="w-full border rounded-lg px-3 py-2 mt-2"
+                className="w-full border rounded-lg px-3 py-2 mt-2 outline-none border-[rgba(91, 120, 124, 1)]"
               >
                 <option value="">Select Interior Color</option>
                 {colors?.colors?.map((color, i) => (
@@ -573,7 +620,7 @@ const ListingEdit = () => {
             ) : (
               <select
                 {...register("exteriorColor")}
-                className="w-full border rounded-lg px-3 py-2 mt-2"
+                className="w-full border rounded-lg px-3 py-2 mt-2 outline-none border-[rgba(91, 120, 124, 1)]"
               >
                 <option value="">Select Exterior Color</option>
                 {colors?.colors?.map((color, i) => (
@@ -598,7 +645,10 @@ const ListingEdit = () => {
                 </>
               ) : (
                 techFeatures?.features?.map((feature, i) => (
-                  <label key={i} className="flex items-center gap-1 ml-2">
+                  <label
+                    key={i}
+                    className="flex items-center gap-1 ml-2 outline-none border-[rgba(91, 120, 124, 1)]"
+                  >
                     <input
                       type="checkbox"
                       value={feature._id}
@@ -644,7 +694,7 @@ const ListingEdit = () => {
             ) : (
               <select
                 {...register("regionalSpecs")}
-                className="w-full border rounded-lg px-3 py-2 mt-2"
+                className="w-full border rounded-lg px-3 py-2 mt-2 outline-none border-[rgba(91, 120, 124, 1)]"
               >
                 <option value="">Select Regional Specs</option>
                 {regionalSpecs?.specs?.map((spec, i) => (
@@ -662,7 +712,7 @@ const ListingEdit = () => {
             ) : (
               <select
                 {...register("carInsurance")}
-                className="w-full border rounded-lg px-3 py-2 mt-2"
+                className="w-full border rounded-lg px-3 py-2 mt-2 outline-none border-[rgba(91, 120, 124, 1)]"
               >
                 <option value="">Select Car Insurance</option>
                 <option value="Yes">Yes</option>
@@ -677,7 +727,7 @@ const ListingEdit = () => {
             ) : (
               <select
                 {...register("warranty")}
-                className="w-full border rounded-lg px-3 py-2 mt-2"
+                className="w-full border rounded-lg px-3 py-2 mt-2 outline-none border-[rgba(91, 120, 124, 1)]"
               >
                 <option value="">Select Car Warranty</option>
                 <option value="Yes">Yes</option>
@@ -693,7 +743,7 @@ const ListingEdit = () => {
               <input
                 type="number"
                 {...register("mileage")}
-                className="w-full border rounded-lg px-3 py-2 mt-2"
+                className="w-full border rounded-lg px-3 py-2 mt-2 outline-none border-[rgba(91, 120, 124, 1)]"
               />
             )}
           </div>
