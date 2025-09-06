@@ -154,21 +154,17 @@ const ListingEdit = () => {
           f.name === listing?.listing?.car.carBrand?.carModel?.details?.fuelType
       )?._id;
 
-      const techFeatureIds =
-        listing?.listing?.car?.carBrand?.carModel?.details?.techFeatures?.map(
-          (tf) => techFeatures?.features?.find((f) => f.name === tf.name)?._id
-        ) || [];
+      // const techFeatureIds =
+      //   listing?.listing?.car?.carBrand?.carModel?.details?.techFeatures?.map(
+      //     (tf) => techFeatures?.features?.find((f) => f.name === tf.name)?._id
+      //   ) || [];
 
       const otherFeatureIds =
-        otherFeatures?.features?.map(
-          (tf) =>
-            listing?.listing?.car?.carBrand?.carModel?.details?.otherFeatures?.find(
-              (f) => f.name === tf.name
-            )?._id
+        listing?.listing?.car?.carBrand?.carModel?.details?.otherFeatures?.map(
+          (tf) => otherFeatures?.features?.find((f) => f.name === tf.name)?._id
         ) || [];
 
       console.log("ListingEdit:techFeatureIds", {
-        techFeatureIds,
         otherFeatureIds,
       });
 
@@ -193,7 +189,7 @@ const ListingEdit = () => {
         transmission: transmissionId || "",
         interiorColor: interiorColorId || "",
         exteriorColor: exteriorColorId || "",
-        techFeatures: techFeatureIds,
+        // techFeatures: techFeatureIds,
         otherFeatures: otherFeatureIds,
         regionalSpecs: regionalSpecId,
         carInsurance: listing?.listing?.car?.carInsurance,
@@ -216,6 +212,17 @@ const ListingEdit = () => {
     techFeatures,
     otherFeatures,
   ]);
+
+  useEffect(() => {
+    const techFeatureIds =
+      listing?.listing?.car?.carBrand?.carModel?.details?.techFeatures?.map(
+        (tf) => techFeatures?.features?.find((f) => f.name === tf.name)?._id
+      ) || [];
+
+    console.log("ListingEdit:techFeatureIds", techFeatureIds);
+
+    reset({ ...getValues, techFeatures: techFeatureIds });
+  }, [techFeatures, reset, getValues]);
 
   const carBrand = watch("carBrand");
 
