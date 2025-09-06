@@ -210,6 +210,8 @@ const ListingEdit = () => {
     powers,
     regionalSpecs,
     fuelTypes,
+    techFeatures,
+    otherFeatures,
   ]);
 
   const carBrand = watch("carBrand");
