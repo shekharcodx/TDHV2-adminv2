@@ -226,11 +226,14 @@ const ListingEdit = () => {
   useEffect(() => {
     if (!carModel) return;
 
-    fetchTrims(carModel).then(() => {
-      // Only set default carTrim after options are loaded
+    fetchTrims(carModel).then((res) => {
+      const carTrimId = res?.data?.carTrims?.find(
+        (t) =>
+          t.name == listing.listing.car?.carBrand?.carModel?.details?.carTrim
+      )?._id;
       reset({
         ...getValues(),
-        carTrim: listing.listing.car?.carBrand?.carModel?.details?.trimId,
+        carTrim: carTrimId || "",
       });
     });
   }, [carModel, fetchTrims, reset, getValues, listing]);
