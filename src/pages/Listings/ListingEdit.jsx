@@ -1,5 +1,5 @@
 import { useNavigate, useParams } from "react-router-dom";
-import { useForm } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
@@ -83,6 +83,7 @@ const ListingEdit = () => {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
+    control,
     reset,
     watch,
     getValues,
@@ -410,17 +411,24 @@ const ListingEdit = () => {
             {isFetching ? (
               <Skeleton height="40px" borderRadius="md" mt={2} />
             ) : (
-              <select
-                {...register("carBrand")}
-                className="w-full border rounded-lg px-3 py-2 mt-2 outline-none border-[rgba(91, 120, 124, 1)]"
-              >
-                <option value="">Select a brand</option>
-                {carBrands?.carBrands?.map((brand) => (
-                  <option key={brand._id} value={brand._id}>
-                    {brand.name}
-                  </option>
-                ))}
-              </select>
+              <Controller
+                name="carBrand"
+                control={control}
+                defaultValue={listing?.listing?.car?.carBrand?._id}
+                render={({ field }) => (
+                  <select
+                    {...field}
+                    className="w-full border rounded-lg px-3 py-2 mt-2 outline-none border-[rgba(91, 120, 124, 1)]"
+                  >
+                    <option value="">Select a brand</option>
+                    {carBrands?.carBrands?.map((brand) => (
+                      <option key={brand._id} value={brand._id}>
+                        {brand.name}
+                      </option>
+                    ))}
+                  </select>
+                )}
+              />
             )}
             {errors.carBrand && (
               <p className="text-red-500 text-sm">{errors.carBrand.message}</p>
