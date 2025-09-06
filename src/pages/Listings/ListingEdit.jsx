@@ -219,7 +219,11 @@ const ListingEdit = () => {
         (tf) => techFeatures?.features?.find((f) => f.name === tf.name)?._id
       ) || [];
 
-    console.log("ListingEdit:techFeatureIds", techFeatureIds);
+    console.log("ListingEdit:techFeatureIds", {
+      techFeatureIds,
+      listing,
+      techFeatures,
+    });
 
     reset({ ...getValues, techFeatures: techFeatureIds });
   }, [techFeatures]);
