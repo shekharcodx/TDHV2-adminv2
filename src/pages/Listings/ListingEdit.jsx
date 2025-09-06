@@ -168,6 +168,12 @@ const ListingEdit = () => {
     seatings,
   ]);
 
+  useEffect(() => {
+    reset({
+      modelYear: listing?.listing?.car?.carBrand?.carModel?.details?.yearId,
+    });
+  }, [years]);
+
   const carBrand = watch("carBrand");
 
   useEffect(() => {
