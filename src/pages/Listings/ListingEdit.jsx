@@ -159,7 +159,15 @@ const ListingEdit = () => {
           (tf) => techFeatures?.features?.find((f) => f.name === tf.name)?._id
         ) || [];
 
-      console.log("ListingEdit:techFeatureIds", techFeatureIds);
+      const otherFeatureIds =
+        listing?.listing?.car?.carBrand?.carModel?.details?.otherFeatures?.map(
+          (tf) => otherFeatures?.features?.find((f) => f.name === tf.name)?._id
+        ) || [];
+
+      console.log("ListingEdit:techFeatureIds", {
+        techFeatureIds,
+        otherFeatureIds,
+      });
 
       reset({
         title: listing?.listing?.title,
