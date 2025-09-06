@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useLazyGetListingQuery } from "@/app/api/carListingApi";
 import { useParams, useNavigate } from "react-router-dom";
 import { LISTING_STATUS_NUM } from "@/utils/constants";
-import { Heading, Skeleton, SkeletonText } from "@chakra-ui/react";
+import { Button, Heading, Skeleton, SkeletonText } from "@chakra-ui/react";
 
 const ListingView = () => {
   const navigate = useNavigate();
@@ -44,20 +44,28 @@ const ListingView = () => {
               </>
             ) : (
               <>
-                <button
-                  className="px-4 py-2 border border-[#5b787c] rounded-lg text-[#5b787c] cursor-pointer"
+                <Button
+                  variant="ghost"
+                  border="1px solid #5b787c"
+                  px="16px"
+                  py="8px"
+                  color="#5b787c"
+                  // className="px-4 py-2 border border-[#5b787c] rounded-lg text-[#5b787c] cursor-pointer"
                   onClick={() => navigate(-1)}
                 >
                   Back
-                </button>
-                <button
-                  className="px-4 py-2 bg-[image:var(--gradient-background)] rounded-lg text-white cursor-pointer"
+                </Button>
+                <Button
+                  bg={"var(--gradient-background)"}
+                  px="16px"
+                  py="8px"
+                  // className="px-4 py-2 bg-[image:var(--gradient-background)] rounded-lg text-white cursor-pointer"
                   onClick={() =>
                     navigate(`/car-listings/edit/${listing?.listing?._id}`)
                   }
                 >
                   Edit
-                </button>
+                </Button>
               </>
             )}
           </div>

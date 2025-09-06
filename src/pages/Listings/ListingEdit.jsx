@@ -23,7 +23,7 @@ import {
   useGetOtherFeaturesQuery,
 } from "@/app/api/carMasterDataApi";
 import { useEffect } from "react";
-import { Heading, Skeleton } from "@chakra-ui/react";
+import { Button, Heading, Skeleton } from "@chakra-ui/react";
 import { toaster } from "@/components/ui/toaster";
 
 const listingSchema = z.object({
@@ -77,7 +77,8 @@ const ListingEdit = () => {
   const { data: techFeatures } = useGetTechFeaturesQuery();
   const { data: otherFeatures } = useGetOtherFeaturesQuery();
 
-  const [updateListing] = useUpdateListingMutation();
+  const [updateListing, { isLoading: listingIsUpdating }] =
+    useUpdateListingMutation();
 
   const {
     register,
@@ -164,11 +165,6 @@ const ListingEdit = () => {
           (tf) => otherFeatures?.features?.find((f) => f.name === tf.name)?._id
         ) || [];
 
-      console.log("ListingEdit:techFeatureIds", {
-        techFeatureIds,
-        otherFeatureIds,
-      });
-
       reset({
         title: listing?.listing?.title,
         description: listing?.listing?.description,
@@ -248,7 +244,6 @@ const ListingEdit = () => {
   }, [carModel, fetchTrims, reset, getValues, listing]);
 
   const onSubmit = (values) => {
-    console.log({ values });
     toaster.promise(updateListing({ listingId, values }).unwrap(), {
       loading: { title: "Updating listing", description: "Please wait..." },
       success: (res) => {
@@ -271,9 +266,6 @@ const ListingEdit = () => {
 
   return (
     <>
-      {/* <Heading fontSize="24px" fontWeight="700" mb="30px">
-        Edit Car Listing
-      </Heading> */}
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
         {/* Header */}
         <div className="flex items-center justify-between">
@@ -286,18 +278,28 @@ const ListingEdit = () => {
               </>
             ) : (
               <>
-                <button
-                  className="px-4 py-2 border border-[#5b787c] rounded-lg text-[#5b787c] cursor-pointer"
+                <Button
+                  variant="ghost"
+                  border="1px solid #5b787c"
+                  px="16px"
+                  py="8px"
+                  color="#5b787c"
+                  // className="px-4 py-2 border border-[#5b787c] rounded-lg text-[#5b787c] cursor-pointer"
+                  disabled={listingIsUpdating}
                   onClick={() => navigate(-1)}
                 >
                   Back
-                </button>
-                <button
+                </Button>
+                <Button
                   type="submit"
-                  className="px-4 py-2 bg-[image:var(--gradient-background)] rounded-lg text-white cursor-pointer"
+                  bg={"var(--gradient-background)"}
+                  px="16px"
+                  py="8px"
+                  disabled={listingIsUpdating}
+                  // className="px-4 py-2 bg-[image:var(--gradient-background)] rounded-lg text-white cursor-pointer"
                 >
                   Update
-                </button>
+                </Button>
               </>
             )}
           </div>
