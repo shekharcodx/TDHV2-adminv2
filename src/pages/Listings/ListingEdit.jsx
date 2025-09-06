@@ -1,5 +1,5 @@
 import { useNavigate, useParams } from "react-router-dom";
-import { useForm, Controller } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
@@ -83,51 +83,11 @@ const ListingEdit = () => {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
-    control,
     reset,
     watch,
     getValues,
   } = useForm({
     resolver: zodResolver(listingSchema),
-    values: {
-      title: listing?.listing?.title,
-      description: listing?.listing?.description,
-      location: listing?.listing?.location,
-      isFeatured: listing?.listing?.isFeatured,
-      isPremium: listing?.listing?.isPremium,
-      rentPerDay: listing?.listing?.rentPerDay,
-      rentPerWeek: listing?.listing?.rentPerWeek,
-      rentPerMonth: listing?.listing?.rentPerMonth,
-      carBrand: listing?.listing?.car?.carBrand?._id,
-      // carModel: listing?.listing?.car?.carBrand?.carModel?._id,
-      // carTrim: listing?.listing?.car?.carBrand?.carModel?.details?.trimId,
-      modelYear: listing?.listing?.car?.carBrand?.carModel?.details?.yearId,
-      doors: listing?.listing?.car?.carBrand?.carModel?.details?.doorsId,
-      seatingCapacity:
-        listing?.listing?.car?.carBrand?.carModel?.details?.seatingCapacityId,
-      horsePower:
-        listing?.listing?.car?.carBrand?.carModel?.details?.horsePowerId,
-      bodyType: listing?.listing?.car?.carBrand?.carModel?.details?.bodyTypeId,
-      fuelType: listing?.listing?.car?.carBrand?.carModel?.details?.fuelTypeId,
-      transmission:
-        listing?.listing?.car?.carBrand?.carModel?.details?.transmissionId,
-      interiorColor:
-        listing?.listing?.car?.carBrand?.carModel?.details?.interiorColorId,
-      exteriorColor:
-        listing?.listing?.car?.carBrand?.carModel?.details?.exteriorColorId,
-      techFeatures:
-        listing?.listing?.car?.carBrand?.carModel?.details?.techFeatures.map(
-          (tf) => tf._id
-        ) || [],
-      otherFeatures:
-        listing?.listing?.car?.carBrand?.carModel?.details?.otherFeatures.map(
-          (tf) => tf._id
-        ) || [],
-      regionalSpecs: listing?.listing?.car?.regionalSpecsId,
-      carInsurance: listing?.listing?.car?.carInsurance,
-      warranty: listing?.listing?.car?.warranty,
-      mileage: listing?.listing?.car?.mileage,
-    },
   });
 
   useEffect(() => {
@@ -136,90 +96,82 @@ const ListingEdit = () => {
     }
   }, [listingId]);
 
-  // useEffect(() => {
-  //   if (!carBrand) return;
-  //   if (carBrand) {
-  //     fetchModels(carBrand);
-  //   }
-  // }, [carBrand]);
+  useEffect(() => {
+    if (listing) {
+      const brandId = carBrands?.carBrands?.find(
+        (b) => b.name === listing?.listing?.car?.carBrand?.name
+      )?._id;
+      reset({
+        title: listing?.listing?.title,
+        description: listing?.listing?.description,
+        location: listing?.listing?.location,
+        isFeatured: listing?.listing?.isFeatured,
+        isPremium: listing?.listing?.isPremium,
+        rentPerDay: listing?.listing?.rentPerDay,
+        rentPerWeek: listing?.listing?.rentPerWeek,
+        rentPerMonth: listing?.listing?.rentPerMonth,
+        carBrand: brandId || "",
+        // carModel: listing?.listing?.car?.carBrand?.carModel?._id,
+        // carTrim: listing?.listing?.car?.carBrand?.carModel?.details?.trimId,
+        modelYear: listing?.listing?.car?.carBrand?.carModel?.details?.yearId,
+        doors: listing?.listing?.car?.carBrand?.carModel?.details?.doorsId,
+        seatingCapacity:
+          listing?.listing?.car?.carBrand?.carModel?.details?.seatingCapacityId,
+        horsePower:
+          listing?.listing?.car?.carBrand?.carModel?.details?.horsePowerId,
+        bodyType:
+          listing?.listing?.car?.carBrand?.carModel?.details?.bodyTypeId,
+        fuelType:
+          listing?.listing?.car?.carBrand?.carModel?.details?.fuelTypeId,
+        transmission:
+          listing?.listing?.car?.carBrand?.carModel?.details?.transmissionId,
+        interiorColor:
+          listing?.listing?.car?.carBrand?.carModel?.details?.interiorColorId,
+        exteriorColor:
+          listing?.listing?.car?.carBrand?.carModel?.details?.exteriorColorId,
+        techFeatures:
+          listing?.listing?.car?.carBrand?.carModel?.details?.techFeatures.map(
+            (tf) => tf._id
+          ) || [],
+        otherFeatures:
+          listing?.listing?.car?.carBrand?.carModel?.details?.otherFeatures.map(
+            (tf) => tf._id
+          ) || [],
+        regionalSpecs: listing?.listing?.car?.regionalSpecsId,
+        carInsurance: listing?.listing?.car?.carInsurance,
+        warranty: listing?.listing?.car?.warranty,
+        mileage: listing?.listing?.car?.mileage,
+      });
+    }
+  }, [reset, listing, carBrands]);
 
-  // useEffect(() => {
-  //   if (carModel) {
-  //     fetchTrims(carModel);
-  //   }
-  // }, [carModel, fetchTrims]);
+  const carBrand = watch("carBrand");
 
-  // useEffect(() => {
-  //   if (!listing) return;
+  useEffect(() => {
+    if (!carBrand) return;
 
-  //   reset({
-  //     title: listing?.listing?.title,
-  //     description: listing?.listing?.description,
-  //     location: listing?.listing?.location,
-  //     isFeatured: listing?.listing?.isFeatured,
-  //     isPremium: listing?.listing?.isPremium,
-  //     rentPerDay: listing?.listing?.rentPerDay,
-  //     rentPerWeek: listing?.listing?.rentPerWeek,
-  //     rentPerMonth: listing?.listing?.rentPerMonth,
-  //     carBrand: listing?.listing?.car?.carBrand?._id,
-  //     // carModel: listing?.listing?.car?.carBrand?.carModel?._id,
-  //     // carTrim: listing?.listing?.car?.carBrand?.carModel?.details?.trimId,
-  //     modelYear: listing?.listing?.car?.carBrand?.carModel?.details?.yearId,
-  //     doors: listing?.listing?.car?.carBrand?.carModel?.details?.doorsId,
-  //     seatingCapacity:
-  //       listing?.listing?.car?.carBrand?.carModel?.details?.seatingCapacityId,
-  //     horsePower:
-  //       listing?.listing?.car?.carBrand?.carModel?.details?.horsePowerId,
-  //     bodyType: listing?.listing?.car?.carBrand?.carModel?.details?.bodyTypeId,
-  //     fuelType: listing?.listing?.car?.carBrand?.carModel?.details?.fuelTypeId,
-  //     transmission:
-  //       listing?.listing?.car?.carBrand?.carModel?.details?.transmissionId,
-  //     interiorColor:
-  //       listing?.listing?.car?.carBrand?.carModel?.details?.interiorColorId,
-  //     exteriorColor:
-  //       listing?.listing?.car?.carBrand?.carModel?.details?.exteriorColorId,
-  //     techFeatures:
-  //       listing?.listing?.car?.carBrand?.carModel?.details?.techFeatures.map(
-  //         (tf) => tf._id
-  //       ) || [],
-  //     otherFeatures:
-  //       listing?.listing?.car?.carBrand?.carModel?.details?.otherFeatures.map(
-  //         (tf) => tf._id
-  //       ) || [],
-  //     regionalSpecs: listing?.listing?.car?.regionalSpecsId,
-  //     carInsurance: listing?.listing?.car?.carInsurance,
-  //     warranty: listing?.listing?.car?.warranty,
-  //     mileage: listing?.listing?.car?.mileage,
-  //   });
-  // }, [listing]);
+    fetchModels(carBrand).then(() => {
+      // Only set default carModel after options are loaded
+      reset({
+        ...getValues(),
+        carModel: listing.listing.car?.carBrand?.carModel?._id,
+      });
+    });
+  }, [carBrand, fetchModels, reset, getValues, listing]);
 
-  // const carBrand = watch("carBrand");
+  const carModel = watch("carModel");
 
-  // useEffect(() => {
-  //   if (!carBrand) return;
+  useEffect(() => {
+    if (!carModel) return;
 
-  //   fetchModels(carBrand).then(() => {
-  //     // Only set default carModel after options are loaded
-  //     reset({
-  //       ...getValues(),
-  //       carModel: listing.listing.car?.carBrand?.carModel?._id,
-  //     });
-  //   });
-  // }, [carBrand, fetchModels, reset, getValues, listing]);
-
-  // const carModel = watch("carModel");
-
-  // useEffect(() => {
-  //   if (!carModel) return;
-
-  //   fetchTrims(carModel).then(() => {
-  //     // Only set default carTrim after options are loaded
-  //     reset({
-  //       ...getValues(),
-  //       carTrim: listing.listing.car?.carBrand?.carModel?.details?.trimId,
-  //     });
-  //   });
-  // }, [carModel, fetchTrims, reset, getValues, listing]);
+    fetchTrims(carModel).then(() => {
+      // Only set default carTrim after options are loaded
+      reset({
+        ...getValues(),
+        carTrim: listing.listing.car?.carBrand?.carModel?.details?.trimId,
+      });
+    });
+  }, [carModel, fetchTrims, reset, getValues, listing]);
 
   const onSubmit = (values) => {
     console.log({ values });
@@ -411,24 +363,17 @@ const ListingEdit = () => {
             {isFetching ? (
               <Skeleton height="40px" borderRadius="md" mt={2} />
             ) : (
-              <Controller
-                name="carBrand"
-                control={control}
-                defaultValue={listing?.listing?.car?.carBrand?._id}
-                render={({ field }) => (
-                  <select
-                    {...field}
-                    className="w-full border rounded-lg px-3 py-2 mt-2 outline-none border-[rgba(91, 120, 124, 1)]"
-                  >
-                    <option value="">Select a brand</option>
-                    {carBrands?.carBrands?.map((brand) => (
-                      <option key={brand._id} value={brand._id}>
-                        {brand.name}
-                      </option>
-                    ))}
-                  </select>
-                )}
-              />
+              <select
+                {...register("carBrand")}
+                className="w-full border rounded-lg px-3 py-2 mt-2 outline-none border-[rgba(91, 120, 124, 1)]"
+              >
+                <option value="">Select a brand</option>
+                {carBrands?.carBrands?.map((brand) => (
+                  <option key={brand._id} value={brand._id}>
+                    {brand.name}
+                  </option>
+                ))}
+              </select>
             )}
             {errors.carBrand && (
               <p className="text-red-500 text-sm">{errors.carBrand.message}</p>
