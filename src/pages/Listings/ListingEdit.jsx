@@ -160,8 +160,11 @@ const ListingEdit = () => {
         ) || [];
 
       const otherFeatureIds =
-        listing?.listing?.car?.carBrand?.carModel?.details?.otherFeatures?.map(
-          (tf) => otherFeatures?.features?.find((f) => f.name === tf.name)?._id
+        otherFeatures?.features?.map(
+          (tf) =>
+            listing?.listing?.car?.carBrand?.carModel?.details?.otherFeatures?.find(
+              (f) => f.name === tf.name
+            )?._id
         ) || [];
 
       console.log("ListingEdit:techFeatureIds", {
