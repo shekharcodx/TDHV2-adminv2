@@ -110,6 +110,8 @@ const ListingEdit = () => {
   // }, [carModel, fetchTrims]);
 
   useEffect(() => {
+    if (!listing) return;
+
     reset({
       title: listing?.listing?.title,
       description: listing?.listing?.description,
@@ -152,7 +154,7 @@ const ListingEdit = () => {
   }, [
     reset,
     listing,
-    // carBrands,
+    carBrands,
     years,
     doors,
     regionalSpecs,
