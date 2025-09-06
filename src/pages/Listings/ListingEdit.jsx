@@ -226,7 +226,7 @@ const ListingEdit = () => {
     });
 
     reset({ ...getValues, techFeatures: techFeatureIds });
-  }, [techFeatures]);
+  }, [techFeatures, listing]);
 
   const carBrand = watch("carBrand");
 
