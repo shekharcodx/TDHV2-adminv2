@@ -103,7 +103,7 @@ const ListingEdit = () => {
       )?._id;
       const modelYearId = years?.years?.find(
         (y) =>
-          y.year ===
+          y.year ==
           listing?.listing?.car?.carBrand?.carModel?.details?.modelYear
       )?._id;
       const regionalSpecId = regionalSpecs?.specs?.find(
@@ -154,7 +154,7 @@ const ListingEdit = () => {
           f.name === listing?.listing?.car.carBrand?.carModel?.details?.fuelType
       )?._id;
 
-      console.log("ListingEdit:fuelTypeId", fuelTypeId);
+      console.log("ListingEdit:modelYearId", modelYearId);
 
       reset({
         title: listing?.listing?.title,
@@ -191,7 +191,19 @@ const ListingEdit = () => {
         mileage: listing?.listing?.car?.mileage,
       });
     }
-  }, [reset, listing, carBrands]);
+  }, [
+    reset,
+    listing,
+    carBrands,
+    transmissions,
+    colors,
+    bodyTypes,
+    doors,
+    seatings,
+    powers,
+    regionalSpecs,
+    fuelTypes,
+  ]);
 
   const carBrand = watch("carBrand");
 
@@ -199,10 +211,12 @@ const ListingEdit = () => {
     if (!carBrand) return;
 
     fetchModels(carBrand).then(() => {
-      // Only set default carModel after options are loaded
+      const carModalId = carModels?.carModels?.find(
+        (m) => m.name === listing.listing.car?.carBrand?.carModel?.name
+      )?._id;
       reset({
         ...getValues(),
-        carModel: listing.listing.car?.carBrand?.carModel?._id,
+        carModel: carModalId || "",
       });
     });
   }, [carBrand, fetchModels, reset, getValues, listing]);
