@@ -109,70 +109,49 @@ const ListingEdit = () => {
   //   }
   // }, [carModel, fetchTrims]);
 
-  // useEffect(() => {
-  //   if (!listing) return;
-
-  //   reset({
-  //     title: listing?.listing?.title,
-  //     description: listing?.listing?.description,
-  //     location: listing?.listing?.location,
-  //     isFeatured: listing?.listing?.isFeatured,
-  //     isPremium: listing?.listing?.isPremium,
-  //     rentPerDay: listing?.listing?.rentPerDay,
-  //     rentPerWeek: listing?.listing?.rentPerWeek,
-  //     rentPerMonth: listing?.listing?.rentPerMonth,
-  //     carBrand: listing?.listing?.car?.carBrand?._id,
-  //     // carModel: listing?.listing?.car?.carBrand?.carModel?._id,
-  //     // carTrim: listing?.listing?.car?.carBrand?.carModel?.details?.trimId,
-  //     modelYear: listing?.listing?.car?.carBrand?.carModel?.details?.yearId,
-  //     doors: listing?.listing?.car?.carBrand?.carModel?.details?.doorsId,
-  //     seatingCapacity:
-  //       listing?.listing?.car?.carBrand?.carModel?.details?.seatingCapacityId,
-  //     horsePower:
-  //       listing?.listing?.car?.carBrand?.carModel?.details?.horsePowerId,
-  //     bodyType: listing?.listing?.car?.carBrand?.carModel?.details?.bodyTypeId,
-  //     fuelType: listing?.listing?.car?.carBrand?.carModel?.details?.fuelTypeId,
-  //     transmission:
-  //       listing?.listing?.car?.carBrand?.carModel?.details?.transmissionId,
-  //     interiorColor:
-  //       listing?.listing?.car?.carBrand?.carModel?.details?.interiorColorId,
-  //     exteriorColor:
-  //       listing?.listing?.car?.carBrand?.carModel?.details?.exteriorColorId,
-  //     techFeatures:
-  //       listing?.listing?.car?.carBrand?.carModel?.details?.techFeatures.map(
-  //         (tf) => tf._id
-  //       ) || [],
-  //     otherFeatures:
-  //       listing?.listing?.car?.carBrand?.carModel?.details?.otherFeatures.map(
-  //         (tf) => tf._id
-  //       ) || [],
-  //     regionalSpecs: listing?.listing?.car?.regionalSpecsId,
-  //     carInsurance: listing?.listing?.car?.carInsurance,
-  //     warranty: listing?.listing?.car?.warranty,
-  //     mileage: listing?.listing?.car?.mileage,
-  //   });
-  // }, [
-  //   reset,
-  //   listing,
-  //   carBrands,
-  //   years,
-  //   doors,
-  //   regionalSpecs,
-  //   transmissions,
-  //   colors,
-  //   techFeatures,
-  //   otherFeatures,
-  //   powers,
-  //   bodyTypes,
-  //   fuelTypes,
-  //   seatings,
-  // ]);
-
   useEffect(() => {
+    if (!listing) return;
+
     reset({
+      title: listing?.listing?.title,
+      description: listing?.listing?.description,
+      location: listing?.listing?.location,
+      isFeatured: listing?.listing?.isFeatured,
+      isPremium: listing?.listing?.isPremium,
+      rentPerDay: listing?.listing?.rentPerDay,
+      rentPerWeek: listing?.listing?.rentPerWeek,
+      rentPerMonth: listing?.listing?.rentPerMonth,
+      carBrand: listing?.listing?.car?.carBrand?._id,
+      // carModel: listing?.listing?.car?.carBrand?.carModel?._id,
+      // carTrim: listing?.listing?.car?.carBrand?.carModel?.details?.trimId,
       modelYear: listing?.listing?.car?.carBrand?.carModel?.details?.yearId,
+      doors: listing?.listing?.car?.carBrand?.carModel?.details?.doorsId,
+      seatingCapacity:
+        listing?.listing?.car?.carBrand?.carModel?.details?.seatingCapacityId,
+      horsePower:
+        listing?.listing?.car?.carBrand?.carModel?.details?.horsePowerId,
+      bodyType: listing?.listing?.car?.carBrand?.carModel?.details?.bodyTypeId,
+      fuelType: listing?.listing?.car?.carBrand?.carModel?.details?.fuelTypeId,
+      transmission:
+        listing?.listing?.car?.carBrand?.carModel?.details?.transmissionId,
+      interiorColor:
+        listing?.listing?.car?.carBrand?.carModel?.details?.interiorColorId,
+      exteriorColor:
+        listing?.listing?.car?.carBrand?.carModel?.details?.exteriorColorId,
+      techFeatures:
+        listing?.listing?.car?.carBrand?.carModel?.details?.techFeatures.map(
+          (tf) => tf._id
+        ) || [],
+      otherFeatures:
+        listing?.listing?.car?.carBrand?.carModel?.details?.otherFeatures.map(
+          (tf) => tf._id
+        ) || [],
+      regionalSpecs: listing?.listing?.car?.regionalSpecsId,
+      carInsurance: listing?.listing?.car?.carInsurance,
+      warranty: listing?.listing?.car?.warranty,
+      mileage: listing?.listing?.car?.mileage,
     });
-  }, [years]);
+  }, [listing]);
 
   const carBrand = watch("carBrand");
 
