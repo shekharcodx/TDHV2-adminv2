@@ -41,7 +41,7 @@ const Header = ({ isOpen, setIsOpen }) => {
 
   return (
     <>
-      <div className={styles.topHeader} style={{ zIndex: 99 }}>
+      <div className={styles.topHeader} style={{ zIndex: 9999 }}>
         <div className={styles.leftSection}>
           <img src={logo} alt="logo" className={styles.logo} />
         </div>
