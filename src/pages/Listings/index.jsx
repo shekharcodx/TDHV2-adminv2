@@ -275,12 +275,7 @@ const Listings = () => {
                     cursor="pointer"
                     onClick={() => handleIsActiveUpdate(listing._id, "true")}
                   >
-                    <Span
-                      bg="green"
-                      p="2px 8px"
-                      borderRadius="12px"
-                      color="#fff"
-                    >
+                    <Span borderRadius="12px" color="green">
                       Activate
                     </Span>
                   </Menu.Item>
@@ -291,7 +286,7 @@ const Listings = () => {
                     cursor="pointer"
                     onClick={() => handleIsActiveUpdate(listing._id, "false")}
                   >
-                    <Span bg="red" p="2px 8px" borderRadius="12px" color="#fff">
+                    <Span borderRadius="12px" color="red">
                       Deactivate
                     </Span>
                   </Menu.Item>

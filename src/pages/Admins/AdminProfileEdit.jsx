@@ -252,7 +252,7 @@ const EditAdminProfile = () => {
               mt="20px"
             >
               <div
-                className={`${styles.backBtn} cursor-pointer text-center sm:!w-full md:!w-auto`}
+                className={`${styles.backBtn} !border !border-[#5b787c] !text-[#5b787c] cursor-pointer text-center sm:!w-full md:!w-auto`}
                 onClick={() => navigate(-1)}
               >
                 Back

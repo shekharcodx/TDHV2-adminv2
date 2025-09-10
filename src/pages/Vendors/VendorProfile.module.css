@@ -168,12 +168,11 @@
 
 /* Save Button (Edit Mode) */
 .saveBtn {
-  background-color: #89b4bc; /* misty-teal */
+  background: var(--gradient-background); /* misty-teal */
   color: #fff; /* dark text */
 }
 
 .saveBtn:hover {
-  background-color: #5b787c; /* slate-gray-secondary */
   color: #efeeea;
   transform: scale(1.05);
 }

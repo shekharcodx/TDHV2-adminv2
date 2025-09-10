@@ -418,7 +418,7 @@ const Profile = () => {
             mt="20px"
           >
             <div
-              className={`${styles.editBtn} ${styles.editModeBtn} cursor-pointer text-center sm:!w-full md:!w-auto`}
+              className={`${styles.editBtn} !border !border-[#5b787c] !text-[#5b787c] cursor-pointer text-center sm:!w-full md:!w-auto`}
               onClick={() => (isEditing ? toggleEdit() : navigate(-1))}
             >
               Back
