@@ -22,6 +22,7 @@ import Listings from "@/pages/Listings";
 import ListingView from "@/pages/Listings/ListingView";
 import PagesLayout from "@/components/layout/PagesLayout";
 import ListingEdit from "./pages/Listings/ListingEdit";
+import CarData from "./pages/CarData/CarData";
 
 function App() {
   const routes = [
@@ -64,7 +65,7 @@ function App() {
               ],
             },
 
-            { path: "/master-data", element: <Box>Data</Box> },
+            { path: "/car-data", element: <CarData /> },
             { path: "/email-templates", element: <Box>Templates</Box> },
           ],
         },

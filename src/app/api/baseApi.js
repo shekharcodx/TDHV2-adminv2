@@ -41,5 +41,7 @@ export const baseApi = createApi({
     "user",
     "listings",
     "listing",
+    "AllModels",
+    "AllTrims",
   ],
 });

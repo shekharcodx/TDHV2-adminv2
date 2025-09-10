@@ -3,12 +3,36 @@ import { baseApi } from "@/app/api/baseApi";
 const carMasterDataApi = baseApi.injectEndpoints({
   overrideExisting: true,
   endpoints: (builder) => ({
+    //car brands
     getCarBrand: builder.query({
       query: () => ({
         url: "/carBrands",
         method: "GET",
       }),
       providesTags: ["CarBrands"],
+    }),
+    updateBrandActive: builder.mutation({
+      query: (brandId) => ({
+        url: `/carBrand/${brandId}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["CarBrands"],
+    }),
+    addCarBrand: builder.mutation({
+      query: (data) => ({
+        url: "/carBrand",
+        method: "POST",
+        body: data,
+      }),
+      invalidatesTags: ["CarBrands"],
+    }),
+    //car models
+    getAllCarModels: builder.query({
+      query: () => ({
+        url: "/carModels",
+        method: "GET",
+      }),
+      providesTags: ["AllModels"],
     }),
     getCarModels: builder.query({
       query: (brandId) => ({
@@ -17,13 +41,35 @@ const carMasterDataApi = baseApi.injectEndpoints({
       }),
       providesTags: ["CarModels"],
     }),
+    updateModelActive: builder.mutation({
+      query: (modelId) => ({
+        url: `/carModel/${modelId}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["AllModels"],
+    }),
+    getAllCarTrims: builder.query({
+      query: () => ({
+        url: "/carTrims",
+        method: "GET",
+      }),
+      providesTags: ["AllTrims"],
+    }),
     getCarTrims: builder.query({
       query: (modelId) => ({
         url: `/carTrims/${modelId}`,
-        methid: "GET",
+        method: "GET",
       }),
       providesTags: ["CarTrims"],
     }),
+    updateTrimActive: builder.mutation({
+      query: (trimId) => ({
+        url: `/carTrim/${trimId}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["AllTrims"],
+    }),
+    //reference data
     getYears: builder.query({
       query: () => ({
         url: "/years",
@@ -106,8 +152,14 @@ const carMasterDataApi = baseApi.injectEndpoints({
 
 export const {
   useGetCarBrandQuery,
+  useUpdateBrandActiveMutation,
+  useAddCarBrandMutation,
+  useGetAllCarModelsQuery,
   useLazyGetCarModelsQuery,
+  useUpdateModelActiveMutation,
+  useGetAllCarTrimsQuery,
   useLazyGetCarTrimsQuery,
+  useUpdateTrimActiveMutation,
   useGetYearsQuery,
   useGetBodyTypesQuery,
   useGetColorsQuery,

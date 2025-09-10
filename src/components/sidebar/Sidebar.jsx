@@ -52,68 +52,78 @@ const sideBarMenu = [
     icon: <FaCar className={styles.icon} />,
     subMenu: null,
   },
-  {
-    label: "Master Data",
-    route: "/master-data",
-    icon: <FaDatabase className={styles.icon} />,
-    subMenu: [
-      {
-        label: "Car",
-        route: "/car-data",
-        icon: <FaCarAlt className={styles.icon} />,
-      },
-      {
-        label: "Body Types",
-        route: "/body-types",
-        icon: <FaCarAlt className={styles.icon} />,
-      },
-      {
-        label: "Regional Specs",
-        route: "/regional-specs",
-        icon: <FaCarAlt className={styles.icon} />,
-      },
-      {
-        label: "Transmissions",
-        route: "/transmissions",
-        icon: <FaCarAlt className={styles.icon} />,
-      },
-      {
-        label: "Fuel Types",
-        route: "/fuel-types",
-        icon: <FaCarAlt className={styles.icon} />,
-      },
-      {
-        label: "Seating Capacities",
-        route: "/seating-capacities",
-        icon: <FaCarAlt className={styles.icon} />,
-      },
-      {
-        label: "Doors",
-        route: "/doors",
-        icon: <FaCarAlt className={styles.icon} />,
-      },
-      {
-        label: "Horse Powers",
-        route: "/horse-powers",
-        icon: <FaCarAlt className={styles.icon} />,
-      },
-      {
-        label: "Tech Features",
-        route: "/tech-features",
-        icon: <FaCarAlt className={styles.icon} />,
-      },
-      {
-        label: "Other Features",
-        route: "/other-features",
-        icon: <FaCarAlt className={styles.icon} />,
-      },
-    ],
-  },
+  // {
+  //   label: "Master Data",
+  //   route: "/master-data",
+  //   icon: <FaDatabase className={styles.icon} />,
+  //   subMenu: [
+  //     {
+  //       label: "Car",
+  //       route: "/car-data",
+  //       icon: <FaCarAlt className={styles.icon} />,
+  //     },
+  //     {
+  //       label: "Body Types",
+  //       route: "/body-types",
+  //       icon: <FaCarAlt className={styles.icon} />,
+  //     },
+  //     {
+  //       label: "Regional Specs",
+  //       route: "/regional-specs",
+  //       icon: <FaCarAlt className={styles.icon} />,
+  //     },
+  //     {
+  //       label: "Transmissions",
+  //       route: "/transmissions",
+  //       icon: <FaCarAlt className={styles.icon} />,
+  //     },
+  //     {
+  //       label: "Fuel Types",
+  //       route: "/fuel-types",
+  //       icon: <FaCarAlt className={styles.icon} />,
+  //     },
+  //     {
+  //       label: "Seating Capacities",
+  //       route: "/seating-capacities",
+  //       icon: <FaCarAlt className={styles.icon} />,
+  //     },
+  //     {
+  //       label: "Doors",
+  //       route: "/doors",
+  //       icon: <FaCarAlt className={styles.icon} />,
+  //     },
+  //     {
+  //       label: "Horse Powers",
+  //       route: "/horse-powers",
+  //       icon: <FaCarAlt className={styles.icon} />,
+  //     },
+  //     {
+  //       label: "Tech Features",
+  //       route: "/tech-features",
+  //       icon: <FaCarAlt className={styles.icon} />,
+  //     },
+  //     {
+  //       label: "Other Features",
+  //       route: "/other-features",
+  //       icon: <FaCarAlt className={styles.icon} />,
+  //     },
+  //   ],
+  // },
   {
     label: "Settings",
     route: "",
     icon: <FaGears className={styles.icon} />,
     subMenu: [
+      {
+        label: "Car Data",
+        route: "/car-data",
+        icon: <FaCarAlt className={styles.icon} />,
+      },
+      {
+        label: "Car Reference Data",
+        route: "/car-reference-data",
+        icon: <FaCarAlt className={styles.icon} />,
+      },
       {
         label: "Email Templates",
         route: "/email-templates",
