@@ -10,7 +10,12 @@ const CarData = () => {
         <Heading fontSize="24px" fontWeight="600" mb="30px">
           Car Data
         </Heading>
-        <Tabs.Root variant="enclosed" fitted defaultValue={"brands"}>
+        <Tabs.Root
+          colorPalette="teal"
+          variant="enclosed"
+          fitted
+          defaultValue={"brands"}
+        >
           <Tabs.List>
             <Tabs.Trigger value="brands">Car Brands</Tabs.Trigger>
             <Tabs.Trigger value="models">Car Models</Tabs.Trigger>
