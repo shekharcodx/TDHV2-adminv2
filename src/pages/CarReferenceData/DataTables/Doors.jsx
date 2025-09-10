@@ -1,32 +1,32 @@
 import styles from "./Table.module.css";
 import {
-  useGetAllCarTrimsQuery,
-  useUpdateTrimActiveMutation,
+  useGetDoorsQuery,
+  useUpdateBrandActiveMutation,
 } from "@/app/api/carMasterDataApi";
 import { Button, Skeleton, Box } from "@chakra-ui/react";
 import { toaster } from "@/components/ui/toaster";
 import DataTableClient from "@/components/DataTableClientPagination";
+// import CarBrandCreation from "./modals/CarBrandCreation";
 import { useState } from "react";
-import CarTrimCreation from "./modals/CarTrimCreation";
 
-const CarTrim = ({ tabValue }) => {
+const Doors = ({ tabValue }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const { data: carTrims, isFetching } = useGetAllCarTrimsQuery(true, {
-    skip: tabValue !== "trims",
+  const { data: doors, isFetching } = useGetDoorsQuery(true, {
+    skip: tabValue !== "doors",
   });
-  const [updateActive] = useUpdateTrimActiveMutation();
+  const [updateActive] = useUpdateBrandActiveMutation();
 
-  const handleActiveStatusChange = (trimId, isActive) => {
+  const handleActiveStatusChange = (brandId, isActive) => {
     if (
       !confirm(
         isActive
-          ? "Do you want to activate the trim?"
-          : "Do you want to deactivate the trim?"
+          ? "Do you want to activate the brand?"
+          : "Do you want to deactivate the brand?"
       )
     ) {
       return;
     }
-    toaster.promise(updateActive(trimId).unwrap(), {
+    toaster.promise(updateActive(brandId).unwrap(), {
       loading: { title: "Updating", description: "Please wait..." },
       success: (res) => {
         return {
@@ -44,17 +44,12 @@ const CarTrim = ({ tabValue }) => {
   };
 
   const columns = [
-    { key: "name", label: "Name" },
-    {
-      key: "model",
-      label: "Model Name",
-      render: (trim) => <span>{trim.carModel?.name || "NA"}</span>,
-    },
+    { key: "doors", label: "Doors" },
     {
       key: "isActive",
       label: "Active",
-      render: (trim) =>
-        trim.isActive ? (
+      render: (door) =>
+        door.isActive ? (
           <span className={styles.activeBadge}>Active</span>
         ) : (
           <span className={styles.inactiveBadge}>Deactivated</span>
@@ -63,21 +58,21 @@ const CarTrim = ({ tabValue }) => {
     {
       key: "actions",
       label: "Actions",
-      render: (trim) => (
+      render: (door) => (
         <Box
           cursor="pointer"
           onClick={() =>
-            handleActiveStatusChange(trim._id, !trim.isActive ? true : false)
+            handleActiveStatusChange(door._id, !door.isActive ? true : false)
           }
         >
           <Button
             size="xs"
-            bg={!trim.isActive ? "green" : "red"}
+            bg={!door.isActive ? "green" : "red"}
             p="2px 8px"
             borderRadius="5px"
             color="#fff"
           >
-            {!trim.isActive ? "Activate" : "Deactivate"}
+            {!door.isActive ? "Activate" : "Deactivate"}
           </Button>
         </Box>
       ),
@@ -93,18 +88,18 @@ const CarTrim = ({ tabValue }) => {
         display="block"
         onClick={() => setIsOpen(true)}
       >
-        Add Trims
+        Add Doors
       </Button>
       <DataTableClient
         columns={columns}
-        data={carTrims?.carTrims || []}
+        data={doors?.doors || []}
         isFetching={isFetching}
         skeleton={<SkeletonRow />}
         getRowClass={(_, i) =>
           i % 2 === 0 ? styles.tableRowEven : styles.tableRowOdd
         }
       />
-      <CarTrimCreation isOpen={isOpen} setIsOpen={setIsOpen} />
+      {/* <CarBrandCreation isOpen={isOpen} setIsOpen={setIsOpen} /> */}
     </Box>
   );
 };
@@ -119,13 +114,10 @@ const SkeletonRow = () => {
         <Skeleton height="25px" width="100%" variant="shine" />
       </td>
       <td className={`${styles.tableCell}`}>
-        <Skeleton height="25px" width="100%" variant="shine" />
-      </td>
-      <td className={`${styles.tableCell}`}>
         <Skeleton height="25px" width="36px" variant="shine" mx="auto" />
       </td>
     </tr>
   );
 };
 
-export default CarTrim;
+export default Doors;

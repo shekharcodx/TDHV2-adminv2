@@ -9,7 +9,6 @@ const DataPaginationClient = ({
   showTotal = false,
   totalDocs = null,
 }) => {
-  console.log("index:totalPages", totalPages);
   return (
     <Pagination.Root
       count={totalPages}

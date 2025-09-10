@@ -67,6 +67,7 @@ const CarBrandCreation = ({ isOpen, setIsOpen }) => {
       key="md"
       size="md"
       placement="center"
+      closeOnInteractOutside={false}
     >
       <Portal>
         <Dialog.Backdrop />
@@ -119,7 +120,12 @@ const CarBrandCreation = ({ isOpen, setIsOpen }) => {
             </Dialog.Body>
             <Dialog.Footer justifyContent="space-between">
               <Dialog.ActionTrigger asChild>
-                <Button disabled={isLoading} size="md" variant="outline">
+                <Button
+                  disabled={isLoading}
+                  size="md"
+                  variant="outline"
+                  onClick={() => reset()}
+                >
                   Cancel
                 </Button>
               </Dialog.ActionTrigger>
@@ -134,7 +140,7 @@ const CarBrandCreation = ({ isOpen, setIsOpen }) => {
               </Button>
             </Dialog.Footer>
             <Dialog.CloseTrigger asChild>
-              <CloseButton size="sm" />
+              <CloseButton size="sm" onClick={() => reset()} />
             </Dialog.CloseTrigger>
           </Dialog.Content>
         </Dialog.Positioner>

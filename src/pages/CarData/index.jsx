@@ -2,8 +2,11 @@ import { Box, Heading, Tabs } from "@chakra-ui/react";
 import CarBrand from "./CarBrand";
 import CarModel from "./CarModel";
 import CarTrim from "./CarTrim";
+import { useState } from "react";
 
 const CarData = () => {
+  const [value, setValue] = useState("brands");
+
   return (
     <>
       <Box mb="10px" borderBottom="1px solid #fff5">
@@ -15,6 +18,8 @@ const CarData = () => {
           variant="enclosed"
           fitted
           defaultValue={"brands"}
+          value={value}
+          onValueChange={(e) => setValue(e.value)}
         >
           <Tabs.List>
             <Tabs.Trigger value="brands">Car Brands</Tabs.Trigger>
@@ -22,13 +27,13 @@ const CarData = () => {
             <Tabs.Trigger value="trims">Car Trims</Tabs.Trigger>
           </Tabs.List>
           <Tabs.Content value="brands">
-            <CarBrand />
+            <CarBrand tabValue={value} />
           </Tabs.Content>
           <Tabs.Content value="models">
-            <CarModel />
+            <CarModel tabValue={value} />
           </Tabs.Content>
           <Tabs.Content value="trims">
-            <CarTrim />
+            <CarTrim tabValue={value} />
           </Tabs.Content>
         </Tabs.Root>
       </Box>

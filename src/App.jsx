@@ -22,7 +22,8 @@ import Listings from "@/pages/Listings";
 import ListingView from "@/pages/Listings/ListingView";
 import PagesLayout from "@/components/layout/PagesLayout";
 import ListingEdit from "./pages/Listings/ListingEdit";
-import CarData from "./pages/CarData/CarData";
+import CarData from "./pages/CarData";
+import CarReferenceData from "./pages/CarReferenceData";
 
 function App() {
   const routes = [
@@ -66,6 +67,7 @@ function App() {
             },
 
             { path: "/car-data", element: <CarData /> },
+            { path: "/car-reference-data", element: <CarReferenceData /> },
             { path: "/email-templates", element: <Box>Templates</Box> },
           ],
         },

@@ -1,4 +1,4 @@
-import styles from "./VendorTable.module.css";
+import styles from "./Table.module.css";
 import {
   useGetAllCarModelsQuery,
   useUpdateModelActiveMutation,
@@ -6,9 +6,14 @@ import {
 import { Button, Skeleton, Box } from "@chakra-ui/react";
 import { toaster } from "@/components/ui/toaster";
 import DataTableClient from "@/components/DataTableClientPagination";
+import CarModelCreation from "./modals/CarModelCreation";
+import { useState } from "react";
 
-const CarModel = () => {
-  const { data: carModels, isFetching } = useGetAllCarModelsQuery();
+const CarModel = ({ tabValue }) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const { data: carModels, isFetching } = useGetAllCarModelsQuery(true, {
+    skip: tabValue !== "models",
+  });
   const [updateActive] = useUpdateModelActiveMutation();
 
   const handleActiveStatusChange = (modelId, isActive) => {
@@ -81,6 +86,15 @@ const CarModel = () => {
 
   return (
     <Box mt="20px" borderBottom="1px solid #fff5">
+      <Button
+        bg="var(--gradient-background)"
+        mb="20px"
+        ml="auto"
+        display="block"
+        onClick={() => setIsOpen(true)}
+      >
+        Add Models
+      </Button>
       <DataTableClient
         columns={columns}
         data={carModels?.models || []}
@@ -90,6 +104,7 @@ const CarModel = () => {
           i % 2 === 0 ? styles.tableRowEven : styles.tableRowOdd
         }
       />
+      <CarModelCreation isOpen={isOpen} setIsOpen={setIsOpen} />
     </Box>
   );
 };

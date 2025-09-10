@@ -1,30 +1,22 @@
 import DataTable from "@/components/DataTable";
-import styles from "./VendorTable.module.css";
+import styles from "./Table.module.css";
 
 import {
   useGetCarBrandQuery,
   useUpdateBrandActiveMutation,
 } from "@/app/api/carMasterDataApi";
-import { MenuIcon } from "lucide-react";
 import avatar from "@/assets/images/avatar.svg";
-import {
-  Button,
-  Menu,
-  Portal,
-  Span,
-  Skeleton,
-  SkeletonCircle,
-  Box,
-  Heading,
-} from "@chakra-ui/react";
+import { Button, Skeleton, SkeletonCircle, Box } from "@chakra-ui/react";
 import { toaster } from "@/components/ui/toaster";
 import DataTableClient from "@/components/DataTableClientPagination";
-import CarBrandCreation from "./CarBrandCreation";
+import CarBrandCreation from "./modals/CarBrandCreation";
 import { useState } from "react";
 
-const CarBrand = () => {
+const CarBrand = ({ tabValue }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const { data: carBrands, isFetching } = useGetCarBrandQuery();
+  const { data: carBrands, isFetching } = useGetCarBrandQuery(true, {
+    skip: tabValue !== "brands",
+  });
   const [updateActive] = useUpdateBrandActiveMutation();
 
   const handleActiveStatusChange = (brandId, isActive) => {
