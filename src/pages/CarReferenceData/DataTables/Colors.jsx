@@ -1,32 +1,34 @@
 import styles from "./Table.module.css";
 import {
   useGetColorsQuery,
-  useUpdateBrandActiveMutation,
+  useUpdateColorActiveMutation,
+  useAddColorsMutation,
 } from "@/app/api/carMasterDataApi";
 import { Button, Skeleton, Box } from "@chakra-ui/react";
 import { toaster } from "@/components/ui/toaster";
 import DataTableClient from "@/components/DataTableClientPagination";
-// import CarBrandCreation from "./modals/CarBrandCreation";
 import { useState } from "react";
+import Create from "../CreateModals/Create";
 
 const Colors = ({ tabValue }) => {
   const [isOpen, setIsOpen] = useState(false);
   const { data: colors, isFetching } = useGetColorsQuery(true, {
     skip: tabValue !== "colors",
   });
-  const [updateActive] = useUpdateBrandActiveMutation();
+  const [updateActive] = useUpdateColorActiveMutation();
+  const [addColors, { isLoading }] = useAddColorsMutation();
 
-  const handleActiveStatusChange = (brandId, isActive) => {
+  const handleActiveStatusChange = (colorId, isActive) => {
     if (
       !confirm(
         isActive
-          ? "Do you want to activate the brand?"
-          : "Do you want to deactivate the brand?"
+          ? "Do you want to activate the color?"
+          : "Do you want to deactivate the color?"
       )
     ) {
       return;
     }
-    toaster.promise(updateActive(brandId).unwrap(), {
+    toaster.promise(updateActive(colorId).unwrap(), {
       loading: { title: "Updating", description: "Please wait..." },
       success: (res) => {
         return {
@@ -48,8 +50,8 @@ const Colors = ({ tabValue }) => {
     {
       key: "isActive",
       label: "Active",
-      render: (seat) =>
-        seat.isActive ? (
+      render: (color) =>
+        color.isActive ? (
           <span className={styles.activeBadge}>Active</span>
         ) : (
           <span className={styles.inactiveBadge}>Deactivated</span>
@@ -58,21 +60,21 @@ const Colors = ({ tabValue }) => {
     {
       key: "actions",
       label: "Actions",
-      render: (seat) => (
+      render: (color) => (
         <Box
           cursor="pointer"
           onClick={() =>
-            handleActiveStatusChange(seat._id, !seat.isActive ? true : false)
+            handleActiveStatusChange(color._id, !color.isActive ? true : false)
           }
         >
           <Button
             size="xs"
-            bg={!seat.isActive ? "green" : "red"}
+            bg={!color.isActive ? "green" : "red"}
             p="2px 8px"
             borderRadius="5px"
             color="#fff"
           >
-            {!seat.isActive ? "Activate" : "Deactivate"}
+            {!color.isActive ? "Activate" : "Deactivate"}
           </Button>
         </Box>
       ),
@@ -99,7 +101,16 @@ const Colors = ({ tabValue }) => {
           i % 2 === 0 ? styles.tableRowEven : styles.tableRowOdd
         }
       />
-      {/* <CarBrandCreation isOpen={isOpen} setIsOpen={setIsOpen} /> */}
+      <Create
+        isOpen={isOpen}
+        setIsOpen={setIsOpen}
+        payloadTitle="colors"
+        fieldName="color"
+        fieldTitle="Color"
+        title="ADD COLORS"
+        addApi={addColors}
+        isLoading={isLoading}
+      />
     </Box>
   );
 };

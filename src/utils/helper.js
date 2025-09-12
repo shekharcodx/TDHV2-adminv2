@@ -1,5 +1,5 @@
 import { createListCollection } from "@chakra-ui/react";
-import { ACCOUNT_STATUS, LISTING_STATUS } from "./constants";
+import { ACCOUNT_STATUS, LISTING_STATUS } from "../config/constants";
 
 export const getKeyNames = (key) => {
   switch (key) {

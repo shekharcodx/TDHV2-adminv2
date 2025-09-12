@@ -1,32 +1,35 @@
 import styles from "./Table.module.css";
 import {
   useGetSeatingCapacitiesQuery,
-  useUpdateBrandActiveMutation,
+  useUpdateSeatingCapacitiesActiveMutation,
+  useAddSeatingCapacitiesMutation,
 } from "@/app/api/carMasterDataApi";
 import { Button, Skeleton, Box } from "@chakra-ui/react";
 import { toaster } from "@/components/ui/toaster";
 import DataTableClient from "@/components/DataTableClientPagination";
-// import CarBrandCreation from "./modals/CarBrandCreation";
 import { useState } from "react";
+import Create from "../CreateModals/Create";
+import { z } from "zod";
 
 const SeatingCapacity = ({ tabValue }) => {
   const [isOpen, setIsOpen] = useState(false);
   const { data: seats, isFetching } = useGetSeatingCapacitiesQuery(true, {
     skip: tabValue !== "seating",
   });
-  const [updateActive] = useUpdateBrandActiveMutation();
+  const [updateActive] = useUpdateSeatingCapacitiesActiveMutation();
+  const [addSeats, { isLoading }] = useAddSeatingCapacitiesMutation();
 
-  const handleActiveStatusChange = (brandId, isActive) => {
+  const handleActiveStatusChange = (seatId, isActive) => {
     if (
       !confirm(
         isActive
-          ? "Do you want to activate the brand?"
-          : "Do you want to deactivate the brand?"
+          ? "Do you want to activate the seats?"
+          : "Do you want to deactivate the seats?"
       )
     ) {
       return;
     }
-    toaster.promise(updateActive(brandId).unwrap(), {
+    toaster.promise(updateActive(seatId).unwrap(), {
       loading: { title: "Updating", description: "Please wait..." },
       success: (res) => {
         return {
@@ -99,7 +102,21 @@ const SeatingCapacity = ({ tabValue }) => {
           i % 2 === 0 ? styles.tableRowEven : styles.tableRowOdd
         }
       />
-      {/* <CarBrandCreation isOpen={isOpen} setIsOpen={setIsOpen} /> */}
+      <Create
+        isOpen={isOpen}
+        setIsOpen={setIsOpen}
+        payloadTitle="seatingCapacities"
+        fieldName="seatingCapacity"
+        fieldTitle="Seating Capacity"
+        title="ADD SEATING CAPACITIES"
+        addApi={addSeats}
+        isLoading={isLoading}
+        fieldType="number"
+        validationRule={z.coerce
+          .number()
+          .min(2, "Seats must be equal to or greater than 2")
+          .max(11, "Seats must be equal to or lower than 11")}
+      />
     </Box>
   );
 };

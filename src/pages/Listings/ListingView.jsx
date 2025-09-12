@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useLazyGetListingQuery } from "@/app/api/carListingApi";
 import { useParams, useNavigate } from "react-router-dom";
-import { LISTING_STATUS_NUM } from "@/utils/constants";
+import { LISTING_STATUS_NUM } from "@/config/constants";
 import { Button, Heading, Skeleton, SkeletonText } from "@chakra-ui/react";
 
 const ListingView = () => {

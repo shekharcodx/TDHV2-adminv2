@@ -1,8 +1,8 @@
 import styles from "./Table.module.css";
 import {
-  useGetOtherFeaturesQuery,
-  useUpdateOtherFeatureActiveMutation,
-  useAddOtherFeaturesMutation,
+  useGetCategoriesQuery,
+  useUpdateCategoryActiveMutation,
+  useAddCategoriesMutation,
 } from "@/app/api/carMasterDataApi";
 import { Button, Skeleton, Box } from "@chakra-ui/react";
 import { toaster } from "@/components/ui/toaster";
@@ -10,25 +10,25 @@ import DataTableClient from "@/components/DataTableClientPagination";
 import { useState } from "react";
 import Create from "../CreateModals/Create";
 
-const OtherFeatures = ({ tabValue }) => {
+const Categories = ({ tabValue }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const { data: features, isFetching } = useGetOtherFeaturesQuery(undefined, {
-    skip: tabValue !== "other-features",
+  const { data: categories, isFetching } = useGetCategoriesQuery(true, {
+    skip: tabValue !== "categories",
   });
-  const [updateActive] = useUpdateOtherFeatureActiveMutation();
-  const [addOtherFeatures, { isLoading }] = useAddOtherFeaturesMutation();
+  const [updateActive] = useUpdateCategoryActiveMutation();
+  const [addCategories, { isLoading }] = useAddCategoriesMutation();
 
-  const handleActiveStatusChange = (featureId, isActive) => {
+  const handleActiveStatusChange = (categoryId, isActive) => {
     if (
       !confirm(
         isActive
-          ? "Do you want to activate the feature?"
-          : "Do you want to deactivate the feature?"
+          ? "Do you want to activate the category?"
+          : "Do you want to deactivate the category?"
       )
     ) {
       return;
     }
-    toaster.promise(updateActive(featureId).unwrap(), {
+    toaster.promise(updateActive(categoryId).unwrap(), {
       loading: { title: "Updating", description: "Please wait..." },
       success: (res) => {
         return {
@@ -46,25 +46,38 @@ const OtherFeatures = ({ tabValue }) => {
   };
 
   const columns = [
-    { key: "name", label: "Feature" },
+    { key: "name", label: "Category" },
+    {
+      key: "isActive",
+      label: "Active",
+      render: (category) =>
+        category.isActive ? (
+          <span className={styles.activeBadge}>Active</span>
+        ) : (
+          <span className={styles.inactiveBadge}>Deactivated</span>
+        ),
+    },
     {
       key: "actions",
       label: "Actions",
-      render: (feat) => (
+      render: (category) => (
         <Box
           cursor="pointer"
           onClick={() =>
-            handleActiveStatusChange(feat._id, !feat.isActive ? true : false)
+            handleActiveStatusChange(
+              category._id,
+              !category.isActive ? true : false
+            )
           }
         >
           <Button
             size="xs"
-            bg="red"
+            bg={!category.isActive ? "green" : "red"}
             p="2px 8px"
             borderRadius="5px"
             color="#fff"
           >
-            Delete
+            {!category.isActive ? "Activate" : "Deactivate"}
           </Button>
         </Box>
       ),
@@ -80,11 +93,11 @@ const OtherFeatures = ({ tabValue }) => {
         display="block"
         onClick={() => setIsOpen(true)}
       >
-        Add Feature
+        Add Categories
       </Button>
       <DataTableClient
         columns={columns}
-        data={features?.features || []}
+        data={categories?.categories || []}
         isFetching={isFetching}
         skeleton={<SkeletonRow />}
         getRowClass={(_, i) =>
@@ -94,11 +107,11 @@ const OtherFeatures = ({ tabValue }) => {
       <Create
         isOpen={isOpen}
         setIsOpen={setIsOpen}
-        payloadTitle="features"
-        fieldName="feature"
-        fieldTitle="Feature"
-        title="ADD OTHER FEATURES"
-        addApi={addOtherFeatures}
+        payloadTitle="names"
+        fieldName="name"
+        fieldTitle="Category"
+        title="ADD CATEGORIES"
+        addApi={addCategories}
         isLoading={isLoading}
       />
     </Box>
@@ -112,10 +125,13 @@ const SkeletonRow = () => {
         <Skeleton height="25px" width="100%" variant="shine" />
       </td>
       <td className={`${styles.tableCell}`}>
+        <Skeleton height="25px" width="100%" variant="shine" />
+      </td>
+      <td className={`${styles.tableCell}`}>
         <Skeleton height="25px" width="36px" variant="shine" mx="auto" />
       </td>
     </tr>
   );
 };
 
-export default OtherFeatures;
+export default Categories;

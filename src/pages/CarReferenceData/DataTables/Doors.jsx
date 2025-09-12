@@ -1,32 +1,35 @@
 import styles from "./Table.module.css";
 import {
   useGetDoorsQuery,
-  useUpdateBrandActiveMutation,
+  useUpdateDoorActiveMutation,
+  useAddDoorsMutation,
 } from "@/app/api/carMasterDataApi";
 import { Button, Skeleton, Box } from "@chakra-ui/react";
 import { toaster } from "@/components/ui/toaster";
 import DataTableClient from "@/components/DataTableClientPagination";
-// import CarBrandCreation from "./modals/CarBrandCreation";
 import { useState } from "react";
+import Create from "../CreateModals/Create";
+import { z } from "zod";
 
 const Doors = ({ tabValue }) => {
   const [isOpen, setIsOpen] = useState(false);
   const { data: doors, isFetching } = useGetDoorsQuery(true, {
     skip: tabValue !== "doors",
   });
-  const [updateActive] = useUpdateBrandActiveMutation();
+  const [updateActive] = useUpdateDoorActiveMutation();
+  const [addDoors, { isLoading }] = useAddDoorsMutation();
 
-  const handleActiveStatusChange = (brandId, isActive) => {
+  const handleActiveStatusChange = (doorId, isActive) => {
     if (
       !confirm(
         isActive
-          ? "Do you want to activate the brand?"
-          : "Do you want to deactivate the brand?"
+          ? "Do you want to activate the doors?"
+          : "Do you want to deactivate the doors?"
       )
     ) {
       return;
     }
-    toaster.promise(updateActive(brandId).unwrap(), {
+    toaster.promise(updateActive(doorId).unwrap(), {
       loading: { title: "Updating", description: "Please wait..." },
       success: (res) => {
         return {
@@ -99,7 +102,21 @@ const Doors = ({ tabValue }) => {
           i % 2 === 0 ? styles.tableRowEven : styles.tableRowOdd
         }
       />
-      {/* <CarBrandCreation isOpen={isOpen} setIsOpen={setIsOpen} /> */}
+      <Create
+        isOpen={isOpen}
+        setIsOpen={setIsOpen}
+        payloadTitle="doors"
+        fieldName="doors"
+        fieldTitle="Doors"
+        title="ADD DOORS"
+        addApi={addDoors}
+        isLoading={isLoading}
+        fieldType="number"
+        validationRule={z.coerce
+          .number()
+          .min(2, "Door must be equal to or greater than 2")
+          .max(8, "Door must be equal to or lower than 8")}
+      />
     </Box>
   );
 };

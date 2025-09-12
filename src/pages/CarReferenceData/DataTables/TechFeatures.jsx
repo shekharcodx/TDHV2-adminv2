@@ -1,32 +1,34 @@
 import styles from "./Table.module.css";
 import {
   useGetTechFeaturesQuery,
-  useUpdateBrandActiveMutation,
+  useUpdateTeachFeatureActiveMutation,
+  useAddTechFeaturesMutation,
 } from "@/app/api/carMasterDataApi";
 import { Button, Skeleton, Box } from "@chakra-ui/react";
 import { toaster } from "@/components/ui/toaster";
 import DataTableClient from "@/components/DataTableClientPagination";
-// import CarBrandCreation from "./modals/CarBrandCreation";
 import { useState } from "react";
+import Create from "../CreateModals/Create";
 
 const TechFeatures = ({ tabValue }) => {
   const [isOpen, setIsOpen] = useState(false);
   const { data: features, isFetching } = useGetTechFeaturesQuery(undefined, {
     skip: tabValue !== "tech-feature",
   });
-  const [updateActive] = useUpdateBrandActiveMutation();
+  const [updateActive] = useUpdateTeachFeatureActiveMutation();
+  const [addTechFeatures, { isLoading }] = useAddTechFeaturesMutation();
 
-  const handleActiveStatusChange = (brandId, isActive) => {
+  const handleActiveStatusChange = (featureId, isActive) => {
     if (
       !confirm(
         isActive
-          ? "Do you want to activate the brand?"
-          : "Do you want to deactivate the brand?"
+          ? "Do you want to activate the feature?"
+          : "Do you want to deactivate the feature?"
       )
     ) {
       return;
     }
-    toaster.promise(updateActive(brandId).unwrap(), {
+    toaster.promise(updateActive(featureId).unwrap(), {
       loading: { title: "Updating", description: "Please wait..." },
       success: (res) => {
         return {
@@ -89,7 +91,16 @@ const TechFeatures = ({ tabValue }) => {
           i % 2 === 0 ? styles.tableRowEven : styles.tableRowOdd
         }
       />
-      {/* <CarBrandCreation isOpen={isOpen} setIsOpen={setIsOpen} /> */}
+      <Create
+        isOpen={isOpen}
+        setIsOpen={setIsOpen}
+        payloadTitle="features"
+        fieldName="feature"
+        fieldTitle="Feature"
+        title="ADD TECHNICAL FEATURES"
+        addApi={addTechFeatures}
+        isLoading={isLoading}
+      />
     </Box>
   );
 };

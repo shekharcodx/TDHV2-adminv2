@@ -33,7 +33,7 @@ function DataTableClient({
           </thead>
           <tbody>
             {isFetching ? (
-              Array.from({ length: 3 }).map((_, i) =>
+              Array.from({ length: itemsPerPage }).map((_, i) =>
                 cloneElement(skeleton, { key: i })
               ) || (
                 <tr>

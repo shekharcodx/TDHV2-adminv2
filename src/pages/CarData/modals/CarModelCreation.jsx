@@ -80,8 +80,8 @@ const CarModelCreation = ({ isOpen, setIsOpen }) => {
       closeOnInteractOutside={false}
     >
       <Portal>
-        <Dialog.Backdrop />
-        <Dialog.Positioner>
+        <Dialog.Backdrop zIndex="9999" />
+        <Dialog.Positioner zIndex="9999">
           <Dialog.Content>
             <Dialog.Header>
               <Dialog.Title>ADD CAR MODELS</Dialog.Title>

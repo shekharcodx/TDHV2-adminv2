@@ -1,32 +1,34 @@
 import styles from "./Table.module.css";
 import {
   useGetRegionalSpecsQuery,
-  useUpdateBrandActiveMutation,
+  useUpdateRegionalSpecsActiveMutation,
+  useAddRegionalSpecsMutation,
 } from "@/app/api/carMasterDataApi";
 import { Button, Skeleton, Box } from "@chakra-ui/react";
 import { toaster } from "@/components/ui/toaster";
 import DataTableClient from "@/components/DataTableClientPagination";
-// import CarBrandCreation from "./modals/CarBrandCreation";
 import { useState } from "react";
+import Create from "../CreateModals/Create";
 
 const RegionalSpecs = ({ tabValue }) => {
   const [isOpen, setIsOpen] = useState(false);
   const { data: regionalSpecs, isFetching } = useGetRegionalSpecsQuery(true, {
     skip: tabValue !== "reg-specs",
   });
-  const [updateActive] = useUpdateBrandActiveMutation();
+  const [updateActive] = useUpdateRegionalSpecsActiveMutation();
+  const [addSpecs, { isLoading }] = useAddRegionalSpecsMutation();
 
-  const handleActiveStatusChange = (brandId, isActive) => {
+  const handleActiveStatusChange = (specId, isActive) => {
     if (
       !confirm(
         isActive
-          ? "Do you want to activate the brand?"
-          : "Do you want to deactivate the brand?"
+          ? "Do you want to activate the specs?"
+          : "Do you want to deactivate the specs?"
       )
     ) {
       return;
     }
-    toaster.promise(updateActive(brandId).unwrap(), {
+    toaster.promise(updateActive(specId).unwrap(), {
       loading: { title: "Updating", description: "Please wait..." },
       success: (res) => {
         return {
@@ -99,7 +101,16 @@ const RegionalSpecs = ({ tabValue }) => {
           i % 2 === 0 ? styles.tableRowEven : styles.tableRowOdd
         }
       />
-      {/* <CarBrandCreation isOpen={isOpen} setIsOpen={setIsOpen} /> */}
+      <Create
+        isOpen={isOpen}
+        setIsOpen={setIsOpen}
+        payloadTitle="specs"
+        fieldName="spec"
+        fieldTitle="Regional Specs"
+        title="ADD REGIONAL SPECS"
+        addApi={addSpecs}
+        isLoading={isLoading}
+      />
     </Box>
   );
 };

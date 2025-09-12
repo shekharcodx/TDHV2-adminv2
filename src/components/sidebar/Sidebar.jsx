@@ -268,11 +268,11 @@ const Sidebar = ({ isOpen, onClose }) => {
         open={isOpen}
         onOpenChange={(e) => onClose(e.open)}
         closeOnInteractOutside={false}
-        zIndex={999}
+        zIndex={9999}
       >
         <Portal>
-          <Drawer.Backdrop />
-          <Drawer.Positioner>
+          <Drawer.Backdrop zIndex="9999" />
+          <Drawer.Positioner zIndex="9999">
             <Drawer.Content w="259px">
               <Drawer.Body p="0px" overflowX="hidden">
                 <aside className={`${styles.sidebar} overflow-x-hidden`}>

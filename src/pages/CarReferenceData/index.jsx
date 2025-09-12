@@ -11,6 +11,7 @@ import Doors from "./DataTables/Doors";
 import Years from "./DataTables/Years";
 import FuelTypes from "./DataTables/FuelTypes";
 import Transmission from "./DataTables/Transmission";
+import Categories from "./DataTables/Categories";
 
 const CarReferenceData = () => {
   const [value, setValue] = useState("years");
@@ -43,6 +44,9 @@ const CarReferenceData = () => {
             </Tabs.Trigger>
             <Tabs.Trigger className="whitespace-nowrap" value="fuel-types">
               Fuel Types
+            </Tabs.Trigger>
+            <Tabs.Trigger className="whitespace-nowrap" value="categories">
+              Categories
             </Tabs.Trigger>
             <Tabs.Trigger className="whitespace-nowrap" value="body-types">
               Body Types
@@ -81,6 +85,9 @@ const CarReferenceData = () => {
           </Tabs.Content>
           <Tabs.Content w="100%" value="fuel-types">
             <FuelTypes tabValue={value} />
+          </Tabs.Content>
+          <Tabs.Content w="100%" value="categories">
+            <Categories tabValue={value} />
           </Tabs.Content>
           <Tabs.Content w="100%" value="body-types">
             <CarBodyTypes tabValue={value} />

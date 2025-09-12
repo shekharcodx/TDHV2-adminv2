@@ -99,6 +99,8 @@ const carMasterDataApi = baseApi.injectEndpoints({
     }),
 
     //reference data
+
+    //years
     getYears: builder.query({
       query: (param) => {
         let urlParams = new URLSearchParams();
@@ -109,53 +111,20 @@ const carMasterDataApi = baseApi.injectEndpoints({
       },
       providesTags: ["CarYears"],
     }),
-
-    //bodytype
-    getBodyTypes: builder.query({
-      query: (param) => {
-        let urlParams = new URLSearchParams();
-        if (param !== undefined && param !== null) {
-          urlParams.append("all", param);
-        }
-        return { url: `/bodyTypes?${urlParams}`, method: "GET" };
-      },
-      providesTags: ["BodyTypes"],
+    updateYearActive: builder.mutation({
+      query: (yearId) => ({
+        url: `/year/${yearId}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["CarYears"],
     }),
-
-    //doors
-    getDoors: builder.query({
-      query: (param) => {
-        let urlParams = new URLSearchParams();
-        if (param !== undefined && param !== null) {
-          urlParams.append("all", param);
-        }
-        return { url: `carDoors?${urlParams}`, method: "GET" };
-      },
-      providesTags: ["Doors"],
-    }),
-
-    //transmission
-    getTransmissions: builder.query({
-      query: (param) => {
-        let urlParams = new URLSearchParams();
-        if (param !== undefined && param !== null) {
-          urlParams.append("all", param);
-        }
-        return { url: `/carTransmissions?${urlParams}`, method: "GET" };
-      },
-      providesTags: ["Transmissions"],
-    }),
-
-    //fuelTypes
-    getFuelTypes: builder.query({
-      query: (param) => {
-        let urlParams = new URLSearchParams();
-        if (param !== undefined && param !== null) {
-          urlParams.append("all", param);
-        }
-        return { url: `/carFuelTypes?${urlParams}`, method: "GET" };
-      },
-      providesTags: ["FuelTypes"],
+    addYears: builder.mutation({
+      query: (data) => ({
+        url: "/years",
+        method: "POST",
+        body: data,
+      }),
+      invalidatesTags: ["CarYears"],
     }),
 
     //colors
@@ -169,17 +138,155 @@ const carMasterDataApi = baseApi.injectEndpoints({
       },
       providesTags: ["Colors"],
     }),
+    updateColorActive: builder.mutation({
+      query: (colorId) => ({
+        url: `/carColor/${colorId}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["Colors"],
+    }),
+    addColors: builder.mutation({
+      query: (data) => ({
+        url: "/carColors",
+        method: "POST",
+        body: data,
+      }),
+      invalidatesTags: ["Colors"],
+    }),
 
-    //seating
-    getSeatingCapacities: builder.query({
+    //doors
+    getDoors: builder.query({
       query: (param) => {
         let urlParams = new URLSearchParams();
         if (param !== undefined && param !== null) {
           urlParams.append("all", param);
         }
-        return { url: `/carSeatingCapacities?${urlParams}`, method: "GET" };
+        return { url: `carDoors?${urlParams}`, method: "GET" };
       },
-      providesTags: ["SeatingCapacities"],
+      providesTags: ["Doors"],
+    }),
+    updateDoorActive: builder.mutation({
+      query: (doorId) => ({
+        url: `/carDoors/${doorId}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["Doors"],
+    }),
+    addDoors: builder.mutation({
+      query: (data) => ({
+        url: "/carDoors",
+        method: "POST",
+        body: data,
+      }),
+      invalidatesTags: ["Doors"],
+    }),
+
+    //fuelTypes
+    getFuelTypes: builder.query({
+      query: (param) => {
+        let urlParams = new URLSearchParams();
+        if (param !== undefined && param !== null) {
+          urlParams.append("all", param);
+        }
+        return { url: `/carFuelTypes?${urlParams}`, method: "GET" };
+      },
+      providesTags: ["FuelTypes"],
+    }),
+    updateFuelTypeActive: builder.mutation({
+      query: (fuelTypeId) => ({
+        url: `/carFuelType/${fuelTypeId}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["FuelTypes"],
+    }),
+    addFuelTypes: builder.mutation({
+      query: (data) => ({
+        url: "/carFuelTypes",
+        method: "POST",
+        body: data,
+      }),
+      invalidatesTags: ["FuelTypes"],
+    }),
+
+    //categories
+    getCategories: builder.query({
+      query: (param) => {
+        let urlParams = new URLSearchParams();
+        if (param !== undefined && param !== null) {
+          urlParams.append("all", param);
+        }
+        return { url: `/carCategories?${urlParams}`, method: "GET" };
+      },
+      providesTags: ["Categories"],
+    }),
+    updateCategoryActive: builder.mutation({
+      query: (categoryId) => ({
+        url: `/carCategory/${categoryId}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["Categories"],
+    }),
+    addCategories: builder.mutation({
+      query: (data) => ({
+        url: "/carCategories",
+        method: "POST",
+        body: data,
+      }),
+      invalidatesTags: ["Categories"],
+    }),
+
+    //bodytype
+    getBodyTypes: builder.query({
+      query: (param) => {
+        let urlParams = new URLSearchParams();
+        if (param !== undefined && param !== null) {
+          urlParams.append("all", param);
+        }
+        return { url: `/bodyTypes?${urlParams}`, method: "GET" };
+      },
+      providesTags: ["BodyTypes"],
+    }),
+    updateBodyTypeUpdate: builder.mutation({
+      query: (bodyTypeId) => ({
+        url: `/bodyType/${bodyTypeId}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["BodyTypes"],
+    }),
+    addBodyTypes: builder.mutation({
+      query: (data) => ({
+        url: "/carBodyTypes",
+        method: "POST",
+        body: data,
+      }),
+      invalidatesTags: ["BodyTypes"],
+    }),
+
+    //transmission
+    getTransmissions: builder.query({
+      query: (param) => {
+        let urlParams = new URLSearchParams();
+        if (param !== undefined && param !== null) {
+          urlParams.append("all", param);
+        }
+        return { url: `/carTransmissions?${urlParams}`, method: "GET" };
+      },
+      providesTags: ["Transmissions"],
+    }),
+    updateTransmissionUpdate: builder.mutation({
+      query: (transmissionId) => ({
+        url: `/carTransmission/${transmissionId}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["Transmissions"],
+    }),
+    addTransmissions: builder.mutation({
+      query: (data) => ({
+        url: "/carTransmissions",
+        method: "POST",
+        body: data,
+      }),
+      invalidatesTags: ["Transmissions"],
     }),
 
     //powers
@@ -193,6 +300,21 @@ const carMasterDataApi = baseApi.injectEndpoints({
       },
       providesTags: ["HorsePowers"],
     }),
+    updatePowerActive: builder.mutation({
+      query: (powerId) => ({
+        url: `/carHorsePower/${powerId}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["HorsePowers"],
+    }),
+    addPowers: builder.mutation({
+      query: (data) => ({
+        url: "/carHorsePowers",
+        method: "POST",
+        body: data,
+      }),
+      invalidatesTags: ["HorsePowers"],
+    }),
 
     //regionalSpecs
     getRegionalSpecs: builder.query({
@@ -205,6 +327,48 @@ const carMasterDataApi = baseApi.injectEndpoints({
       },
       providesTags: ["RegionalSpecs"],
     }),
+    updateRegionalSpecsActive: builder.mutation({
+      query: (specId) => ({
+        url: `/carRegionalSpecs/${specId}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["RegionalSpecs"],
+    }),
+    addRegionalSpecs: builder.mutation({
+      query: (data) => ({
+        url: "/carRegionalSpecs",
+        method: "POST",
+        body: data,
+      }),
+      invalidatesTags: ["RegionalSpecs"],
+    }),
+
+    //seating
+    getSeatingCapacities: builder.query({
+      query: (param) => {
+        let urlParams = new URLSearchParams();
+        if (param !== undefined && param !== null) {
+          urlParams.append("all", param);
+        }
+        return { url: `/carSeatingCapacities?${urlParams}`, method: "GET" };
+      },
+      providesTags: ["SeatingCapacities"],
+    }),
+    updateSeatingCapacitiesActive: builder.mutation({
+      query: (seatId) => ({
+        url: `/carSeating/${seatId}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["SeatingCapacities"],
+    }),
+    addSeatingCapacities: builder.mutation({
+      query: (data) => ({
+        url: "/carSeatingCapacities",
+        method: "POST",
+        body: data,
+      }),
+      invalidatesTags: ["SeatingCapacities"],
+    }),
 
     //techFeatures
     getTechFeatures: builder.query({
@@ -214,6 +378,21 @@ const carMasterDataApi = baseApi.injectEndpoints({
       }),
       providesTags: ["TechFeatures"],
     }),
+    updateTeachFeatureActive: builder.mutation({
+      query: (featureId) => ({
+        url: `/carTechFeature/${featureId}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["TechFeatures"],
+    }),
+    addTechFeatures: builder.mutation({
+      query: (data) => ({
+        url: "/carTechFeatures",
+        method: "POST",
+        body: data,
+      }),
+      invalidatesTags: ["TechFeatures"],
+    }),
 
     //otherFeatures
     getOtherFeatures: builder.query({
@@ -222,6 +401,21 @@ const carMasterDataApi = baseApi.injectEndpoints({
         method: "GET",
       }),
       providesTags: ["OtherFeatures"],
+    }),
+    updateOtherFeatureActive: builder.mutation({
+      query: (featureId) => ({
+        url: `/carOtherFeature/${featureId}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["OtherFeatures"],
+    }),
+    addOtherFeatures: builder.mutation({
+      query: (data) => ({
+        url: "/carOtherFeatures",
+        method: "POST",
+        body: data,
+      }),
+      invalidatesTags: ["OtherFeatures"],
     }),
   }),
 });
@@ -242,14 +436,50 @@ export const {
   useAddCarTrimsMutation,
 
   useGetYearsQuery,
-  useGetBodyTypesQuery,
-  useGetColorsQuery,
+  useUpdateYearActiveMutation,
+  useAddYearsMutation,
+
   useGetDoorsQuery,
+  useUpdateDoorActiveMutation,
+  useAddDoorsMutation,
+
+  useGetColorsQuery,
+  useUpdateColorActiveMutation,
+  useAddColorsMutation,
+
   useGetFuelTypesQuery,
-  useGetPowersQuery,
-  useGetRegionalSpecsQuery,
-  useGetSeatingCapacitiesQuery,
+  useUpdateFuelTypeActiveMutation,
+  useAddFuelTypesMutation,
+
+  useGetCategoriesQuery,
+  useUpdateCategoryActiveMutation,
+  useAddCategoriesMutation,
+
+  useGetBodyTypesQuery,
+  useUpdateBodyTypeUpdateMutation,
+  useAddBodyTypesMutation,
+
   useGetTransmissionsQuery,
+  useUpdateTransmissionUpdateMutation,
+  useAddTransmissionsMutation,
+
+  useGetPowersQuery,
+  useUpdatePowerActiveMutation,
+  useAddPowersMutation,
+
+  useGetRegionalSpecsQuery,
+  useUpdateRegionalSpecsActiveMutation,
+  useAddRegionalSpecsMutation,
+
+  useGetSeatingCapacitiesQuery,
+  useUpdateSeatingCapacitiesActiveMutation,
+  useAddSeatingCapacitiesMutation,
+
   useGetTechFeaturesQuery,
+  useUpdateTeachFeatureActiveMutation,
+  useAddTechFeaturesMutation,
+
   useGetOtherFeaturesQuery,
+  useUpdateOtherFeatureActiveMutation,
+  useAddOtherFeaturesMutation,
 } = carMasterDataApi;

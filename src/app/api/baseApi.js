@@ -23,6 +23,7 @@ export const baseApi = createApi({
     "CarBrands",
     "CarModels",
     "CarTrims",
+    "Categories",
     "CarYears",
     "BodyTypes",
     "RegionalSpecs",

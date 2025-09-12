@@ -8,27 +8,28 @@ import {
 } from "@chakra-ui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, useFieldArray } from "react-hook-form";
-import {
-  useGetAllCarModelsQuery,
-  useAddCarTrimsMutation,
-} from "@/app/api/carMasterDataApi";
 import { z } from "zod";
 import { toaster } from "@/components/ui/toaster";
 
-const schema = z.object({
-  items: z.array(
-    z.object({
-      name: z.string().min(1, "Name is required"),
-    })
-  ),
-  modelId: z.string().min(1, "Model is required"),
-});
-
-const CarTrimCreation = ({ isOpen, setIsOpen }) => {
-  const { data: carModel } = useGetAllCarModelsQuery(undefined, {
-    skip: !isOpen,
+const Create = ({
+  isOpen,
+  setIsOpen,
+  fieldName = "name",
+  title,
+  fieldTitle,
+  payloadTitle = "names",
+  addApi,
+  isLoading,
+  fieldType = "text",
+  validationRule = z.string().min(1, `${fieldTitle} is required`),
+}) => {
+  const schema = z.object({
+    items: z.array(
+      z.object({
+        [fieldName]: validationRule,
+      })
+    ),
   });
-  const [addTrims, { isLoading }] = useAddCarTrimsMutation();
   const {
     register,
     control,
@@ -37,7 +38,7 @@ const CarTrimCreation = ({ isOpen, setIsOpen }) => {
     handleSubmit,
   } = useForm({
     resolver: zodResolver(schema),
-    defaultValues: { items: [{ name: "", modelId: "" }] },
+    defaultValues: { items: [{ [fieldName]: "" }] },
   });
 
   const { fields, append, remove } = useFieldArray({
@@ -47,28 +48,28 @@ const CarTrimCreation = ({ isOpen, setIsOpen }) => {
 
   const onSubmit = (data) => {
     const payload = {
-      names: data.items.map((item) => item.name),
-      modelId: data.modelId,
+      [payloadTitle]: data.items.map((item) => item[fieldName]),
     };
-    console.log("CarTrimCreation:", { payload });
-    toaster.promise(addTrims(payload).unwrap(), {
-      loading: { title: "Adding trim(s)", description: "Please wait..." },
+    toaster.promise(addApi(payload).unwrap(), {
+      loading: { title: `Adding ${fieldTitle}`, description: "Please wait..." },
       success: (res) => {
         reset();
         setIsOpen(false);
         return {
-          title: res?.message || "Trim(s) added successfully",
+          title: res?.message || `${fieldTitle} added successfully`,
           description: "",
         };
       },
       error: (err) => {
         return {
-          title: err?.err?.message || "Error adding trim(s)",
+          title: err?.err?.message || `Error adding ${fieldTitle}`,
           description: "Please try again",
         };
       },
     });
   };
+
+  const formId = `${fieldName}-form`;
 
   return (
     <Dialog.Root
@@ -85,53 +86,32 @@ const CarTrimCreation = ({ isOpen, setIsOpen }) => {
         <Dialog.Positioner zIndex="9999">
           <Dialog.Content>
             <Dialog.Header>
-              <Dialog.Title>ADD CAR TRIMS</Dialog.Title>
+              <Dialog.Title>{title}</Dialog.Title>
             </Dialog.Header>
             <Dialog.Body>
               <form
-                id="brand-form"
+                id={formId}
                 onSubmit={handleSubmit(onSubmit)}
                 className="max-h-[70vh] overflow-y-auto scrollbar-thin
                          scrollbar-thumb-gray-400 scrollbar-thumb-rounded-full
                         hover:scrollbar-thumb-gray-500 scrollbar-track-gray-100"
               >
-                <Box>
-                  <label className="text-black text-[16px] font-semibold">
-                    Select Model
-                  </label>
-                  <select
-                    {...register(`modelId`)}
-                    className="w-full border rounded-lg px-3 py-3 mt-2 outline-none border-[rgba(91, 120, 124, 1)]"
-                  >
-                    <option value="">Select Model</option>
-                    {carModel?.models?.map((model, i) => (
-                      <option key={i} value={model._id}>
-                        {model.name}
-                      </option>
-                    ))}
-                  </select>
-                  {errors?.modelId && (
-                    <p className="text-red-500 text-sm">
-                      {errors?.modelId?.message}
-                    </p>
-                  )}
-                </Box>
                 <Box className="border border-black border-dashed py-8 pt-0 mt-6 px-6 rounded-xl">
                   {fields.map((field, index) => (
                     <div key={field.id}>
                       <Box mt="20px">
                         <label className="text-black text-[16px] font-semibold">
-                          Trim
+                          {fieldTitle}
                         </label>
                         <input
-                          type="text"
-                          placeholder="Trim"
-                          {...register(`items.${index}.name`)}
+                          type={fieldType}
+                          placeholder={fieldTitle}
+                          {...register(`items.${index}.${fieldName}`)}
                           className="w-full border rounded-lg px-3 py-2 mt-2 outline-none border-[rgba(91, 120, 124, 1)]"
                         />
-                        {errors.items?.[index]?.name && (
+                        {errors.items?.[index]?.[fieldName] && (
                           <p className="text-red-500 text-sm">
-                            {errors.items[index].name?.message}
+                            {errors.items[index]?.[fieldName]?.message}
                           </p>
                         )}
                       </Box>
@@ -158,7 +138,7 @@ const CarTrimCreation = ({ isOpen, setIsOpen }) => {
                 type="button"
                 size="sm"
                 variant="surface"
-                onClick={() => append({ name: "", logo: undefined })}
+                onClick={() => append({ [fieldName]: "" })}
                 disabled={isLoading}
               >
                 Add More
@@ -176,7 +156,7 @@ const CarTrimCreation = ({ isOpen, setIsOpen }) => {
                 </Dialog.ActionTrigger>
                 <Button
                   type="submit"
-                  form="brand-form"
+                  form={formId}
                   bg="var(--gradient-background)"
                   size="sm"
                   disabled={isLoading}
@@ -195,4 +175,4 @@ const CarTrimCreation = ({ isOpen, setIsOpen }) => {
   );
 };
 
-export default CarTrimCreation;
+export default Create;

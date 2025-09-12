@@ -1,32 +1,35 @@
 import styles from "./Table.module.css";
 import {
   useGetPowersQuery,
-  useUpdateBrandActiveMutation,
+  useUpdatePowerActiveMutation,
+  useAddPowersMutation,
 } from "@/app/api/carMasterDataApi";
 import { Button, Skeleton, Box } from "@chakra-ui/react";
 import { toaster } from "@/components/ui/toaster";
 import DataTableClient from "@/components/DataTableClientPagination";
-// import CarBrandCreation from "./modals/CarBrandCreation";
 import { useState } from "react";
+import Create from "../CreateModals/Create";
+import { z } from "zod";
 
 const HorsePower = ({ tabValue }) => {
   const [isOpen, setIsOpen] = useState(false);
   const { data: powers, isFetching } = useGetPowersQuery(true, {
     skip: tabValue !== "powers",
   });
-  const [updateActive] = useUpdateBrandActiveMutation();
+  const [updateActive] = useUpdatePowerActiveMutation();
+  const [addPowers, { isLoading }] = useAddPowersMutation();
 
-  const handleActiveStatusChange = (brandId, isActive) => {
+  const handleActiveStatusChange = (powerId, isActive) => {
     if (
       !confirm(
         isActive
-          ? "Do you want to activate the brand?"
-          : "Do you want to deactivate the brand?"
+          ? "Do you want to activate the horse power?"
+          : "Do you want to deactivate the horse power?"
       )
     ) {
       return;
     }
-    toaster.promise(updateActive(brandId).unwrap(), {
+    toaster.promise(updateActive(powerId).unwrap(), {
       loading: { title: "Updating", description: "Please wait..." },
       success: (res) => {
         return {
@@ -99,7 +102,21 @@ const HorsePower = ({ tabValue }) => {
           i % 2 === 0 ? styles.tableRowEven : styles.tableRowOdd
         }
       />
-      {/* <CarBrandCreation isOpen={isOpen} setIsOpen={setIsOpen} /> */}
+      <Create
+        isOpen={isOpen}
+        setIsOpen={setIsOpen}
+        payloadTitle="horsePowers"
+        fieldName="horsePower"
+        fieldTitle="Horse Power"
+        title="ADD HORSE POWERS"
+        addApi={addPowers}
+        isLoading={isLoading}
+        fieldType="number"
+        validationRule={z.coerce
+          .number()
+          .min(10, "Horse power must be equal to or greater than 10")
+          .max(2000, "Horse power must be equal to or lower than 2000")}
+      />
     </Box>
   );
 };

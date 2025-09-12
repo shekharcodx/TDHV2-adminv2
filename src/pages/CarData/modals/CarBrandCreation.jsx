@@ -70,8 +70,8 @@ const CarBrandCreation = ({ isOpen, setIsOpen }) => {
       closeOnInteractOutside={false}
     >
       <Portal>
-        <Dialog.Backdrop />
-        <Dialog.Positioner>
+        <Dialog.Backdrop zIndex="9999" />
+        <Dialog.Positioner zIndex="9999">
           <Dialog.Content px="24px" pb="20px">
             <Dialog.Header>
               <Dialog.Title>ADD CAR BRAND</Dialog.Title>

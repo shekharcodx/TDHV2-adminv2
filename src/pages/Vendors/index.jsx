@@ -6,7 +6,7 @@ import {
   useUpdateAccountStatusMutation,
 } from "@/app/api/userApi";
 import styles from "./VendorTable.module.css";
-import { ACCOUNT_STATUS, ACCOUNT_STATUS_NUM } from "@/utils/constants";
+import { ACCOUNT_STATUS, ACCOUNT_STATUS_NUM } from "@/config/constants";
 import { LuChevronRight } from "react-icons/lu";
 import { MenuIcon } from "lucide-react";
 import avatar from "@/assets/images/avatar.svg";

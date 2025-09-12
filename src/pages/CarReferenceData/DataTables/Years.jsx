@@ -1,32 +1,34 @@
 import styles from "./Table.module.css";
 import {
   useGetYearsQuery,
-  useUpdateBrandActiveMutation,
+  useUpdateYearActiveMutation,
+  useAddYearsMutation,
 } from "@/app/api/carMasterDataApi";
 import { Button, Skeleton, Box } from "@chakra-ui/react";
 import { toaster } from "@/components/ui/toaster";
 import DataTableClient from "@/components/DataTableClientPagination";
-// import CarBrandCreation from "./modals/CarBrandCreation";
 import { useState } from "react";
+import Create from "../CreateModals/Create";
 
 const Years = ({ tabValue }) => {
   const [isOpen, setIsOpen] = useState(false);
   const { data: years, isFetching } = useGetYearsQuery(true, {
     skip: tabValue !== "years",
   });
-  const [updateActive] = useUpdateBrandActiveMutation();
+  const [updateActive] = useUpdateYearActiveMutation();
+  const [addYears, { isLoading }] = useAddYearsMutation();
 
-  const handleActiveStatusChange = (brandId, isActive) => {
+  const handleActiveStatusChange = (yearId, isActive) => {
     if (
       !confirm(
         isActive
-          ? "Do you want to activate the brand?"
-          : "Do you want to deactivate the brand?"
+          ? "Do you want to activate year?"
+          : "Do you want to deactivate year?"
       )
     ) {
       return;
     }
-    toaster.promise(updateActive(brandId).unwrap(), {
+    toaster.promise(updateActive(yearId).unwrap(), {
       loading: { title: "Updating", description: "Please wait..." },
       success: (res) => {
         return {
@@ -88,7 +90,7 @@ const Years = ({ tabValue }) => {
         display="block"
         onClick={() => setIsOpen(true)}
       >
-        Add Year
+        Add Years
       </Button>
       <DataTableClient
         columns={columns}
@@ -99,7 +101,16 @@ const Years = ({ tabValue }) => {
           i % 2 === 0 ? styles.tableRowEven : styles.tableRowOdd
         }
       />
-      {/* <CarBrandCreation isOpen={isOpen} setIsOpen={setIsOpen} /> */}
+      <Create
+        isOpen={isOpen}
+        setIsOpen={setIsOpen}
+        payloadTitle="years"
+        fieldName="year"
+        fieldTitle="Year"
+        title="ADD YEARS"
+        addApi={addYears}
+        isLoading={isLoading}
+      />
     </Box>
   );
 };

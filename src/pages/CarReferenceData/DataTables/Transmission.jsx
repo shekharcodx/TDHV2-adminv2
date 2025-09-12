@@ -1,32 +1,34 @@
 import styles from "./Table.module.css";
 import {
   useGetTransmissionsQuery,
-  useUpdateBrandActiveMutation,
+  useUpdateTransmissionUpdateMutation,
+  useAddTransmissionsMutation,
 } from "@/app/api/carMasterDataApi";
 import { Button, Skeleton, Box } from "@chakra-ui/react";
 import { toaster } from "@/components/ui/toaster";
 import DataTableClient from "@/components/DataTableClientPagination";
-// import CarBrandCreation from "./modals/CarBrandCreation";
 import { useState } from "react";
+import Create from "../CreateModals/Create";
 
 const Transmission = ({ tabValue }) => {
   const [isOpen, setIsOpen] = useState(false);
   const { data: transmissions, isFetching } = useGetTransmissionsQuery(true, {
     skip: tabValue !== "transmission",
   });
-  const [updateActive] = useUpdateBrandActiveMutation();
+  const [updateActive] = useUpdateTransmissionUpdateMutation();
+  const [addTransmission, { isLoading }] = useAddTransmissionsMutation();
 
-  const handleActiveStatusChange = (brandId, isActive) => {
+  const handleActiveStatusChange = (transmissionId, isActive) => {
     if (
       !confirm(
         isActive
-          ? "Do you want to activate the brand?"
-          : "Do you want to deactivate the brand?"
+          ? "Do you want to activate the transmission?"
+          : "Do you want to deactivate the transmission?"
       )
     ) {
       return;
     }
-    toaster.promise(updateActive(brandId).unwrap(), {
+    toaster.promise(updateActive(transmissionId).unwrap(), {
       loading: { title: "Updating", description: "Please wait..." },
       success: (res) => {
         return {
@@ -48,8 +50,8 @@ const Transmission = ({ tabValue }) => {
     {
       key: "isActive",
       label: "Active",
-      render: (year) =>
-        year.isActive ? (
+      render: (transmission) =>
+        transmission.isActive ? (
           <span className={styles.activeBadge}>Active</span>
         ) : (
           <span className={styles.inactiveBadge}>Deactivated</span>
@@ -102,7 +104,16 @@ const Transmission = ({ tabValue }) => {
           i % 2 === 0 ? styles.tableRowEven : styles.tableRowOdd
         }
       />
-      {/* <CarBrandCreation isOpen={isOpen} setIsOpen={setIsOpen} /> */}
+      <Create
+        isOpen={isOpen}
+        setIsOpen={setIsOpen}
+        payloadTitle="transmissions"
+        fieldName="transmission"
+        fieldTitle="Transmission"
+        title="ADD TRANSMISSIONS"
+        addApi={addTransmission}
+        isLoading={isLoading}
+      />
     </Box>
   );
 };

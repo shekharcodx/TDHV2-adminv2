@@ -1,32 +1,35 @@
 import styles from "./Table.module.css";
 import {
   useGetFuelTypesQuery,
-  useUpdateBrandActiveMutation,
+  useUpdateFuelTypeActiveMutation,
+  useAddFuelTypesMutation,
 } from "@/app/api/carMasterDataApi";
 import { Button, Skeleton, Box } from "@chakra-ui/react";
 import { toaster } from "@/components/ui/toaster";
 import DataTableClient from "@/components/DataTableClientPagination";
 // import CarBrandCreation from "./modals/CarBrandCreation";
 import { useState } from "react";
+import Create from "../CreateModals/Create";
 
 const FuelTypes = ({ tabValue }) => {
   const [isOpen, setIsOpen] = useState(false);
   const { data: fuelTypes, isFetching } = useGetFuelTypesQuery(true, {
     skip: tabValue !== "fuel-types",
   });
-  const [updateActive] = useUpdateBrandActiveMutation();
+  const [updateActive] = useUpdateFuelTypeActiveMutation();
+  const [addFuelTypes, { isLoading }] = useAddFuelTypesMutation();
 
-  const handleActiveStatusChange = (brandId, isActive) => {
+  const handleActiveStatusChange = (fuelTypeId, isActive) => {
     if (
       !confirm(
         isActive
-          ? "Do you want to activate the brand?"
-          : "Do you want to deactivate the brand?"
+          ? "Do you want to activate the fuel type?"
+          : "Do you want to deactivate the fuel type?"
       )
     ) {
       return;
     }
-    toaster.promise(updateActive(brandId).unwrap(), {
+    toaster.promise(updateActive(fuelTypeId).unwrap(), {
       loading: { title: "Updating", description: "Please wait..." },
       success: (res) => {
         return {
@@ -99,7 +102,16 @@ const FuelTypes = ({ tabValue }) => {
           i % 2 === 0 ? styles.tableRowEven : styles.tableRowOdd
         }
       />
-      {/* <CarBrandCreation isOpen={isOpen} setIsOpen={setIsOpen} /> */}
+      <Create
+        isOpen={isOpen}
+        setIsOpen={setIsOpen}
+        payloadTitle="fuelTypes"
+        fieldName="fuelType"
+        fieldTitle="Fuel Type"
+        title="ADD FUEL TYPES"
+        addApi={addFuelTypes}
+        isLoading={isLoading}
+      />
     </Box>
   );
 };

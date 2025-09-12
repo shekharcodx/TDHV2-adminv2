@@ -21,7 +21,7 @@ import FilterResetBtn from "@/components/FilterResetBtn";
 import FilterInput from "@/components/FilterInput/input";
 import styles from "./Listing.module.css";
 import DataTable from "@/components/DataTable";
-import { LISTING_STATUS, LISTING_STATUS_NUM } from "@/utils/constants";
+import { LISTING_STATUS, LISTING_STATUS_NUM } from "@/config/constants";
 import placeholderImg from "@/assets/images/placeholder_image.jpg";
 import { MenuIcon } from "lucide-react";
 import { LuChevronRight } from "react-icons/lu";
