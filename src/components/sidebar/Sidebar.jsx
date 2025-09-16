@@ -18,7 +18,7 @@ import { X } from "lucide-react";
 
 const sideBarMenu = [
   {
-    label: "DASHBOARD",
+    label: "Dashboard",
     route: "/",
     icon: <FaThLarge className={styles.icon} />,
     subMenu: null,

@@ -1,5 +1,5 @@
 // components/DataTable.jsx
-import React, { useState } from "react";
+import React, { cloneElement, useState } from "react";
 import styles from "./DataTable.module.css";
 import DataPagination from "../DataPagination";
 
@@ -28,7 +28,9 @@ function DataTable({
           </thead>
           <tbody>
             {isFetching ? (
-              Array.from({ length: 3 }).map(() => skeleton) || (
+              Array.from({ length: 3 }).map((_, i) =>
+                cloneElement(skeleton, { key: i })
+              ) || (
                 <tr>
                   <td colSpan={columns.length}>Loading...</td>
                 </tr>
