@@ -91,8 +91,8 @@ const UpdatePassword = ({ isOpen, setIsOpen }) => {
       onOpenChange={(e) => setIsOpen(e.open)}
     >
       <Portal>
-        <Dialog.Backdrop />
-        <Dialog.Positioner>
+        <Dialog.Backdrop zIndex="9999" />
+        <Dialog.Positioner zIndex="99999">
           <Dialog.Content>
             <Dialog.Header>
               <Dialog.Title>Change Password</Dialog.Title>
