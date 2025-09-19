@@ -35,6 +35,38 @@ const listingSchema = z.object({
   rentPerDay: z.coerce.number().min(1, "Rent/Day is required"),
   rentPerWeek: z.coerce.number().optional(),
   rentPerMonth: z.coerce.number().optional(),
+  dailyMileage: z.coerce.number().min(1, "Daily mileage is required"),
+  weeklyMileage: z.coerce.number().min(1, "Weekly mileage is required"),
+  monthlyMileage: z.coerce.number().min(1, "Monthly mileage is required"),
+  airBags: z
+    .string()
+    .min(1, "Air Bags is required")
+    .transform(Number)
+    .refine((val) => val >= 0, {
+      message: "Air Bags cannot be negative",
+    }),
+  tankCapacity: z.coerce.number().min(1, "Tank capacity is required"),
+  extraMileageRate: z.coerce
+    .number()
+    .min(0, "Extra mileage rate cannot be negative"),
+  deliveryCharges: z
+    .string()
+    .min(1, "Delivery charges is required")
+    .transform(Number)
+    .refine((val) => val >= 0, {
+      message: "Delivery charges cannot be negative",
+    }),
+  tollCharges: z
+    .string()
+    .min(1, "Toll charges is required")
+    .transform(Number)
+    .refine((val) => val >= 0, {
+      message: "Toll charges cannot be negative",
+    }),
+  securityDeposit: z.string().min(1, "Security deposit is required"),
+  minRentalDays: z.coerce.number().min(1, "Min rental days is required"),
+  pickupAvailable: z.string().min(1, "Pickup Available is required"),
+  depositRequired: z.string().min(1, "Deposit Required is required"),
   carBrand: z.string().min(1, "Brand required"),
   carModel: z.string().min(1, "Model required"),
   carTrim: z.string().optional(),
@@ -83,7 +115,7 @@ const ListingEdit = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting },
+    formState: { errors },
     reset,
     watch,
     getValues,
@@ -95,7 +127,7 @@ const ListingEdit = () => {
     if (listingId) {
       fetchListing(listingId);
     }
-  }, [listingId]);
+  }, [listingId, fetchListing]);
 
   useEffect(() => {
     if (listing) {
@@ -192,6 +224,18 @@ const ListingEdit = () => {
         carInsurance: listing?.listing?.car?.carInsurance,
         warranty: listing?.listing?.car?.warranty,
         mileage: listing?.listing?.car?.mileage,
+        extraMileageRate: listing?.listing?.extraMileageRate.toString(),
+        deliveryCharges: listing?.listing?.deliveryCharges.toString(),
+        tollCharges: listing?.listing?.tollCharges.toString(),
+        securityDeposit: listing?.listing?.securityDeposit.toString(),
+        dailyMileage: listing?.listing?.car?.dailyMileage.toString(),
+        weeklyMileage: listing?.listing?.car?.weeklyMileage.toString(),
+        monthlyMileage: listing?.listing?.car?.monthlyMileage.toString(),
+        airBags: listing?.listing?.car?.airBags.toString(),
+        tankCapacity: listing?.listing?.car?.tankCapacity.toString(),
+        minRentalDays: listing?.listing?.minRentalDays.toString(),
+        pickupAvailable: listing?.listing?.pickupAvailable.toString(),
+        depositRequired: listing?.listing?.depositRequired.toString(),
       });
     }
   }, [
@@ -203,12 +247,15 @@ const ListingEdit = () => {
     bodyTypes,
     doors,
     seatings,
+    years,
     powers,
     regionalSpecs,
     fuelTypes,
     techFeatures,
     otherFeatures,
   ]);
+
+  console.log("ListingEdit:", { errors });
 
   const carBrand = watch("carBrand");
 
@@ -417,6 +464,11 @@ const ListingEdit = () => {
                 className="w-full border rounded-lg px-3 py-2 mt-2 outline-none border-[rgba(91, 120, 124, 1)]"
               />
             )}
+            {errors.rentPerWeek && (
+              <p className="text-red-500 text-sm">
+                {errors.rentPerWeek.message}
+              </p>
+            )}
           </div>
           <div>
             <label className="block font-medium">Rent / Month</label>
@@ -428,6 +480,83 @@ const ListingEdit = () => {
                 {...register("rentPerMonth")}
                 className="w-full border rounded-lg px-3 py-2 mt-2 outline-none border-[rgba(91, 120, 124, 1)]"
               />
+            )}
+            {errors.rentPerMonth && (
+              <p className="text-red-500 text-sm">
+                {errors.rentPerMonth.message}
+              </p>
+            )}
+          </div>
+
+          <div>
+            <label className="block font-medium">Extra Mileage Rate</label>
+            {isFetching ? (
+              <Skeleton height="40px" borderRadius="md" mt={2} />
+            ) : (
+              <input
+                type="text"
+                {...register("extraMileageRate")}
+                className="w-full border rounded-lg px-3 py-2 mt-2 outline-none border-[rgba(91, 120, 124, 1)]"
+              />
+            )}
+            {errors.extraMileageRate && (
+              <p className="text-red-500 text-sm">
+                {errors.extraMileageRate.message}
+              </p>
+            )}
+          </div>
+
+          <div>
+            <label className="block font-medium">Delivery Charges</label>
+            {isFetching ? (
+              <Skeleton height="40px" borderRadius="md" mt={2} />
+            ) : (
+              <input
+                type="text"
+                {...register("deliveryCharges")}
+                className="w-full border rounded-lg px-3 py-2 mt-2 outline-none border-[rgba(91, 120, 124, 1)]"
+              />
+            )}
+            {errors.deliveryCharges && (
+              <p className="text-red-500 text-sm">
+                {errors.deliveryCharges.message}
+              </p>
+            )}
+          </div>
+
+          <div>
+            <label className="block font-medium">Toll Charges</label>
+            {isFetching ? (
+              <Skeleton height="40px" borderRadius="md" mt={2} />
+            ) : (
+              <input
+                type="text"
+                {...register("tollCharges")}
+                className="w-full border rounded-lg px-3 py-2 mt-2 outline-none border-[rgba(91, 120, 124, 1)]"
+              />
+            )}
+            {errors.tollCharges && (
+              <p className="text-red-500 text-sm">
+                {errors.tollCharges.message}
+              </p>
+            )}
+          </div>
+
+          <div>
+            <label className="block font-medium">Security Deposit</label>
+            {isFetching ? (
+              <Skeleton height="40px" borderRadius="md" mt={2} />
+            ) : (
+              <input
+                type="text"
+                {...register("securityDeposit")}
+                className="w-full border rounded-lg px-3 py-2 mt-2 outline-none border-[rgba(91, 120, 124, 1)]"
+              />
+            )}
+            {errors.securityDeposit && (
+              <p className="text-red-500 text-sm">
+                {errors.securityDeposit.message}
+              </p>
             )}
           </div>
         </section>
@@ -494,6 +623,9 @@ const ListingEdit = () => {
                 ))}
               </select>
             )}
+            {errors.carTrim && (
+              <p className="text-red-500 text-sm">{errors.carTrim.message}</p>
+            )}
           </div>
           <div>
             <label className="block font-medium">Year</label>
@@ -533,6 +665,9 @@ const ListingEdit = () => {
                 ))}
               </select>
             )}
+            {errors.doors && (
+              <p className="text-red-500 text-sm">{errors.doors.message}</p>
+            )}
           </div>
           <div>
             <label className="block font-medium">Seating Capacity</label>
@@ -550,6 +685,11 @@ const ListingEdit = () => {
                   </option>
                 ))}
               </select>
+            )}
+            {errors.seatingCapacity && (
+              <p className="text-red-500 text-sm">
+                {errors.seatingCapacity.message}
+              </p>
             )}
           </div>
           <div>
@@ -569,6 +709,11 @@ const ListingEdit = () => {
                 ))}
               </select>
             )}
+            {errors.horsePower && (
+              <p className="text-red-500 text-sm">
+                {errors.horsePower.message}
+              </p>
+            )}
           </div>
           <div>
             <label className="block font-medium">Body Type</label>
@@ -586,6 +731,9 @@ const ListingEdit = () => {
                   </option>
                 ))}
               </select>
+            )}
+            {errors.bodyType && (
+              <p className="text-red-500 text-sm">{errors.bodyType.message}</p>
             )}
           </div>
           <div>
@@ -605,6 +753,9 @@ const ListingEdit = () => {
                 ))}
               </select>
             )}
+            {errors.fuelType && (
+              <p className="text-red-500 text-sm">{errors.fuelType.message}</p>
+            )}
           </div>
           <div>
             <label className="block font-medium">Transmission</label>
@@ -622,6 +773,11 @@ const ListingEdit = () => {
                   </option>
                 ))}
               </select>
+            )}
+            {errors.transmission && (
+              <p className="text-red-500 text-sm">
+                {errors.transmission.message}
+              </p>
             )}
           </div>
           <div>
@@ -641,6 +797,11 @@ const ListingEdit = () => {
                 ))}
               </select>
             )}
+            {errors.interiorColor && (
+              <p className="text-red-500 text-sm">
+                {errors.interiorColor.message}
+              </p>
+            )}
           </div>
           <div>
             <label className="block font-medium">Exterior Color</label>
@@ -658,6 +819,43 @@ const ListingEdit = () => {
                   </option>
                 ))}
               </select>
+            )}
+            {errors.exteriorColor && (
+              <p className="text-red-500 text-sm">
+                {errors.exteriorColor.message}
+              </p>
+            )}
+          </div>
+          <div>
+            <label className="block font-medium">Air Bags</label>
+            {isFetching ? (
+              <Skeleton height="40px" borderRadius="md" mt={2} />
+            ) : (
+              <input
+                type="number"
+                {...register("airBags")}
+                className="w-full border rounded-lg px-3 py-2 mt-2 outline-none border-[rgba(91, 120, 124, 1)]"
+              />
+            )}
+            {errors.airBags && (
+              <p className="text-red-500 text-sm">{errors.airBags.message}</p>
+            )}
+          </div>
+          <div>
+            <label className="block font-medium">Fuel Tank Capacity</label>
+            {isFetching ? (
+              <Skeleton height="40px" borderRadius="md" mt={2} />
+            ) : (
+              <input
+                type="number"
+                {...register("tankCapacity")}
+                className="w-full border rounded-lg px-3 py-2 mt-2 outline-none border-[rgba(91, 120, 124, 1)]"
+              />
+            )}
+            {errors.tankCapacity && (
+              <p className="text-red-500 text-sm">
+                {errors.tankCapacity.message}
+              </p>
             )}
           </div>
         </section>
@@ -733,6 +931,11 @@ const ListingEdit = () => {
                 ))}
               </select>
             )}
+            {errors.regionalSpecs && (
+              <p className="text-red-500 text-sm">
+                {errors.regionalSpecs.message}
+              </p>
+            )}
           </div>
           <div>
             <label className="block font-medium">Insurance</label>
@@ -747,6 +950,11 @@ const ListingEdit = () => {
                 <option value="Yes">Yes</option>
                 <option value="No">No</option>
               </select>
+            )}
+            {errors.carInsurance && (
+              <p className="text-red-500 text-sm">
+                {errors.carInsurance.message}
+              </p>
             )}
           </div>
           <div>
@@ -763,6 +971,66 @@ const ListingEdit = () => {
                 <option value="No">No</option>
               </select>
             )}
+            {errors.warranty && (
+              <p className="text-red-500 text-sm">{errors.warranty.message}</p>
+            )}
+          </div>
+          <div>
+            <label className="block font-medium">Pickup Available</label>
+            {isFetching ? (
+              <Skeleton height="40px" borderRadius="md" mt={2} />
+            ) : (
+              <select
+                {...register("pickupAvailable")}
+                className="w-full border rounded-lg px-3 py-2 mt-2 outline-none border-[rgba(91, 120, 124, 1)]"
+              >
+                <option value="">Select Pickup Available</option>
+                <option value="true">Yes</option>
+                <option value="false">No</option>
+              </select>
+            )}
+            {errors.pickupAvailable && (
+              <p className="text-red-500 text-sm">
+                {errors.pickupAvailable.message}
+              </p>
+            )}
+          </div>
+          <div>
+            <label className="block font-medium">Deposit Required</label>
+            {isFetching ? (
+              <Skeleton height="40px" borderRadius="md" mt={2} />
+            ) : (
+              <select
+                {...register("depositRequired")}
+                className="w-full border rounded-lg px-3 py-2 mt-2 outline-none border-[rgba(91, 120, 124, 1)]"
+              >
+                <option value="">Select Deposit Required</option>
+                <option value="true">Yes</option>
+                <option value="false">No</option>
+              </select>
+            )}
+            {errors.depositRequired && (
+              <p className="text-red-500 text-sm">
+                {errors.depositRequired.message}
+              </p>
+            )}
+          </div>
+          <div>
+            <label className="block font-medium">Minimum Rental Days</label>
+            {isFetching ? (
+              <Skeleton height="40px" borderRadius="md" mt={2} />
+            ) : (
+              <input
+                type="number"
+                {...register("minRentalDays")}
+                className="w-full border rounded-lg px-3 py-2 mt-2 outline-none border-[rgba(91, 120, 124, 1)]"
+              />
+            )}
+            {errors.minRentalDays && (
+              <p className="text-red-500 text-sm">
+                {errors.minRentalDays.message}
+              </p>
+            )}
           </div>
           <div>
             <label className="block font-medium">Mileage</label>
@@ -774,6 +1042,60 @@ const ListingEdit = () => {
                 {...register("mileage")}
                 className="w-full border rounded-lg px-3 py-2 mt-2 outline-none border-[rgba(91, 120, 124, 1)]"
               />
+            )}
+            {errors.mileage && (
+              <p className="text-red-500 text-sm">{errors.mileage.message}</p>
+            )}
+          </div>
+          <div>
+            <label className="block font-medium">Daily Mileage</label>
+            {isFetching ? (
+              <Skeleton height="40px" borderRadius="md" mt={2} />
+            ) : (
+              <input
+                type="number"
+                {...register("dailyMileage")}
+                className="w-full border rounded-lg px-3 py-2 mt-2 outline-none border-[rgba(91, 120, 124, 1)]"
+              />
+            )}
+            {errors.dailyMileage && (
+              <p className="text-red-500 text-sm">
+                {errors.dailyMileage.message}
+              </p>
+            )}
+          </div>
+          <div>
+            <label className="block font-medium">Weekly Mileage</label>
+            {isFetching ? (
+              <Skeleton height="40px" borderRadius="md" mt={2} />
+            ) : (
+              <input
+                type="number"
+                {...register("weeklyMileage")}
+                className="w-full border rounded-lg px-3 py-2 mt-2 outline-none border-[rgba(91, 120, 124, 1)]"
+              />
+            )}
+            {errors.weeklyMileage && (
+              <p className="text-red-500 text-sm">
+                {errors.weeklyMileage.message}
+              </p>
+            )}
+          </div>
+          <div>
+            <label className="block font-medium">Monthly Mileage</label>
+            {isFetching ? (
+              <Skeleton height="40px" borderRadius="md" mt={2} />
+            ) : (
+              <input
+                type="number"
+                {...register("monthlyMileage")}
+                className="w-full border rounded-lg px-3 py-2 mt-2 outline-none border-[rgba(91, 120, 124, 1)]"
+              />
+            )}
+            {errors.monthlyMileage && (
+              <p className="text-red-500 text-sm">
+                {errors.monthlyMileage.message}
+              </p>
             )}
           </div>
         </section>

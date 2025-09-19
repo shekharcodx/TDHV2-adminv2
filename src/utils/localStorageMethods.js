@@ -22,41 +22,41 @@ const removeItem = (key) => {
 };
 
 const setToken = (token) => {
-  Cookies.set("token", token, { expires: 1 });
+  Cookies.set("admin-token", token, { expires: 1 });
 };
 
 const getToken = () => {
-  return Cookies.get("token") || null;
+  return Cookies.get("admin-token") || null;
 };
 
 const removeToken = () => {
-  Cookies.remove("token");
+  Cookies.remove("admin-token");
 };
 
 const setUser = (user) => {
-  Cookies.set("user", JSON.stringify(user));
+  Cookies.set("user-admin", JSON.stringify(user));
 };
 
 const getUser = () => {
-  const user = Cookies.get("user");
+  const user = Cookies.get("user-admin");
   return user ? JSON.parse(user) : null;
 };
 
 const removeUser = () => {
-  Cookies.remove("user");
+  Cookies.remove("user-admin");
 };
 
 const setUserRole = (role) => {
-  Cookies.set("role", role.toString(), { expires: 1 });
+  Cookies.set("admin-role", role.toString(), { expires: 1 });
 };
 
 const getUserRole = () => {
-  const role = Cookies.get("role");
+  const role = Cookies.get("admin-role");
   return role ? parseInt(role, 10) : null;
 };
 
 const removeUserRole = () => {
-  Cookies.remove("k_role");
+  Cookies.remove("admin-role");
 };
 
 export {

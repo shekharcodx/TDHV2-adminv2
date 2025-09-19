@@ -22,7 +22,7 @@ const VendorProfile = () => {
     if (vendorId) {
       fetchVendorProfile(vendorId);
     }
-  }, [vendorId, location.search]);
+  }, [vendorId, fetchVendorProfile]);
 
   return (
     <>
@@ -71,7 +71,9 @@ const VendorProfile = () => {
                 {vendorFetching ? (
                   <Skeleton variant="shine" width="200px" height="15px" />
                 ) : (
-                  <h2 className={styles.name}>{vendorProfile?.data?.name}</h2>
+                  <h2 className={styles.name}>
+                    {vendorProfile?.data?.businessName}
+                  </h2>
                 )}
                 {vendorFetching ? (
                   <Skeleton
@@ -97,7 +99,7 @@ const VendorProfile = () => {
               className={`${styles.infoRow}`}
             >
               <Box marginBottom={{ base: "20px" }} className={styles.infoItem}>
-                <strong>Business Name</strong>
+                <strong>Vendor Admin Name</strong>
                 {vendorFetching ? (
                   <Skeleton
                     variant="shine"
@@ -106,7 +108,7 @@ const VendorProfile = () => {
                     mt="10px"
                   />
                 ) : (
-                  vendorProfile?.data?.businessName
+                  vendorProfile?.data?.name
                 )}
               </Box>
 

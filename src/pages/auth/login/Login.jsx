@@ -39,6 +39,7 @@ const Login = () => {
   const onSubmit = async (formData) => {
     toaster.promise(login(formData).unwrap(), {
       success: (res) => {
+        console.log("Login:", { res });
         if (res.code === 9011 && res?.data?.role === 1) {
           setToken(res.data?.token);
           setUserRole(res.data?.role);

@@ -2,7 +2,14 @@ import { useEffect, useState } from "react";
 import { useLazyGetListingQuery } from "@/app/api/carListingApi";
 import { useParams, useNavigate } from "react-router-dom";
 import { LISTING_STATUS_NUM } from "@/config/constants";
-import { Button, Heading, Skeleton, SkeletonText } from "@chakra-ui/react";
+import {
+  Badge,
+  Button,
+  Heading,
+  Skeleton,
+  SkeletonText,
+  Text,
+} from "@chakra-ui/react";
 
 const ListingView = () => {
   const navigate = useNavigate();
@@ -79,7 +86,7 @@ const ListingView = () => {
             <img
               src={selectedImage?.url}
               alt={listing?.listing?.title}
-              className="w-full h-72 object-cover"
+              className="w-full h-72 object-contain"
             />
           </div>
         )}
@@ -96,7 +103,7 @@ const ListingView = () => {
                   src={img.url}
                   alt={`Thumbnail ${idx + 1}`}
                   onClick={() => setSelectedImage(img)}
-                  className={`w-24 h-16 object-cover rounded-lg cursor-pointer border-2 ${
+                  className={`w-24 h-16 object-contain rounded-lg cursor-pointer border-2 ${
                     selectedImage === img
                       ? "border-blue-500"
                       : "border-transparent"
@@ -177,17 +184,35 @@ const ListingView = () => {
           </div>
           <div className="p-4 grid grid-cols-1 md:grid-cols-3 gap-4">
             {isFetching ? (
-              <SkeletonText noOfLines={3} spacing="4" />
+              <SkeletonText noOfLines={7} spacing="4" />
             ) : (
               <>
                 <div>
-                  <strong>Rent/Day:</strong> ${listing?.listing?.rentPerDay}
+                  <strong>Rent/Day:</strong> {listing?.listing?.rentPerDay} AED
                 </div>
                 <div>
-                  <strong>Rent/Week:</strong> ${listing?.listing?.rentPerWeek}
+                  <strong>Rent/Week:</strong> {listing?.listing?.rentPerWeek}{" "}
+                  AED
                 </div>
                 <div>
-                  <strong>Rent/Month:</strong> ${listing?.listing?.rentPerMonth}
+                  <strong>Rent/Month:</strong> {listing?.listing?.rentPerMonth}{" "}
+                  AED
+                </div>
+                <div>
+                  <strong>Extra Mileage Rate:</strong>{" "}
+                  {listing?.listing?.extraMileageRate} AED
+                </div>
+                <div>
+                  <strong>Delivery Charges:</strong>{" "}
+                  {listing?.listing?.deliveryCharges} AED
+                </div>
+                <div>
+                  <strong>Toll Charges:</strong> {listing?.listing?.tollCharges}{" "}
+                  AED
+                </div>
+                <div>
+                  <strong>Security Deposit:</strong>{" "}
+                  {listing?.listing?.securityDeposit} AED
                 </div>
               </>
             )}
@@ -226,6 +251,28 @@ const ListingView = () => {
                     listing?.listing?.car?.carBrand?.carModel?.details
                       ?.modelYear
                   }
+                </div>
+                <div>
+                  <strong>Mileage:</strong> {listing?.listing?.car?.mileage}
+                </div>
+                <div>
+                  <strong>Daily Mileage:</strong>{" "}
+                  {listing?.listing?.car?.dailyMileage}
+                </div>
+                <div>
+                  <strong>Weekly Mileage:</strong>{" "}
+                  {listing?.listing?.car?.weeklyMileage}
+                </div>
+                <div>
+                  <strong>Monthly Mileage:</strong>{" "}
+                  {listing?.listing?.car?.monthlyMileage}
+                </div>
+                <div>
+                  <strong>Air Bags:</strong> {listing?.listing?.car?.airBags}
+                </div>
+                <div>
+                  <strong>Fuel Tank Capacity:</strong>{" "}
+                  {listing?.listing?.car?.tankCapacity}
                 </div>
                 <div>
                   <strong>Doors:</strong>{" "}
@@ -315,7 +362,7 @@ const ListingView = () => {
           </div>
           <div className="p-4 grid grid-cols-1 md:grid-cols-3 gap-4">
             {isFetching ? (
-              <SkeletonText noOfLines={4} spacing="4" />
+              <SkeletonText noOfLines={6} spacing="4" />
             ) : (
               <>
                 <div>
@@ -324,10 +371,55 @@ const ListingView = () => {
                 </div>
                 <div>
                   <strong>Insurance:</strong>{" "}
-                  {listing?.listing?.car?.carInsurance}
+                  <Badge
+                    colorPalette={
+                      listing?.listing?.car?.carInsurance == "yes"
+                        ? "green"
+                        : "red"
+                    }
+                  >
+                    {listing?.listing?.car?.carInsurance}
+                  </Badge>
                 </div>
                 <div>
-                  <strong>Warranty:</strong> {listing?.listing?.car?.warranty}
+                  <strong>Warranty:</strong>{" "}
+                  <Badge
+                    colorPalette={
+                      listing?.listing?.car?.warranty == "yes" ? "green" : "red"
+                    }
+                  >
+                    {listing?.listing?.car?.warranty}
+                  </Badge>
+                </div>
+                <div>
+                  <strong>Warranty:</strong>{" "}
+                  <Badge
+                    colorPalette={
+                      listing?.listing?.car?.warranty == "yes" ? "green" : "red"
+                    }
+                  >
+                    {listing?.listing?.car?.warranty}
+                  </Badge>
+                </div>
+                <div>
+                  <strong>Pickup Available:</strong>{" "}
+                  <Badge
+                    colorPalette={
+                      listing?.listing?.pickupAvailable ? "green" : "red"
+                    }
+                  >
+                    {listing?.listing?.pickupAvailable ? "Yes" : "No"}
+                  </Badge>
+                </div>
+                <div>
+                  <strong>Deposit Required:</strong>{" "}
+                  <Badge
+                    colorPalette={
+                      listing?.listing?.depositRequired ? "green" : "red"
+                    }
+                  >
+                    {listing?.listing?.depositRequired ? "Yes" : "No"}
+                  </Badge>
                 </div>
                 <div>
                   <strong>Mileage:</strong> {listing?.listing?.car?.mileage} KM
