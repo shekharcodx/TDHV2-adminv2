@@ -23,6 +23,7 @@ const Header = ({ isOpen, setIsOpen }) => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const navigate = useNavigate();
   const dropdownRef = useRef(null);
+  const [logoutUser] = useLogoutMutation();
 
   const handleSignOut = () => {
     toaster.promise(logoutUser(), {
