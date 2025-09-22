@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import styles from "./AdminProfile.module.css";
 import { Box, Breadcrumb, Flex } from "@chakra-ui/react";
 import profilePicPlaceholder from "@/assets/images/avatar.svg";
@@ -23,6 +23,7 @@ const schema = z.object({
 
 const EditAdminProfile = () => {
   const navigate = useNavigate();
+  const [preview, setPreview] = useState(null);
   const { id: adminId } = useParams();
   const [fetchAdminProfile, { data: adminProfile, isFetching: adminFetching }] =
     useLazyGetUserQuery();
@@ -77,6 +78,14 @@ const EditAdminProfile = () => {
   useEffect(() => {
     console.log("adminProfile:errors", errors);
   }, [errors]);
+
+  const handleProfilePicSelect = (e) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const imageUrl = URL.createObjectURL(file);
+      setPreview(imageUrl); // store preview URL
+    }
+  };
 
   const onSubmit = async (data) => {
     console.log("adminProfile:submittedData", data);
@@ -147,11 +156,12 @@ const EditAdminProfile = () => {
                 ) : (
                   <img
                     src={
-                      adminProfile?.data?.profilePicture
+                      preview ??
+                      (adminProfile?.data?.profilePicture
                         ? `${
                             adminProfile.data.profilePicture?.url
                           }?t=${Date.now()}`
-                        : profilePicPlaceholder
+                        : profilePicPlaceholder)
                     }
                     alt="Profile"
                     className={`h-full w-full ${styles.avatarPhoto}`}
@@ -167,7 +177,9 @@ const EditAdminProfile = () => {
                 </Box>
                 <input
                   type="file"
-                  {...register("profilePicture")}
+                  {...register("profilePicture", {
+                    onChange: (e) => handleProfilePicSelect(e),
+                  })}
                   ref={(e) => {
                     register("profilePicture").ref(e);
                     imageRef.current = e;
