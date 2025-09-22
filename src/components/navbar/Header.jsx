@@ -5,6 +5,9 @@ import { useNavigate } from "react-router-dom";
 import { Avatar, Button, Menu, Portal } from "@chakra-ui/react";
 import { FaBars } from "react-icons/fa";
 import { toaster } from "@/components/ui/toaster";
+import { useLogoutMutation } from "@/app/api/authApi";
+import { baseApi } from "@/app/api/baseApi";
+import { useDispatch } from "react-redux";
 import {
   removeToken,
   removeUserRole,
@@ -15,23 +18,33 @@ import UpdatePassword from "@/pages/Profile/UpdatePassword";
 import placeholderImage from "@/assets/images/avatar.svg";
 
 const Header = ({ isOpen, setIsOpen }) => {
+  const dispatch = useDispatch();
   const [user, setUser] = useState(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const navigate = useNavigate();
   const dropdownRef = useRef(null);
 
   const handleSignOut = () => {
-    removeToken();
-    removeUserRole();
-    removeUser();
-    toaster.create({
-      type: "success",
-      title: "Signed out",
-      description: "You have been signed out successfully.",
-      closable: true,
-      duration: 5000,
+    toaster.promise(logoutUser(), {
+      loading: { title: "Signing out", description: "Please wait..." },
+      success: (res) => {
+        removeToken();
+        removeUserRole();
+        removeUser();
+        navigate("/login");
+        dispatch(baseApi.util.resetApiState());
+        return {
+          title: res?.message || "Signed out successfully",
+          description: "",
+        };
+      },
+      error: (err) => {
+        return {
+          title: "Error signing out",
+          description: "Please try again",
+        };
+      },
     });
-    navigate("/login");
   };
 
   useEffect(() => {
