@@ -31,7 +31,7 @@ const getToken = () => {
 
 const removeToken = () => {
   Cookies.remove("admin-token");
-  Cookies.remove("refreshToken");
+  Cookies.remove("adminRefreshToken");
 };
 
 const setUser = (user) => {
