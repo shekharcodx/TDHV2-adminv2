@@ -22,7 +22,7 @@ const baseQueryWithErrorHandling = async (args, api, extraOptions) => {
       try {
         // Call the refresh endpoint
         const refreshResult = await baseQuery(
-          { url: "/refresh", method: "POST" },
+          { url: "/refresh", method: "POST", body: { role: 1 } },
           api,
           extraOptions
         );
