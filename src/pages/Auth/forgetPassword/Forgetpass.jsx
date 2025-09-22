@@ -72,7 +72,7 @@ const ForgetPassword = () => {
             style={
               isLoading
                 ? { backgroundColor: "#ccc", cursor: "not-allowed" }
-                : {}
+                : { cursor: "cursor" }
             }
           >
             {isLoading ? "Sending..." : "Send Reset Link"}
