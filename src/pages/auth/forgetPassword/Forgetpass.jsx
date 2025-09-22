@@ -21,7 +21,7 @@ const ForgetPassword = () => {
 
     // ✅ call API with proper toaster options
     toaster.promise(
-      forgetPassword(email).unwrap(),
+      forgetPassword({ email, role: 1 }).unwrap(),
       {
         loading: { title: "Sending Reset Link", description: " " },
         success: (res) => {
