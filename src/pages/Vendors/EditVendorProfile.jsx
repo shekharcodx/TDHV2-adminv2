@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import styles from "./VendorProfile.module.css";
 import { Box, Breadcrumb, Flex } from "@chakra-ui/react";
 import profilePicPlaceholder from "@/assets/images/avatar.svg";
@@ -36,6 +36,7 @@ const schema = z.object({
 
 const EditVendorProfile = () => {
   const navigate = useNavigate();
+  const [preview, setPreview] = useState(null);
   const { id: vendorId } = useParams();
   const [
     fetchVendorProfile,
@@ -109,9 +110,13 @@ const EditVendorProfile = () => {
     }
   }, [vendorProfile, reset]);
 
-  useEffect(() => {
-    console.log("VendorProfile:errors", errors);
-  }, [errors]);
+  const handleProfilePicSelect = (e) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const imageUrl = URL.createObjectURL(file);
+      setPreview(imageUrl); // store preview URL
+    }
+  };
 
   const onSubmit = async (data) => {
     console.log("VendorProfile:submittedData", data);
@@ -198,11 +203,12 @@ const EditVendorProfile = () => {
                 ) : (
                   <img
                     src={
-                      vendorProfile?.data?.profilePicture
+                      preview ??
+                      (vendorProfile?.data?.profilePicture
                         ? `${
                             vendorProfile.data.profilePicture?.url
                           }?t=${Date.now()}`
-                        : profilePicPlaceholder
+                        : profilePicPlaceholder)
                     }
                     alt="Profile"
                     className={`h-full w-full ${styles.avatarPhoto}`}
@@ -218,7 +224,9 @@ const EditVendorProfile = () => {
                 </Box>
                 <input
                   type="file"
-                  {...register("profilePicture")}
+                  {...register("profilePicture", {
+                    onChange: (e) => handleProfilePicSelect(e),
+                  })}
                   ref={(e) => {
                     register("profilePicture").ref(e);
                     imageRef.current = e;
@@ -230,14 +238,16 @@ const EditVendorProfile = () => {
               <div className={`styles.headerText`}>
                 <input
                   type="text"
-                  {...register("name")}
-                  className={`${styles.inputEdit} block !w-[350px]`}
+                  {...register("businessName")}
+                  className={styles.inputEdit}
                 />
-                <div className="text-red-600">{errors?.name?.message}</div>
+                <div className="text-red-600">
+                  {errors?.businessName?.message}
+                </div>
                 <input
                   type="email"
                   {...register("email")}
-                  className={`${styles.inputEdit} block !w-[350px]`}
+                  className={`${styles.inputEdit} block w-full !md:w-[350px]`}
                 />
                 <div className="text-red-600">{errors?.email?.message}</div>
               </div>
@@ -254,15 +264,13 @@ const EditVendorProfile = () => {
                   marginBottom={{ base: "20px" }}
                   className={styles.infoItem}
                 >
-                  <strong>Business Name</strong>
+                  <strong>Vendor Admin Name</strong>
                   <input
                     type="text"
-                    {...register("businessName")}
-                    className={styles.inputEdit}
+                    {...register("name")}
+                    className={`${styles.inputEdit} block w-full !md:w-[350px]`}
                   />
-                  <div className="text-red-600">
-                    {errors?.businessName?.message}
-                  </div>
+                  <div className="text-red-600">{errors?.name?.message}</div>
                 </Box>
 
                 <Box
