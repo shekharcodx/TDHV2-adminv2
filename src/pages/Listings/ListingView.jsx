@@ -15,6 +15,7 @@ const ListingView = () => {
   const navigate = useNavigate();
   const { id: listingId } = useParams();
   const [selectedImage, setSelectedImage] = useState("");
+  const [images, setImages] = useState([]);
   const [fetchListing, { data: listing, isFetching }] =
     useLazyGetListingQuery();
 
@@ -22,11 +23,21 @@ const ListingView = () => {
     if (listingId) {
       fetchListing(listingId);
     }
-  }, [listingId]);
+  }, [fetchListing, listingId]);
 
   useEffect(() => {
-    if (listing?.listing?.car?.images) {
-      setSelectedImage(listing?.listing?.car?.images?.[0]);
+    if (listing?.listing?.car?.coverImage) {
+      setSelectedImage(listing?.listing?.car?.coverImage);
+    }
+    if (
+      listing?.listing?.car?.images?.length > 0 &&
+      listing?.listing?.car?.coverImage
+    ) {
+      const imgs = [
+        listing?.listing?.car?.coverImage,
+        ...(listing?.listing?.car?.images || []),
+      ];
+      setImages(imgs);
     }
   }, [listing]);
 
@@ -84,7 +95,7 @@ const ListingView = () => {
         ) : (
           <div className="rounded-2xl shadow-md overflow-hidden">
             <img
-              src={selectedImage?.url}
+              src={`${selectedImage?.url}?v=${Date.now()}`}
               alt={listing?.listing?.title}
               className="w-full h-72 object-contain"
             />
@@ -97,10 +108,10 @@ const ListingView = () => {
             ? Array.from({ length: 4 }).map((_, i) => (
                 <Skeleton key={i} height="64px" width="96px" rounded="lg" />
               ))
-            : listing?.listing?.car?.images.map((img, idx) => (
+            : images?.map((img, idx) => (
                 <img
                   key={idx}
-                  src={img.url}
+                  src={`${img.url}?v=${Date.now()}`}
                   alt={`Thumbnail ${idx + 1}`}
                   onClick={() => setSelectedImage(img)}
                   className={`w-24 h-16 object-contain rounded-lg cursor-pointer border-2 ${
