@@ -394,11 +394,24 @@ const ListingEdit = () => {
             {isFetching ? (
               <Skeleton height="40px" borderRadius="md" mt={2} />
             ) : (
-              <input
-                type="text"
+              // <input
+              //   type="text"
+              //   {...register("location")}
+              //   className="w-full border rounded-lg px-3 py-2 mt-2 outline-none border-[rgba(91, 120, 124, 1)]"
+              // />
+              <select
                 {...register("location")}
                 className="w-full border rounded-lg px-3 py-2 mt-2 outline-none border-[rgba(91, 120, 124, 1)]"
-              />
+              >
+                <option value="">Select Emirate</option>
+                <option value="Abu Dhabi">Abu Dhabi</option>
+                <option value="Dubai">Dubai</option>
+                <option value="Sharjah">Sharjah</option>
+                <option value="Ajman">Ajman</option>
+                <option value="Umm Al Quwain">Umm Al Quwain</option>
+                <option value="Ras Al Khaimah">Ras Al Khaimah</option>
+                <option value="Fujairah">Fujairah</option>
+              </select>
             )}
             {errors.location && (
               <p className="text-red-500 text-sm">{errors.location.message}</p>
